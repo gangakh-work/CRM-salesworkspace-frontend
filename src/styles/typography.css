@@ -1,0 +1,37 @@
+@layer components {
+  .text-display {
+    @apply text-4xl font-semibold tracking-tight;
+  }
+
+  .text-heading-1 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+
+  .text-heading-2 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+
+  .text-heading-3 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+
+  .text-heading-4 {
+    @apply text-lg font-semibold;
+  }
+
+  .text-body {
+    @apply text-base leading-relaxed;
+  }
+
+  .text-body-sm {
+    @apply text-sm leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-xs text-muted-foreground;
+  }
+
+  .text-label {
+    @apply text-sm font-medium leading-none;
+  }
+}

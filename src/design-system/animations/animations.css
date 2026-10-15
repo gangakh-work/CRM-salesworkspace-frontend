@@ -1,0 +1,55 @@
+@keyframes ds-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes ds-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ds-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@layer utilities {
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-neutral-100) 0%,
+      var(--color-neutral-200) 50%,
+      var(--color-neutral-100) 100%
+    );
+    background-size: 200% 100%;
+    animation: ds-shimmer 1.5s ease-in-out infinite;
+  }
+
+  .dark .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-neutral-800) 0%,
+      var(--color-neutral-700) 50%,
+      var(--color-neutral-800) 100%
+    );
+    background-size: 200% 100%;
+  }
+
+  .animate-ds-spin {
+    animation: ds-spin 0.8s linear infinite;
+  }
+
+  .animate-ds-pulse {
+    animation: ds-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
