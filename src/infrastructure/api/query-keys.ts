@@ -1,0 +1,46 @@
+export const queryKeys = {
+  all: ['api'] as const,
+  health: () => [...queryKeys.all, 'health'] as const,
+  leads: {
+    all: ['leads'] as const,
+    list: () => [...queryKeys.leads.all, 'list'] as const,
+    detail: (id: string) => [...queryKeys.leads.all, 'detail', id] as const,
+  },
+  dashboard: {
+    all: ['dashboard'] as const,
+    kpis: () => [...queryKeys.dashboard.all, 'kpis'] as const,
+    activities: () => [...queryKeys.dashboard.all, 'activities'] as const,
+    scoreDistribution: () => [...queryKeys.dashboard.all, 'score-distribution'] as const,
+    funnel: () => [...queryKeys.dashboard.all, 'funnel'] as const,
+    stageDistribution: () => [...queryKeys.dashboard.all, 'stage-distribution'] as const,
+    lostAnalytics: () => [...queryKeys.dashboard.all, 'lost-analytics'] as const,
+    disqualificationReport: () => [...queryKeys.dashboard.all, 'disqualification-report'] as const,
+    opportunityPipeline: () => [...queryKeys.dashboard.all, 'opportunity-pipeline'] as const,
+    opportunityByStage: () => [...queryKeys.dashboard.all, 'opportunity-by-stage'] as const,
+    revenueTrend: () => [...queryKeys.dashboard.all, 'revenue-trend'] as const,
+    leadsBySource: () => [...queryKeys.dashboard.all, 'leads-by-source'] as const,
+    leadsByOwner: () => [...queryKeys.dashboard.all, 'leads-by-owner'] as const,
+    leadsByStatus: () => [...queryKeys.dashboard.all, 'leads-by-status'] as const,
+    recentLeads: () => [...queryKeys.dashboard.all, 'recent-leads'] as const,
+    recentOpportunities: () => [...queryKeys.dashboard.all, 'recent-opportunities'] as const,
+    upcomingActivities: () => [...queryKeys.dashboard.all, 'upcoming-activities'] as const,
+    aiRecommendations: () => [...queryKeys.dashboard.all, 'ai-recommendations'] as const,
+    executive: (role: string, ownerName?: string) =>
+      [...queryKeys.dashboard.all, 'executive', role, ownerName ?? ''] as const,
+  },
+  opportunities: {
+    all: ['opportunities'] as const,
+    list: () => [...queryKeys.opportunities.all, 'list'] as const,
+    detail: (id: string) => [...queryKeys.opportunities.all, 'detail', id] as const,
+    byLead: (leadId: string) => [...queryKeys.opportunities.all, 'by-lead', leadId] as const,
+  },
+  crm: {
+    all: ['crm'] as const,
+    filterOptions: () => [...queryKeys.crm.all, 'filter-options'] as const,
+    workspaceTab: (tab: string) => [...queryKeys.crm.all, 'workspace', tab] as const,
+  },
+  ai: {
+    all: ['ai'] as const,
+    leadSummary: (leadId: string) => [...queryKeys.ai.all, 'lead-summary', leadId] as const,
+  },
+} as const

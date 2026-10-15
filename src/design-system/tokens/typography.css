@@ -1,0 +1,92 @@
+:root {
+  --font-sans: 'Segoe UI', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+
+  --text-heading-xl: 2.25rem;
+  --text-heading-xl-lh: 2.5rem;
+  --text-heading-xl-weight: 600;
+  --text-heading-xl-tracking: -0.025em;
+
+  --text-heading-l: 1.875rem;
+  --text-heading-l-lh: 2.25rem;
+  --text-heading-l-weight: 600;
+  --text-heading-l-tracking: -0.025em;
+
+  --text-heading-m: 1.5rem;
+  --text-heading-m-lh: 2rem;
+  --text-heading-m-weight: 600;
+  --text-heading-m-tracking: -0.02em;
+
+  --text-body: 0.875rem;
+  --text-body-lh: 1.375rem;
+  --text-body-weight: 400;
+
+  --text-body-lg: 1rem;
+  --text-body-lg-lh: 1.5rem;
+
+  --text-caption: 0.75rem;
+  --text-caption-lh: 1rem;
+  --text-caption-weight: 400;
+
+  --text-badge: 0.6875rem;
+  --text-badge-lh: 1rem;
+  --text-badge-weight: 500;
+  --text-badge-tracking: 0.02em;
+
+  --text-code: 0.8125rem;
+  --text-code-lh: 1.25rem;
+}
+
+@layer components {
+  .text-heading-xl {
+    font-size: var(--text-heading-xl);
+    line-height: var(--text-heading-xl-lh);
+    font-weight: var(--text-heading-xl-weight);
+    letter-spacing: var(--text-heading-xl-tracking);
+  }
+
+  .text-heading-l {
+    font-size: var(--text-heading-l);
+    line-height: var(--text-heading-l-lh);
+    font-weight: var(--text-heading-l-weight);
+    letter-spacing: var(--text-heading-l-tracking);
+  }
+
+  .text-heading-m {
+    font-size: var(--text-heading-m);
+    line-height: var(--text-heading-m-lh);
+    font-weight: var(--text-heading-m-weight);
+    letter-spacing: var(--text-heading-m-tracking);
+  }
+
+  .text-body {
+    font-size: var(--text-body);
+    line-height: var(--text-body-lh);
+    font-weight: var(--text-body-weight);
+  }
+
+  .text-body-lg {
+    font-size: var(--text-body-lg);
+    line-height: var(--text-body-lg-lh);
+  }
+
+  .text-caption {
+    font-size: var(--text-caption);
+    line-height: var(--text-caption-lh);
+    font-weight: var(--text-caption-weight);
+  }
+
+  .text-badge {
+    font-size: var(--text-badge);
+    line-height: var(--text-badge-lh);
+    font-weight: var(--text-badge-weight);
+    letter-spacing: var(--text-badge-tracking);
+    text-transform: uppercase;
+  }
+
+  .text-code {
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+    line-height: var(--text-code-lh);
+  }
+}
