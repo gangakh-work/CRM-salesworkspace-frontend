@@ -7,6 +7,36 @@ import { cn } from '@/lib/utils'
 
 const ACCEPTED_TYPES = '.pdf,.docx,.txt,.md,.xlsx,.xlsm'
 
+/**
+ * Build the dictated text from a SpeechRecognition result list without duplicates.
+ * Some browsers (notably Chrome on Android) return cumulative entries such as
+ * ["vinay", "vinay kumar", "vinay kumar"] instead of one growing entry, so a plain
+ * join produces "vinay vinay kumar vinay kumar".
+ */
+function dedupeTranscript(parts: string[]): string {
+  const kept: string[] = []
+  for (const raw of parts) {
+    const text = raw.replace(/\s+/g, ' ').trim()
+    if (!text) continue
+    const last = kept[kept.length - 1]
+    const lowerText = text.toLowerCase()
+    const lowerLast = last?.toLowerCase()
+    if (last && lowerText.startsWith(lowerLast)) kept[kept.length - 1] = text // longer version of the same phrase
+    else if (last && lowerLast.startsWith(lowerText)) continue // shorter echo of what we already have
+    else kept.push(text)
+  }
+  let joined = kept.join(' ')
+  // "find vinay kumar find vinay kumar" -> "find vinay kumar"
+  const words = joined.split(' ')
+  if (words.length % 2 === 0) {
+    const half = words.length / 2
+    if (words.slice(0, half).join(' ').toLowerCase() === words.slice(half).join(' ').toLowerCase()) {
+      joined = words.slice(0, half).join(' ')
+    }
+  }
+  return joined
+}
+
 export function AiCopilotInput() {
   const { sendMessage, isGenerating, stopGeneration } = useAiCopilot()
 
@@ -17,6 +47,9 @@ export function AiCopilotInput() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<{ start: () => void; stop: () => void; lang?: string; interimResults?: boolean; continuous?: boolean; onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onerror: ((event?: { error?: string }) => void) | null; onend: (() => void) | null } | null>(null)
   const [isListening, setIsListening] = useState(false)
+  // Text already in the box when dictation started; each speech update replaces
+  // (not appends to) what was dictated, so interim results don't pile up.
+  const voiceBaseRef = useRef('')
 
   const canSend = (input.trim().length > 0 || attachments.length > 0) && !isGenerating
 
@@ -53,6 +86,8 @@ export function AiCopilotInput() {
       window.alert('Voice input is not supported in this browser. Please use the text input.')
       return
     }
+    try { recognitionRef.current?.stop() } catch { /* already stopped */ }
+    recognitionRef.current = null
     let recognition: NonNullable<typeof recognitionRef.current>
     try {
       recognition = new SpeechRecognitionConstructor()
@@ -63,9 +98,15 @@ export function AiCopilotInput() {
     recognition.lang = navigator.language || 'en-IN'
     recognition.interimResults = true
     recognition.continuous = false
+    voiceBaseRef.current = input.trim()
     recognition.onresult = (event) => {
-      const transcript = Array.from(event.results).map((result) => result[0]?.transcript ?? '').join(' ').trim()
-      if (transcript) setInput((current) => `${current}${current ? ' ' : ''}${transcript}`)
+      if (recognitionRef.current !== recognition) return // stale recognizer
+      const transcript = dedupeTranscript(
+        Array.from(event.results).map((result) => result[0]?.transcript ?? ''),
+      )
+      if (!transcript) return
+      const base = voiceBaseRef.current
+      setInput(base ? `${base} ${transcript}` : transcript)
     }
     recognition.onerror = (event) => {
       setIsListening(false)
@@ -78,7 +119,9 @@ export function AiCopilotInput() {
         window.alert('Voice recognition needs a network connection. Check your connection or use text input.')
       }
     }
-    recognition.onend = () => setIsListening(false)
+    recognition.onend = () => {
+      if (recognitionRef.current === recognition) setIsListening(false)
+    }
     recognitionRef.current = recognition
     setIsListening(true)
     try {
@@ -89,6 +132,11 @@ export function AiCopilotInput() {
       window.alert('Voice input could not start. Please try again or use text input.')
     }
   }
+
+  useEffect(() => () => {
+    try { recognitionRef.current?.stop() } catch { /* ignore */ }
+    recognitionRef.current = null
+  }, [])
 
   /* Listen for prompt injections from suggested-prompt chips elsewhere in the UI */
   useEffect(() => {
