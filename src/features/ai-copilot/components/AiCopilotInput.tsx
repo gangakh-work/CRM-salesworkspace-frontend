@@ -5,6 +5,18 @@ import { Textarea } from '@/components/ui/textarea'
 import { useAiCopilot } from '@/features/ai-copilot/context/AiCopilotProvider'
 import { cn } from '@/lib/utils'
 
+type SpeechRecognitionResultLike = ArrayLike<{ transcript: string }>
+type SpeechRecognitionInstance = {
+  start: () => void
+  stop: () => void
+  lang?: string
+  interimResults?: boolean
+  continuous?: boolean
+  onresult: ((event: { results: ArrayLike<SpeechRecognitionResultLike> }) => void) | null
+  onerror: ((event?: { error?: string }) => void) | null
+  onend: (() => void) | null
+}
+
 const ACCEPTED_TYPES = '.pdf,.docx,.txt,.md,.xlsx,.xlsm'
 
 /**
@@ -45,7 +57,7 @@ export function AiCopilotInput() {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const recognitionRef = useRef<{ start: () => void; stop: () => void; lang?: string; interimResults?: boolean; continuous?: boolean; onresult: ((event: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onerror: ((event?: { error?: string }) => void) | null; onend: (() => void) | null } | null>(null)
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
   const [isListening, setIsListening] = useState(false)
   // Text already in the box when dictation started; each speech update replaces
   // (not appends to) what was dictated, so interim results don't pile up.
@@ -80,7 +92,7 @@ export function AiCopilotInput() {
       setIsListening(false)
       return
     }
-    const speechWindow = window as unknown as { SpeechRecognition?: new () => NonNullable<typeof recognitionRef.current>; webkitSpeechRecognition?: new () => NonNullable<typeof recognitionRef.current> }
+    const speechWindow = window as unknown as { SpeechRecognition?: new () => SpeechRecognitionInstance; webkitSpeechRecognition?: new () => SpeechRecognitionInstance }
     const SpeechRecognitionConstructor = speechWindow.SpeechRecognition ?? speechWindow.webkitSpeechRecognition
     if (!SpeechRecognitionConstructor) {
       window.alert('Voice input is not supported in this browser. Please use the text input.')
@@ -88,7 +100,7 @@ export function AiCopilotInput() {
     }
     try { recognitionRef.current?.stop() } catch { /* already stopped */ }
     recognitionRef.current = null
-    let recognition: NonNullable<typeof recognitionRef.current>
+    let recognition: SpeechRecognitionInstance
     try {
       recognition = new SpeechRecognitionConstructor()
     } catch {
