@@ -41,6 +41,29 @@ import type {
 } from '@/features/ai-copilot/types/copilot.types'
 
 let convCounter = 0
+type ImportRowResult = { row: number; created: boolean; error?: string; result?: Record<string, unknown> }
+type ImportCreateResponse = { created_count: number; failed_count: number; results: ImportRowResult[] }
+
+/** One line per created record: its name and Dataverse ID, same as the single-record forms. */
+function describeCreatedRecord(entity: 'leads' | 'opportunities', row: ImportRowResult): string {
+  const record = row.result ?? {}
+  const name = entity === 'leads'
+    ? (record.fullname ?? record.subject)
+    : (record.name ?? record.subject)
+  const id = entity === 'leads' ? record.lead_id : record.opportunityid
+  const subject = entity === 'leads' && record.subject && record.subject !== name ? ` — ${String(record.subject)}` : ''
+  return `Row ${row.row}: **${name ? String(name) : entity === 'leads' ? 'Lead' : 'Opportunity'}**${subject}${id ? ` (ID: \`${String(id)}\`)` : ''}`
+}
+
+function formatImportReport(label: string, entity: 'leads' | 'opportunities', data: ImportCreateResponse): string {
+  const created = (data.results ?? []).filter((r) => r.created)
+  const failed = (data.results ?? []).filter((r) => !r.created)
+  const lines = [`${label}: ${data.created_count} created, ${data.failed_count} failed.`]
+  if (created.length) lines.push('', ...created.map((r) => `- ${describeCreatedRecord(entity, r)}`))
+  if (failed.length) lines.push('', '**Failed rows:**', ...failed.map((r) => `- Row ${r.row}: ${r.error ?? 'Creation failed'}`))
+  return lines.join('\n')
+}
+
 function convId() {
   convCounter += 1
   return `conv-${Date.now()}-${convCounter}`
@@ -342,12 +365,12 @@ export function AiCopilotProvider({ children }: { children: ReactNode }) {
             const leadComplete = leadRequired.every(key => typeof lead[key] === 'string' && String(lead[key]).trim())
             if (leadComplete && window.confirm(`${file.name}\nCreate a Lead from the extracted transcript details?\n\nName: ${lead.firstname} ${lead.lastname}\nCompany: ${lead.companyname}\nEmail: ${lead.emailaddress1}\n\nOnly explicitly extracted information will be saved.`)) {
               const result = await apiClient.post('/imports/create', {entity:'leads', records:[lead], confirm:true})
-              reports.push(`Lead creation result: ${result.data.created_count} created, ${result.data.failed_count} failed.`)
+              reports.push(formatImportReport('Lead creation result', 'leads', result.data as ImportCreateResponse))
             } else if (!leadComplete) reports.push(`Lead not created: required fields are missing (${leadRequired.filter(key => !(typeof lead[key] === 'string' && String(lead[key]).trim())).join(', ')}).`)
             const opportunity = analysis.opportunity ?? {}
             if (typeof opportunity.name === 'string' && opportunity.name.trim() && window.confirm(`${file.name}\nCreate an Opportunity from the extracted transcript details?\n\nName: ${opportunity.name}\nEstimated value: ${opportunity.estimatedvalue ?? 'Not specified'}\n\nReview the extracted fields before confirming.`)) {
               const result = await apiClient.post('/imports/create', {entity:'opportunities', records:[opportunity], confirm:true})
-              reports.push(`Opportunity creation result: ${result.data.created_count} created, ${result.data.failed_count} failed.`)
+              reports.push(formatImportReport('Opportunity creation result', 'opportunities', result.data as ImportCreateResponse))
             }
           }
           updateMessages((msgs) => [...msgs, { id: msgId(), role: 'assistant', content: reports.join('\n\n'), contentType: 'markdown', timestamp: new Date().toISOString() }], conversationId)
@@ -372,7 +395,7 @@ export function AiCopilotProvider({ children }: { children: ReactNode }) {
             form.append('file', file)
             const previewResponse = await apiClient.post('/imports/preview', form)
             const preview = previewResponse.data as { entity: 'leads' | 'opportunities'; total: number; valid_count: number; invalid_count: number; rows: Array<{row:number; valid:boolean; data:Record<string, unknown>; errors:Array<{field:string;message:string}>}> }
-            const validRows = preview.rows.filter(row => row.valid).map(row => row.data)
+            const validRows = preview.rows.filter(row => row.valid).map(row => ({ ...row.data, _row_number: row.row }))
             const invalidSummary = preview.rows.filter(row => !row.valid).map(row => `Row ${row.row}: ${row.errors.map(e => `${e.field}: ${e.message}`).join('; ')}`).join('\n')
             if (validRows.length === 0) {
               reports.push(`${file.name}: no valid records. ${invalidSummary}`)
@@ -381,8 +404,8 @@ export function AiCopilotProvider({ children }: { children: ReactNode }) {
             const approved = window.confirm(`${file.name}\nEntity: ${preview.entity}\nTotal rows: ${preview.total}\nValid: ${preview.valid_count}\nInvalid: ${preview.invalid_count}\n\nCreate the ${validRows.length} valid record(s) in Dataverse now?${invalidSummary ? `\n\nInvalid rows will be skipped:\n${invalidSummary}` : ''}`)
             if (!approved) { reports.push(`${file.name}: import cancelled. No records created.`); continue }
             const createResponse = await apiClient.post('/imports/create', { entity: preview.entity, records: validRows, confirm: true })
-            const created = createResponse.data as {created_count:number; failed_count:number; results:Array<{row:number;created:boolean;error?:string}>}
-            reports.push(`${file.name}: ${created.created_count} created, ${created.failed_count} failed.${created.failed_count ? `\n${created.results.filter(r=>!r.created).map(r=>`Row ${r.row}: ${r.error ?? 'Creation failed'}`).join('\n')}` : ''}${invalidSummary ? `\nSkipped invalid rows:\n${invalidSummary}` : ''}`)
+            const created = createResponse.data as ImportCreateResponse
+            reports.push(`${formatImportReport(file.name, preview.entity, created)}${invalidSummary ? `\n\nSkipped invalid rows:\n${invalidSummary}` : ''}`)
           }
           updateMessages((msgs) => [...msgs, { id: msgId(), role: 'assistant', content: reports.join('\n\n'), contentType: 'markdown', timestamp: new Date().toISOString() }], conversationId)
           if (reports.some(report => /\d+ created/.test(report))) notifyCrmChanged()
