@@ -13,7 +13,6 @@ import { CompanyLogo } from '@/features/auth/components/CompanyLogo'
 import { useSession } from '@/features/auth/hooks/useSession'
 import { getStoredRememberMe } from '@/features/auth/lib/auth-storage'
 import { ThemeSwitcher } from '@/shell/ThemeSwitcher'
-import { transitions } from '@/design-system/animations/motion'
 import { cn } from '@/lib/utils'
 
 export function LoginCard() {
@@ -31,39 +30,39 @@ export function LoginCard() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24, scale: 0.98 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={transitions.slow}
-      className="relative w-full max-w-md px-1 sm:max-w-lg lg:max-w-md"
+      transition={{ duration: 0.22, ease: 'easeOut' }}
+      className="relative w-full max-w-[410px] px-1"
     >
-      <div className="absolute -inset-1 rounded-3xl bg-gradient-to-br from-primary/30 via-violet-500/20 to-cyan-500/10 blur-sm" />
-      <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-primary/25 to-violet-500/10" />
-      <div className="relative rounded-2xl border border-border/60 bg-background/90 p-6 shadow-elevation-4 backdrop-blur-xl sm:p-8">
+      
+      
+      <div className="relative rounded-2xl border border-border/80 bg-background p-6 shadow-[0_24px_70px_-28px_rgba(0,0,0,0.28)] sm:p-8">
         <div className="absolute right-4 top-4">
           <ThemeSwitcher />
         </div>
 
-        <CompanyLogo className="mb-8" />
+        <CompanyLogo className="mb-7" />
 
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ ...transitions.base, delay: 0.1 }}
-          className="mb-8 text-center"
+          transition={{ duration: 0.18 }}
+          className="mb-7 text-center"
         >
-          <Typography variant="heading-l" className="mb-2 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+          <Typography variant="heading-l" className="mb-2 text-[1.7rem] font-semibold tracking-tight">
             Welcome back
           </Typography>
           <Typography variant="body" tone="muted">
-            Sign in to access live Dataverse CRM, AI copilot, and sales dashboards
+            Access your sales workspace with your company account.
           </Typography>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ ...transitions.base, delay: 0.2 }}
-          className="space-y-6"
+          transition={{ duration: 0.18 }}
+          className="space-y-5"
         >
           {isMockAuth ? (
             <div className="flex items-center justify-between rounded-lg border border-border/50 bg-background/40 px-4 py-3">
@@ -86,16 +85,14 @@ export function LoginCard() {
 
           <Button
             className={cn(
-              'group relative h-12 w-full overflow-hidden text-base font-semibold shadow-lg transition-all duration-300',
+              'group relative h-12 w-full overflow-hidden rounded-xl text-sm font-semibold shadow-none transition-colors duration-150',
               !isMockAuth &&
-                'bg-gradient-to-r from-[#2f2f2f] via-[#0078d4] to-[#005a9e] hover:shadow-primary/25 hover:brightness-110',
+                'bg-[#1769aa] text-white hover:bg-[#125a92]',
             )}
             disabled={isLoading}
             onClick={() => void handleContinue()}
           >
-            {!isMockAuth ? (
-              <span className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.18),transparent)] opacity-0 transition-opacity group-hover:opacity-100" />
-            ) : null}
+            
             {isLoading ? (
               <>
                 <Loader2 className="size-4 animate-spin" />
@@ -112,7 +109,7 @@ export function LoginCard() {
                   </svg>
                 ) : null}
                 {isMockAuth ? 'Continue' : 'Sign in with Microsoft'}
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                <ArrowRight className="size-4" />
               </>
             )}
           </Button>

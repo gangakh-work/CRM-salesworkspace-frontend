@@ -7,7 +7,6 @@ import { DashboardSection } from '@/features/dashboard/components/DashboardSecti
 import { DashboardTablesGrid } from '@/features/dashboard/components/DashboardTablesGrid'
 import { DisqualificationReportPanel } from '@/features/dashboard/components/DisqualificationReportPanel'
 import { ExecutiveDashboardPanel } from '@/features/dashboard/components/ExecutiveDashboardPanel'
-import { KpiMetricsGrid } from '@/features/dashboard/components/KpiMetricsGrid'
 import { LeadFunnelPanel } from '@/features/dashboard/components/LeadFunnelPanel'
 import { LeadScoreDistributionPanel } from '@/features/dashboard/components/LeadScoreDistributionPanel'
 import { MyDayPanel } from '@/features/dashboard/components/MyDayPanel'
@@ -16,7 +15,7 @@ import { pageTransition } from '@/design-system/animations/motion'
 import { useSettings } from '@/hooks/useSettings'
 import { cn } from '@/lib/utils'
 
-const SECTIONS_STORAGE_KEY = 'sw:dashboard-open-sections'
+const SECTIONS_STORAGE_KEY = 'sw:dashboard-open-sections:v3'
 
 function loadOpenSections(): Set<string> {
   try {
@@ -25,8 +24,8 @@ function loadOpenSections(): Set<string> {
   } catch {
     /* ignore */
   }
-  // Progressive disclosure: analytics start collapsed so "My Day" leads.
-  return new Set()
+  // Show the core sales metrics and charts on first visit; deeper reports stay available on demand.
+  return new Set(['analytics', 'tables'])
 }
 
 export function DashboardPage() {
@@ -55,27 +54,37 @@ export function DashboardPage() {
 
   return (
     <motion.div
-      className={cn('space-y-4 pb-16', settings.compactMode && 'space-y-3')}
+      className={cn('space-y-5 pb-16', settings.compactMode && 'space-y-4')}
       initial="initial"
       animate="animate"
       variants={pageTransition}
     >
       <MyDayPanel />
 
-      <div className="mx-auto flex max-w-[1400px] items-end justify-between gap-4 border-t border-foreground pt-6">
+      <div className="mx-auto flex max-w-[1440px] flex-wrap items-end justify-between gap-3 border-t border-border pt-5">
         <div className="space-y-1">
-          <p className="font-mono text-[11px] text-muted-foreground">04</p>
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">Analytics &amp; reports</h2>
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Sales intelligence</p>
+          <h2 className="text-xl font-semibold tracking-tight md:text-2xl">Pipeline & insights</h2>
         </div>
         <DashboardRefreshIndicator />
       </div>
 
       <DashboardSection
-        {...sectionProps('kpis')}
-        title="KPI Overview"
-        description="Real-time sales metrics from Microsoft Dataverse"
+        {...sectionProps('analytics')}
+        title="Performance analytics"
+        description="Opportunity pipeline, revenue trends, and lead distribution"
+        className="border-border/70 bg-card/90"
       >
-        <KpiMetricsGrid />
+        <DashboardChartsGrid />
+      </DashboardSection>
+
+      <DashboardSection
+        {...sectionProps('tables')}
+        title="Recent records"
+        description="Latest leads, opportunities, upcoming activities, and AI recommendations"
+        className="border-border/70 bg-card/90"
+      >
+        <DashboardTablesGrid />
       </DashboardSection>
 
       <DashboardSection
@@ -84,14 +93,6 @@ export function DashboardPage() {
         description="Role-based KPIs — revenue, forecast, pipeline, win rate, and trends"
       >
         <ExecutiveDashboardPanel />
-      </DashboardSection>
-
-      <DashboardSection
-        {...sectionProps('analytics')}
-        title="Analytics"
-        description="Pipeline, revenue, and lead distribution charts"
-      >
-        <DashboardChartsGrid />
       </DashboardSection>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -128,13 +129,6 @@ export function DashboardPage() {
         <RecentActivitiesPanel />
       </DashboardSection>
 
-      <DashboardSection
-        {...sectionProps('tables')}
-        title="Records"
-        description="Recent leads and opportunities"
-      >
-        <DashboardTablesGrid />
-      </DashboardSection>
     </motion.div>
   )
 }

@@ -54,7 +54,7 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
     },
     {
       id: 'open-opportunities',
-      title: 'Open Opportunities',
+      title: 'Active Opportunities',
       value: data.open_opportunities,
       format: 'number',
       trend: 0,
@@ -65,7 +65,7 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
     },
     {
       id: 'won-opportunities',
-      title: 'Won Opportunities',
+      title: 'Closed Won',
       value: data.won_opportunities,
       format: 'number',
       trend: 0,
@@ -222,7 +222,14 @@ function KpiCard({ metric, index }: { metric: KpiMetric; index: number }) {
 
 export function KpiMetricsGrid() {
   const { data, isLoading, isError, error, refetch } = useDashboardKpisQuery()
-  const metrics = useMemo(() => (data ? mapKpisToMetrics(data.data) : []), [data])
+  const metrics = useMemo(() => {
+    if (!data) return []
+    const preferredOrder = ['total-leads', 'qualified-leads', 'open-opportunities', 'won-opportunities']
+    const allMetrics = mapKpisToMetrics(data.data)
+    return preferredOrder
+      .map((id) => allMetrics.find((metric) => metric.id === id))
+      .filter((metric): metric is KpiMetric => Boolean(metric))
+  }, [data])
 
   return (
     <TooltipProvider delayDuration={300}>

@@ -58,10 +58,10 @@ const STATS = [
 export function LoginHero() {
   const { settings } = useSettings()
   return (
-    <div className="relative flex h-full min-h-[480px] flex-col justify-between overflow-hidden p-8 md:p-12 lg:p-14">
+    <div className="relative flex h-full min-h-[auto] flex-col justify-center overflow-hidden px-6 py-8 sm:px-10 sm:py-10 lg:min-h-screen lg:justify-between lg:px-12 lg:py-12 xl:px-16">
       {settings.animatedBackground ? (
         /* ThreeUI Energy Orb shows through from the page; a soft scrim keeps the copy legible */
-        <div className="absolute inset-0 bg-gradient-to-r from-[#05030e]/80 via-[#05030e]/45 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#081126]/96 via-[#0b1730]/88 to-[#0b2035]/75" />
       ) : (
         <>
           {/* Hero image layer */}
@@ -81,40 +81,42 @@ export function LoginHero() {
         className="relative z-10"
       >
         <motion.div variants={fadeIn} className="flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-primary/15 ring-1 ring-primary/25 backdrop-blur-sm">
-            <Sparkles className="size-6 text-primary" />
-          </div>
+          <img
+            src="/logo.png"
+            alt="Sonata"
+            className="h-auto w-32 object-contain"
+          />
           <div>
-            <Typography variant="heading-l" className="text-2xl md:text-3xl">
+            <Typography variant="heading-l" className="text-xl font-semibold tracking-tight text-white md:text-2xl">
               {APP_NAME}
             </Typography>
-            <Typography variant="caption" tone="muted" className="mt-0.5">
+            <Typography variant="caption" tone="muted" className="mt-0.5 text-slate-300">
               Enterprise sales platform · AI powered
             </Typography>
           </div>
         </motion.div>
 
-        <motion.div variants={fadeIn} className="mt-10 max-w-xl">
-          <Badge variant="secondary" className="mb-4 bg-primary/10 text-primary">
+        <motion.div variants={fadeIn} className="mt-8 max-w-2xl lg:mt-14">
+          <Badge variant="secondary" className="mb-4 border border-sky-300/20 bg-sky-300/10 text-sky-100">
             <Target className="mr-1 size-3" />
             Built for modern revenue teams
           </Badge>
-          <Typography variant="heading-xl" className="text-3xl font-bold leading-tight tracking-tight md:text-4xl lg:text-[2.75rem]">
+          <Typography variant="heading-xl" className="max-w-2xl text-[clamp(2rem,4.2vw,3.8rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
             Close more deals with{' '}
-            <span className="bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-sky-300 to-cyan-300 bg-clip-text text-transparent">
               intelligent CRM
             </span>
           </Typography>
-          <Typography variant="body" tone="muted" className="mt-4 max-w-lg text-base leading-relaxed">
+          <Typography variant="body" tone="muted" className="mt-4 max-w-xl text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
             Unified workspace for leads, opportunities, forecasting, and AI-assisted selling —
             connected to Microsoft Dataverse in real time.
           </Typography>
         </motion.div>
 
-        <motion.div variants={fadeIn} className="mt-10 flex flex-wrap gap-6">
+        <motion.div variants={fadeIn} className="mt-7 flex flex-wrap gap-x-8 gap-y-4 lg:mt-10">
           {STATS.map((stat) => (
             <div key={stat.label}>
-              <Typography variant="heading-m" className="text-2xl font-bold text-primary">
+              <Typography variant="heading-m" className="text-xl font-semibold text-white">
                 {stat.value}
               </Typography>
               <Typography variant="caption" tone="muted">
@@ -129,7 +131,7 @@ export function LoginHero() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mt-10 grid gap-3 sm:grid-cols-2"
+        className="relative z-10 mt-8 grid gap-2 sm:grid-cols-2 lg:mt-12"
       >
         {FEATURES.map((feature) => {
           const Icon = feature.icon
@@ -137,17 +139,17 @@ export function LoginHero() {
             <motion.div
               key={feature.title}
               variants={fadeIn}
-              className="rounded-xl border border-white/10 bg-background/40 p-4 backdrop-blur-md transition-colors hover:bg-background/55"
+              className="rounded-xl border border-white/10 bg-white/[0.045] p-3 transition-colors hover:bg-white/[0.075] sm:p-3.5"
             >
               <div className="flex items-start gap-3">
-                <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/15">
-                  <Icon className="size-4 text-primary" />
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-sky-200/15 bg-sky-200/10">
+                  <Icon className="size-4 text-sky-200" />
                 </div>
                 <div>
-                  <Typography variant="body" className="text-sm font-semibold">
+                  <Typography variant="body" className="text-sm font-semibold text-white">
                     {feature.title}
                   </Typography>
-                  <Typography variant="caption" tone="muted" className="mt-1 leading-relaxed">
+                  <Typography variant="caption" tone="muted" className="mt-1 text-slate-300 leading-relaxed">
                     {feature.description}
                   </Typography>
                 </div>

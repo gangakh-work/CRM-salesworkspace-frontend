@@ -87,13 +87,21 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
           collapsed && 'justify-center px-2',
         )}
       >
+        
         {!collapsed ? (
-          <Typography variant="body" className="truncate font-semibold">
-            {APP_NAME}
-          </Typography>
+          <img
+            src="/logo.png"
+            alt="Sonata"
+            className="h-8 w-auto max-w-[150px] object-contain"
+          />
         ) : (
-          <span className="text-sm font-bold text-primary">SW</span>
+          <img
+            src="/logo.png"
+            alt="Sonata"
+            className="h-7 w-7 object-contain"
+          />
         )}
+
       </div>
       <ScrollArea className="flex-1 px-2 py-3">
         <TooltipProvider delayDuration={0}>

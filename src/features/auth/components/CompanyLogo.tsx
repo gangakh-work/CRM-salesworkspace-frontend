@@ -11,10 +11,11 @@ interface CompanyLogoProps {
 export function CompanyLogo({ className }: CompanyLogoProps) {
   return (
     <div className={cn('flex flex-col items-center gap-3', className)}>
-      <div className="relative flex size-14 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20 backdrop-blur-sm">
-        <Sparkles className="size-7 text-primary" strokeWidth={1.75} />
-        <div className="absolute -inset-1 rounded-2xl bg-primary/5 blur-md" />
-      </div>
+      <img
+        src="/logo.png"
+        alt="Sonata"
+        className="h-auto w-32 object-contain"
+      />
       <div className="text-center">
         <Typography variant="heading-m" className="tracking-tight">
           {APP_NAME}
