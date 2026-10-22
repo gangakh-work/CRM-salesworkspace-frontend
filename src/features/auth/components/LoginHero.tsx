@@ -5,7 +5,6 @@ import {
   Bot,
   Database,
   LayoutDashboard,
-  Sparkles,
   Target,
   Users,
   Workflow,

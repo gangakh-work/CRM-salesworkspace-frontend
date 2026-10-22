@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sheet'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
-import { APP_NAME } from '@/config/constants'
+
 import { sidebarAnimation } from '@/design-system/animations/motion'
 import { useNavigation } from '@/hooks/useNavigation'
 import { useSidebar } from '@/hooks/useSidebar'

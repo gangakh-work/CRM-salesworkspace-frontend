@@ -79,7 +79,6 @@ export function MyDayView({
   onOpenCard: (card: RecordCardData) => void
 }) {
   const pipelineRef = useRef<HTMLDivElement>(null)
-  const navigate = useNavigate()
   const nextStep = (card: RecordCardData) =>
     card.kind === 'opportunity'
       ? { label: 'Next step', onClick: () => onAsk(`What should I do next for ${card.title}?`) }

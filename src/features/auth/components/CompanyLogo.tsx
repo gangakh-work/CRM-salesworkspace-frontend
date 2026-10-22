@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react'
+
 
 import { APP_NAME } from '@/config/constants'
 import { Typography } from '@/components/ui/typography'
