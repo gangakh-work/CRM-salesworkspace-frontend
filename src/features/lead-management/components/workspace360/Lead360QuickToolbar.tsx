@@ -1,3 +1,5 @@
+import { ChevronDown } from 'lucide-react'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { motion } from 'framer-motion'
 import {
   Ban,
@@ -7,7 +9,6 @@ import {
   Mail,
   Phone,
   Share2,
-  Sparkles,
   Target,
   TrendingUp,
   UserPlus,
@@ -39,7 +40,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
-import { useAiCopilot } from '@/features/ai-copilot/context/AiCopilotProvider'
 import { useLeadManagement } from '@/features/lead-management/context/LeadManagementProvider'
 import { canQualifyLead } from '@/features/lead-management/services/lead-qualification.service'
 import { canDisqualifyLead } from '@/features/lead-management/services/lead-disqualification.service'
@@ -139,14 +139,6 @@ const ACTIONS: ActionDef[] = [
     group: 'utility',
   },
   {
-    id: 'assistant',
-    label: 'Assistant',
-    icon: Sparkles,
-    tooltip:
-      'Open the AI Assistant with this lead as context.',
-    group: 'utility',
-  },
-  {
     id: 'assign',
     label: 'Assign',
     icon: UserPlus,
@@ -227,8 +219,6 @@ export function Lead360QuickToolbar({
     filterOptions,
   } = useLeadManagement()
 
-  const { open: openAssistant } =
-    useAiCopilot()
 
   const [dialog, setDialog] =
     useState<DialogType>(null)
@@ -252,7 +242,7 @@ export function Lead360QuickToolbar({
     if (
       terminal &&
       id !== 'share' &&
-      id !== 'assistant'
+      id !== 'share'
     ) {
       return true
     }
@@ -369,13 +359,6 @@ export function Lead360QuickToolbar({
         void shareLead()
         break
 
-      case 'assistant':
-        openAssistant({
-          mode: 'docked',
-          prompt: `Help me with this lead: ${lead.name} at ${lead.company}.`,
-        })
-        break
-
       case 'assign':
         setOwnerValue(lead.owner)
         setDialog('assign')
@@ -452,52 +435,18 @@ export function Lead360QuickToolbar({
           animate="visible"
           className="flex flex-wrap items-center gap-3"
         >
-          <motion.div
-            variants={fadeIn}
-            className="flex flex-wrap items-center gap-1.5 rounded-xl border border-border/50 bg-background/70 p-1.5 shadow-sm backdrop-blur-md"
-          >
-            <Typography
-              variant="caption"
-              tone="muted"
-              className="hidden px-2 font-semibold uppercase tracking-wider lg:inline"
-            >
-              Engage
-            </Typography>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild><Button variant="outline" size="sm">Engage <ChevronDown className="ml-1 size-4" /></Button></DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {engageActions.map(action => <DropdownMenuItem key={action.id} disabled={isDisabled(action.id)} onClick={() => handleAction(action.id)}>{action.label}</DropdownMenuItem>)}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-            {engageActions.map((action) => (
-              <ActionButton
-                key={action.id}
-                action={action}
-                disabled={isDisabled(action.id)}
-                onClick={() =>
-                  handleAction(action.id)
-                }
-              />
-            ))}
-          </motion.div>
-
-          <motion.div
-            variants={fadeIn}
-            className="flex flex-wrap items-center gap-1.5 rounded-xl border border-primary/20 bg-primary/5 p-1.5 shadow-sm backdrop-blur-md"
-          >
-            <Typography
-              variant="caption"
-              className="hidden px-2 font-semibold uppercase tracking-wider text-primary/80 lg:inline"
-            >
-              Pipeline
-            </Typography>
-
-            {pipelineActions.map((action) => (
-              <ActionButton
-                key={action.id}
-                action={action}
-                disabled={isDisabled(action.id)}
-                onClick={() =>
-                  handleAction(action.id)
-                }
-              />
-            ))}
-          </motion.div>
+          <ActionButton action={pipelineActions[0]} disabled={isDisabled(pipelineActions[0].id)} onClick={() => handleAction(pipelineActions[0].id)} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild><Button variant="outline" size="sm">Pipeline <ChevronDown className="ml-1 size-4" /></Button></DropdownMenuTrigger>
+            <DropdownMenuContent align="end">{pipelineActions.slice(1).map(action => <DropdownMenuItem key={action.id} disabled={isDisabled(action.id)} onClick={() => handleAction(action.id)}>{action.label}</DropdownMenuItem>)}</DropdownMenuContent>
+          </DropdownMenu>
 
           <motion.div
             variants={fadeIn}

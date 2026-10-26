@@ -29,7 +29,9 @@ export function UpcomingMeetingsPanel() {
         </Typography>
       </div>
 
-      {meetings.map((meeting, index) => {
+      {meetings.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-border p-5 text-sm text-muted-foreground">No upcoming activities are scheduled.</div>
+      ) : meetings.map((meeting, index) => {
         const start = meeting.scheduled_start?.slice(0, 16) ?? 'TBD'
         return (
           <div

@@ -27,19 +27,19 @@ export function LoginPage() {
     <div
       className={
         settings.animatedBackground
-          ? 'relative isolate flex min-h-screen flex-col bg-[#080d1a] lg:flex-row'
-          : 'relative flex min-h-screen flex-col lg:flex-row'
+          ? 'crm-login-responsive relative isolate flex min-h-dvh overflow-x-hidden flex-col bg-[#080d1a] xl:h-dvh xl:overflow-hidden xl:flex-row'
+          : 'crm-login-responsive relative flex min-h-dvh overflow-x-hidden flex-col xl:h-dvh xl:overflow-hidden xl:flex-row'
       }
     >
       {settings.animatedBackground && <AppBackdrop />}
-      <div className="relative flex-1 lg:min-h-screen lg:max-w-[56%]">
+      <div className="relative min-w-0 flex-1 xl:h-full xl:max-w-[56%] xl:overflow-y-auto">
         <LoginHero />
       </div>
       <div
         className={
           settings.animatedBackground
-            ? 'relative flex flex-1 items-center justify-center border-t border-white/8 p-5 sm:p-8 lg:max-w-[44%] lg:border-l lg:border-t-0 lg:p-10'
-            : 'relative flex flex-1 items-center justify-center border-t border-border/60 bg-background p-5 sm:p-8 lg:max-w-[44%] lg:border-l lg:border-t-0 lg:p-10'
+            ? 'relative flex flex-1 items-center justify-center border-t border-white/8 p-5 sm:p-8 min-w-0 xl:h-full xl:max-w-[44%] xl:border-l xl:border-t-0 xl:p-6'
+            : 'relative flex flex-1 items-center justify-center border-t border-border/60 bg-background p-5 sm:p-8 min-w-0 xl:h-full xl:max-w-[44%] xl:border-l xl:border-t-0 xl:p-6'
         }
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(var(--primary)/0.08),transparent_55%)]" />

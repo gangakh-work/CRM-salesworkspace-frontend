@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { Sparkles } from 'lucide-react'
 import { Suspense } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
@@ -9,27 +10,28 @@ import { useSettings } from '@/hooks/useSettings'
 import { AppBreadcrumb } from '@/shell/AppBreadcrumb'
 import { AppSidebar } from '@/shell/AppSidebar'
 import { CommandBar, useCommandBar } from '@/shell/CommandBar'
-import { ShellFooter } from '@/shell/ShellFooter'
 import { TopNavigation } from '@/shell/TopNavigation'
 import { AppBackdrop } from '@/components/threeui/AppBackdrop'
-import { GlobalAiCopilot } from '@/features/ai-copilot/components/GlobalAiCopilot'
+
 import { useAiCopilot } from '@/features/ai-copilot/context/AiCopilotProvider'
+import { GlobalAiCopilot } from '@/features/ai-copilot/components/GlobalAiCopilot'
 
 export function AppShell() {
   const location = useLocation()
   const { settings } = useSettings()
   const { open, setOpen } = useCommandBar()
-  const { open: openCopilot } = useAiCopilot()
+  const { open: openCopilot, isOpen: isCopilotOpen, close: closeCopilot } = useAiCopilot()
   const isWorkspace = location.pathname.startsWith('/workspace')
 
   return (
     <div
       className={
         settings.animatedBackground
-          ? 'relative isolate flex h-screen overflow-hidden bg-[#05030e]'
-          : 'flex h-screen overflow-hidden bg-background'
+          ? 'sales-workspace-app relative isolate flex h-dvh min-h-0 bg-background'
+          : 'sales-workspace-app flex h-dvh min-h-0 bg-background'
       }
       data-backdrop={settings.animatedBackground ? 'on' : 'off'}
+      data-product-theme="sales-workspace"
       style={
         {
           '--layout-sidebar-width': '16rem',
@@ -48,8 +50,8 @@ export function AppShell() {
           <main
             className={
               isWorkspace
-                ? 'flex-1 overflow-hidden'
-                : 'flex-1 overflow-auto p-[var(--page-padding)]'
+                ? 'flex-1 min-h-0 overflow-auto'
+                : 'flex-1 min-h-0 overflow-auto p-[var(--page-padding)]'
             }
           >
             {!isWorkspace && <AppBreadcrumb />}
@@ -60,7 +62,7 @@ export function AppShell() {
                 animate={settings.animationsEnabled ? 'animate' : false}
                 exit={settings.animationsEnabled ? 'exit' : undefined}
                 variants={pageTransition}
-                className="h-full"
+                className="min-h-0"
               >
                 <Suspense fallback={<LoadingState label="Loading page..." />}>
                   <Outlet />
@@ -68,10 +70,14 @@ export function AppShell() {
               </motion.div>
             </AnimatePresence>
           </main>
-          <GlobalAiCopilot />
+
         </div>
-        <ShellFooter />
+
       </div>
+      <GlobalAiCopilot showTrigger={false} />
+      <button type="button" className="crm-floating-assistant" aria-label={isCopilotOpen ? 'Close AI Assistant' : 'Open AI Assistant'} title="AI Assistant" onClick={() => isCopilotOpen ? closeCopilot() : openCopilot({ mode: 'floating' })}>
+        <Sparkles size={22}/><span>AI Assistant</span>
+      </button>
       <CommandBar open={open} onOpenChange={setOpen} onOpenCopilot={(opts) => openCopilot(opts)} />
     </div>
   )

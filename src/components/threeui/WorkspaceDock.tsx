@@ -60,7 +60,7 @@ const ITEMS: readonly DockItem[] = [
   },
   {
     id: 'pipeline',
-    label: 'PIPELINE',
+    label: 'OPPORTUNITIES',
     path: '/workspace/opportunities',
     match: (p) => p.startsWith('/workspace/opportunities'),
     icon: (
@@ -84,18 +84,7 @@ const ITEMS: readonly DockItem[] = [
       </>
     ),
   },
-  {
-    id: 'agent',
-    label: 'AGENT',
-    path: '/sales-agent',
-    match: (p) => p.startsWith('/sales-agent'),
-    icon: (
-      <>
-        <path d="M8 1.9v2.2M8 11.9v2.2M1.9 8h2.2M11.9 8h2.2" />
-        <path d="M8 4.6 9.1 6.9 11.4 8 9.1 9.1 8 11.4 6.9 9.1 4.6 8 6.9 6.9z" />
-      </>
-    ),
-  },
+
 ]
 
 export function WorkspaceDock({ className = '' }: { className?: string }) {
@@ -119,28 +108,6 @@ export function WorkspaceDock({ className = '' }: { className?: string }) {
         data-dock-state="idle"
         data-dock-max="0.00"
       >
-        <button
-          className="animated-top-dock__item animated-top-dock__logo"
-          data-dock-item
-          type="button"
-          aria-label="Home"
-          onClick={() => navigate('/dashboard')}
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <rect width="24" height="24" rx="4.5" fill="#E8E8E3" />
-            <text
-              x="12"
-              y="15.6"
-              textAnchor="middle"
-              fontSize="9.5"
-              fontWeight="700"
-              fill="#111"
-              fontFamily="ui-sans-serif, system-ui, sans-serif"
-            >
-              SW
-            </text>
-          </svg>
-        </button>
         {ITEMS.map((item) => {
           const active = item.match(pathname)
           return (

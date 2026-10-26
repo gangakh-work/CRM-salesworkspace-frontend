@@ -1,5 +1,4 @@
 import { MsalProvider } from '@azure/msal-react'
-import { Loader2 } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 
 import { MsalAuthProvider } from '@/features/auth/context/MsalAuthProvider'
@@ -19,7 +18,7 @@ export function MsalAppProvider({ children }: MsalAppProviderProps) {
   if (!ready) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="size-8 animate-spin text-primary" aria-label="Loading sign-in" />
+        <img src="/logo.png" alt="Sonata Software loading" className="h-16 w-16 animate-pulse object-contain" />
       </div>
     )
   }

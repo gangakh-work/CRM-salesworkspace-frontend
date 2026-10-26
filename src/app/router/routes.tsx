@@ -22,11 +22,11 @@ const ComingSoonPage = lazy(() =>
 const ReportsHubPage = lazy(() =>
   import('@/features/reports/pages/ReportsHubPage').then((m) => ({ default: m.ReportsHubPage })),
 )
+const KnowledgeBasePage = lazy(() =>
+  import('@/pages/KnowledgeBasePage').then((m) => ({ default: m.KnowledgeBasePage })),
+)
 const SettingsPage = lazy(() =>
   import('@/pages/SettingsPage').then((m) => ({ default: m.SettingsPage })),
-)
-const AdministrationPage = lazy(() =>
-  import('@/pages/AdministrationPage').then((m) => ({ default: m.AdministrationPage })),
 )
 const AccountsModule = lazy(() =>
   import('@/features/accounts-contacts/pages/AccountsModule').then((m) => ({ default: m.AccountsModule })),
@@ -81,10 +81,10 @@ const featureRoutes = getFeatureRouteDefinitions()
         <DashboardPage />
       ) : featureId === 'reports' ? (
         <ReportsHubPage />
+      ) : featureId === 'knowledgeBase' ? (
+        <KnowledgeBasePage />
       ) : featureId === 'settings' ? (
         <SettingsPage />
-      ) : featureId === 'administration' ? (
-        <AdministrationPage />
       ) : featureId === 'workflow' ? (
         <MyWorkflowPage />
       ) : featureId === 'dealIntelligence' ? (

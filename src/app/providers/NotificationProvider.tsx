@@ -22,8 +22,8 @@ const NotificationContext = createContext<NotificationContextValue | null>(null)
 const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: '1',
-    title: 'Welcome to Sales Workspace',
-    message: 'Application shell is ready for module development.',
+    title: 'Welcome!',
+    message: new Date().getHours() < 12 ? 'Good morning!' : new Date().getHours() < 17 ? 'Good afternoon!' : 'Good evening!',
     timestamp: 'Just now',
     read: false,
     type: 'info',

@@ -57,10 +57,10 @@ const STATS = [
 export function LoginHero() {
   const { settings } = useSettings()
   return (
-    <div className="relative flex h-full min-h-[auto] flex-col justify-center overflow-hidden px-6 py-8 sm:px-10 sm:py-10 lg:min-h-screen lg:justify-between lg:px-12 lg:py-12 xl:px-16">
+    <div className="relative flex h-full min-h-0 flex-col justify-between overflow-hidden px-5 py-5 sm:px-8 sm:py-7 xl:px-10 xl:py-7 2xl:px-12">
       {settings.animatedBackground ? (
         /* ThreeUI Energy Orb shows through from the page; a soft scrim keeps the copy legible */
-        <div className="absolute inset-0 bg-gradient-to-r from-[#081126]/96 via-[#0b1730]/88 to-[#0b2035]/75" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#090b12]/96 via-[#151219]/92 to-[#251b18]/85" />
       ) : (
         <>
           {/* Hero image layer */}
@@ -80,11 +80,9 @@ export function LoginHero() {
         className="relative z-10"
       >
         <motion.div variants={fadeIn} className="flex items-center gap-3">
-          <img
-            src="/logo.png"
-            alt="Sonata"
-            className="h-auto w-32 object-contain"
-          />
+          <div className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/10 p-1.5">
+            <img src="/logo.png" alt="Sonata logo" className="h-full w-full object-contain" />
+          </div>
           <div>
             <Typography variant="heading-l" className="text-xl font-semibold tracking-tight text-white md:text-2xl">
               {APP_NAME}
@@ -95,14 +93,14 @@ export function LoginHero() {
           </div>
         </motion.div>
 
-        <motion.div variants={fadeIn} className="mt-8 max-w-2xl lg:mt-14">
-          <Badge variant="secondary" className="mb-4 border border-sky-300/20 bg-sky-300/10 text-sky-100">
+        <motion.div variants={fadeIn} className="mt-5 max-w-2xl xl:mt-6">
+          <Badge variant="secondary" className="mb-4 border border-orange-300/20 bg-orange-300/10 text-orange-100">
             <Target className="mr-1 size-3" />
             Built for modern revenue teams
           </Badge>
-          <Typography variant="heading-xl" className="max-w-2xl text-[clamp(2rem,4.2vw,3.8rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
+          <Typography variant="heading-xl" className="max-w-2xl text-[clamp(2rem,3.5vw,3.3rem)] font-semibold leading-[1.08] tracking-[-0.04em] text-white">
             Close more deals with{' '}
-            <span className="bg-gradient-to-r from-sky-300 to-cyan-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-orange-300 to-amber-400 bg-clip-text text-transparent">
               intelligent CRM
             </span>
           </Typography>
@@ -112,7 +110,7 @@ export function LoginHero() {
           </Typography>
         </motion.div>
 
-        <motion.div variants={fadeIn} className="mt-7 flex flex-wrap gap-x-8 gap-y-4 lg:mt-10">
+        <motion.div variants={fadeIn} className="mt-5 flex flex-wrap gap-x-7 gap-y-2 xl:mt-6">
           {STATS.map((stat) => (
             <div key={stat.label}>
               <Typography variant="heading-m" className="text-xl font-semibold text-white">
@@ -130,7 +128,7 @@ export function LoginHero() {
         variants={staggerContainer}
         initial="hidden"
         animate="visible"
-        className="relative z-10 mt-8 grid gap-2 sm:grid-cols-2 lg:mt-12"
+        className="relative z-10 mt-5 grid grid-cols-2 gap-2 xl:mt-6"
       >
         {FEATURES.map((feature) => {
           const Icon = feature.icon
@@ -138,17 +136,17 @@ export function LoginHero() {
             <motion.div
               key={feature.title}
               variants={fadeIn}
-              className="rounded-xl border border-white/10 bg-white/[0.045] p-3 transition-colors hover:bg-white/[0.075] sm:p-3.5"
+              className="rounded-xl border border-white/10 bg-white/[0.045] p-2.5 transition-colors hover:bg-white/[0.075]"
             >
               <div className="flex items-start gap-3">
                 <div className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-sky-200/15 bg-sky-200/10">
-                  <Icon className="size-4 text-sky-200" />
+                  <Icon className="size-4 text-orange-200" />
                 </div>
                 <div>
                   <Typography variant="body" className="text-sm font-semibold text-white">
                     {feature.title}
                   </Typography>
-                  <Typography variant="caption" tone="muted" className="mt-1 text-slate-300 leading-relaxed">
+                  <Typography variant="caption" tone="muted" className="mt-0.5 text-slate-300 leading-snug text-xs">
                     {feature.description}
                   </Typography>
                 </div>

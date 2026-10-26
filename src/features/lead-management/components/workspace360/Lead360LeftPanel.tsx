@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
 import {
-  AlertTriangle,
   ArrowLeft,
   Building2,
   ChevronRight,
@@ -15,32 +14,17 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
-import { HEALTH_SCORE_DESCRIPTION } from '@/features/dashboard/config/kpi-descriptions.config'
 import { LeadScoreBadge, PriorityBadge, QualificationRatingBadge, StatusBadge, DisqualificationReasonBadge } from '@/features/lead-management/components/LeadBadges'
-import { LeadWorkflowStepper } from '@/features/lead-management/components/workflow/LeadWorkflowStepper'
 import type { Lead360Profile } from '@/features/lead-management/types/lead.types'
 import type { Lead } from '@/features/lead-management/types/lead.types'
 import { fadeIn } from '@/design-system/animations/motion'
 import { cn } from '@/lib/utils'
 
-const RISK_STYLES = {
-  low: { badge: 'success' as const, color: 'text-emerald-600', bg: 'bg-emerald-500/10' },
-  medium: { badge: 'warning' as const, color: 'text-amber-600', bg: 'bg-amber-500/10' },
-  high: { badge: 'error' as const, color: 'text-destructive', bg: 'bg-destructive/10' },
-}
-
 function initials(name: string) {
   return name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
 }
 
-function healthColor(score: number) {
-  if (score >= 75) return 'from-emerald-500 to-teal-400'
-  if (score >= 50) return 'from-amber-500 to-orange-400'
-  return 'from-red-500 to-rose-400'
-}
-
 export function Lead360LeftPanel({ lead, profile }: { lead: Lead; profile: Lead360Profile }) {
-  const risk = RISK_STYLES[profile.riskLevel]
 
   return (
     <motion.aside
@@ -119,45 +103,10 @@ export function Lead360LeftPanel({ lead, profile }: { lead: Lead; profile: Lead3
             </Typography>
           )}
 
-          <div>
-            <div className="mb-1.5 flex items-center justify-between">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Typography variant="caption" className="cursor-help font-semibold uppercase tracking-wider text-muted-foreground underline decoration-dotted underline-offset-2">
-                    Health Score
-                  </Typography>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs leading-snug">
-                  {HEALTH_SCORE_DESCRIPTION}
-                </TooltipContent>
-              </Tooltip>
-              <Typography variant="body" className="text-sm font-bold">{profile.healthScore}%</Typography>
-            </div>
-            <div className="h-2 overflow-hidden rounded-full bg-muted">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${profile.healthScore}%` }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className={cn('h-full rounded-full bg-gradient-to-r', healthColor(profile.healthScore))}
-              />
-            </div>
-          </div>
 
-          <div className={cn('rounded-lg border p-3', risk.bg)}>
-            <div className="flex items-center gap-2">
-              <AlertTriangle className={cn('size-4', risk.color)} />
-              <Typography variant="caption" className="font-semibold">Risk Indicator</Typography>
-              <Badge variant={risk.badge} className="ml-auto capitalize">{profile.riskLevel}</Badge>
-            </div>
-            <Typography variant="caption" tone="muted" className="mt-2 leading-relaxed">
-              {profile.riskReason}
-            </Typography>
-          </div>
         </section>
 
-        <div className="mt-5 hidden lg:block">
-          <LeadWorkflowStepper status={lead.status} />
-        </div>
+
       </div>
     </motion.aside>
   )

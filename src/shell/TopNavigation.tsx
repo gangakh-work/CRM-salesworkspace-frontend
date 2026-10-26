@@ -1,14 +1,11 @@
-import { GlobalSearch } from '@/shell/GlobalSearch'
 import { NotificationCenter } from '@/shell/NotificationCenter'
 import { ProfileMenu } from '@/shell/ProfileMenu'
 import { SidebarToggle } from '@/shell/AppSidebar'
 import { ThemeSwitcher } from '@/shell/ThemeSwitcher'
 import { WorkspaceDock } from '@/components/threeui/WorkspaceDock'
-import { AiCopilotTrigger } from '@/features/ai-copilot/components/GlobalAiCopilot'
 import { Separator } from '@/components/ui/separator'
 import { Typography } from '@/components/ui/typography'
 import { useNavigation } from '@/hooks/useNavigation'
-import { useCrmEnvironment } from '@/hooks/useCrmEnvironment'
 import { useSidebar } from '@/hooks/useSidebar'
 import { useLocation } from 'react-router-dom'
 import { APP_NAME } from '@/config/constants'
@@ -20,10 +17,9 @@ interface TopNavigationProps {
 
 export function TopNavigation({ onOpenCommandBar }: TopNavigationProps) {
   const { currentFeature } = useNavigation()
-  const crm = useCrmEnvironment()
-  const { openHover, closeHover, hoverOpen } = useSidebar()
+  const { openHover, closeHover, hoverOpen, pinnedOpen, togglePinnedOpen } = useSidebar()
   const location = useLocation()
-  const isWorkspace = location.pathname.startsWith('/workspace')
+  const isWorkspace = true
 
   return (
     <header data-shell-surface data-dock-frame className="relative z-30 flex h-[var(--header-height)] shrink-0 items-center gap-3 border-b bg-background px-4">
@@ -35,20 +31,24 @@ export function TopNavigation({ onOpenCommandBar }: TopNavigationProps) {
           type="button"
           onMouseEnter={() => openHover()}
           onMouseLeave={() => closeHover()}
+          onClick={togglePinnedOpen}
+          onFocus={() => openHover()}
           className={cn(
-            'hidden min-w-0 cursor-default select-none items-center gap-1.5 rounded-md px-2 py-1 transition-colors sm:flex',
+            'crm-sidebar-hover-trigger flex min-w-0 cursor-pointer select-none items-center gap-2 rounded-lg px-2 py-1 transition-all',
             hoverOpen
               ? 'bg-sidebar-accent text-sidebar-accent-foreground'
               : 'text-foreground hover:bg-accent',
           )}
-          aria-label="Show navigation"
+          aria-label={pinnedOpen ? 'Close navigation sidebar' : 'Pin navigation sidebar open'}
+          aria-expanded={hoverOpen || pinnedOpen}
         >
+          <img src="/logo.png" alt="" className="crm-header-logo" />
           <Typography variant="body" className="truncate font-semibold">
             {APP_NAME}
           </Typography>
           {/* Small chevron hint */}
           <svg
-            className="size-3 shrink-0 opacity-50"
+            className="crm-sidebar-chevron size-4 shrink-0"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -72,25 +72,11 @@ export function TopNavigation({ onOpenCommandBar }: TopNavigationProps) {
       )}
 
       {/* ThreeUI Sable dock — primary destinations, centred in the header */}
-      <WorkspaceDock className="pointer-events-none absolute inset-y-0 left-1/2 hidden -translate-x-1/2 items-center xl:flex" />
+      <WorkspaceDock className="crm-top-dock flex min-w-0 flex-1 items-center justify-center" />
 
-      <div className="flex flex-1 items-center justify-end gap-2">
-        {crm.data?.dataverseUrl ? (
-          <a
-            href={crm.data.dataverseUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden max-w-[14rem] truncate rounded-full border px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground lg:inline-flex xl:hidden"
-            title="This app writes only to Dynamics 365 UAT, not DEV"
-          >
-            CRM: {crm.data.orgLabel}
-          </a>
-        ) : null}
-        <GlobalSearch
-          className="hidden md:flex xl:w-9 xl:max-w-9 xl:justify-center xl:px-0 xl:[&>:not(svg)]:hidden"
-          onOpenCommandBar={onOpenCommandBar}
-        />
-        <AiCopilotTrigger className="hidden sm:flex" />
+      <div className="crm-header-actions flex items-center justify-end gap-2">
+
+
         <Separator orientation="vertical" className="hidden h-6 md:block" />
         <ThemeSwitcher />
         <NotificationCenter />

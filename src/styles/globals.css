@@ -125,3 +125,193 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Sales Workspace application theme ──────────────────────────────────────
+   Cohesive product surface inspired by the approved dark premium reference.
+   Deliberately scoped to AppShell so the Login experience is untouched. */
+.sales-workspace-app {
+  --radius: 0.75rem;
+  --radius-sm: 0.4rem;
+  --radius-md: 0.55rem;
+  --radius-xl: 1rem;
+
+  --color-primary: oklch(0.67 0.19 38);
+  --color-primary-hover: oklch(0.72 0.18 38);
+  --color-primary-foreground: oklch(0.99 0.005 40);
+  --color-primary-muted: oklch(0.67 0.19 38 / 0.12);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-primary-foreground);
+  --ring: var(--color-primary);
+  --color-ring: var(--color-primary);
+
+  --color-background: oklch(0.985 0.004 55);
+  --color-foreground: oklch(0.19 0.012 45);
+  --color-surface: oklch(1 0 0);
+  --color-surface-raised: oklch(0.995 0.003 50);
+  --color-surface-overlay: oklch(1 0 0);
+  --color-border: oklch(0.91 0.008 50);
+  --color-border-strong: oklch(0.84 0.012 50);
+  --color-input: oklch(0.91 0.008 50);
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-foreground);
+  --popover: var(--color-surface-overlay);
+  --popover-foreground: var(--color-foreground);
+  --border: var(--color-border);
+  --input: var(--color-input);
+  --muted: oklch(0.955 0.006 50);
+  --muted-foreground: oklch(0.52 0.012 45);
+  --accent: oklch(0.95 0.018 45);
+  --accent-foreground: oklch(0.22 0.018 45);
+  --secondary: oklch(0.95 0.01 50);
+  --secondary-foreground: oklch(0.23 0.012 45);
+  --sidebar: oklch(0.975 0.005 50);
+  --sidebar-foreground: var(--color-foreground);
+  --sidebar-border: var(--color-border);
+  --sidebar-accent: oklch(0.94 0.018 45);
+  --sidebar-accent-foreground: var(--color-foreground);
+
+  --elevation-1: 0 1px 2px oklch(0.2 0.02 40 / 0.04);
+  --elevation-2: 0 8px 24px oklch(0.2 0.02 40 / 0.07);
+  --elevation-3: 0 16px 40px oklch(0.2 0.02 40 / 0.10);
+
+  letter-spacing: -0.005em;
+}
+
+.dark .sales-workspace-app,
+.sales-workspace-app.dark {
+  --color-primary: oklch(0.70 0.19 38);
+  --color-primary-hover: oklch(0.75 0.18 38);
+  --color-primary-foreground: oklch(0.99 0.005 40);
+  --color-primary-muted: oklch(0.70 0.19 38 / 0.15);
+  --primary: var(--color-primary);
+  --primary-foreground: var(--color-primary-foreground);
+  --ring: var(--color-primary);
+  --color-ring: var(--color-primary);
+
+  --color-background: oklch(0.105 0.006 40);
+  --color-foreground: oklch(0.965 0.006 55);
+  --color-surface: oklch(0.135 0.008 42);
+  --color-surface-raised: oklch(0.16 0.009 42);
+  --color-surface-overlay: oklch(0.17 0.01 42);
+  --color-border: oklch(0.245 0.01 42);
+  --color-border-strong: oklch(0.31 0.012 42);
+  --color-input: oklch(0.245 0.01 42);
+  --background: var(--color-background);
+  --foreground: var(--color-foreground);
+  --card: var(--color-surface);
+  --card-foreground: var(--color-foreground);
+  --popover: var(--color-surface-overlay);
+  --popover-foreground: var(--color-foreground);
+  --border: var(--color-border);
+  --input: var(--color-input);
+  --muted: oklch(0.19 0.008 42);
+  --muted-foreground: oklch(0.68 0.008 50);
+  --accent: oklch(0.205 0.014 42);
+  --accent-foreground: oklch(0.97 0.005 50);
+  --secondary: oklch(0.19 0.008 42);
+  --secondary-foreground: oklch(0.95 0.005 50);
+  --sidebar: oklch(0.115 0.006 42);
+  --sidebar-foreground: var(--color-foreground);
+  --sidebar-border: var(--color-border);
+  --sidebar-accent: oklch(0.19 0.014 42);
+  --sidebar-accent-foreground: var(--color-foreground);
+
+  --elevation-1: 0 1px 2px oklch(0 0 0 / 0.28);
+  --elevation-2: 0 12px 32px oklch(0 0 0 / 0.34);
+  --elevation-3: 0 20px 52px oklch(0 0 0 / 0.42);
+}
+
+/* Shared controls inherit one restrained interaction language throughout the app. */
+.sales-workspace-app button,
+.sales-workspace-app [role='button'],
+.sales-workspace-app a,
+.sales-workspace-app input,
+.sales-workspace-app textarea,
+.sales-workspace-app select {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+  transition-duration: 160ms;
+  transition-timing-function: ease-out;
+}
+
+.sales-workspace-app button:focus-visible,
+.sales-workspace-app [role='button']:focus-visible,
+.sales-workspace-app a:focus-visible,
+.sales-workspace-app input:focus-visible,
+.sales-workspace-app textarea:focus-visible,
+.sales-workspace-app select:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.sales-workspace-app input,
+.sales-workspace-app textarea,
+.sales-workspace-app select {
+  border-color: var(--input);
+  background: color-mix(in oklab, var(--card) 92%, var(--background));
+}
+
+.sales-workspace-app table thead {
+  background: color-mix(in oklab, var(--muted) 72%, transparent);
+}
+
+.sales-workspace-app table tbody tr {
+  transition: background-color 150ms ease-out;
+}
+
+.sales-workspace-app table tbody tr:hover {
+  background: color-mix(in oklab, var(--accent) 62%, transparent);
+}
+
+/* Premium panels stay quiet: border/contrast changes rather than floating cards. */
+.sales-workspace-app [class*='hover:-translate-y'] {
+  transform: none !important;
+}
+
+.sales-workspace-app [data-shell-surface] {
+  border-color: var(--border);
+  background: color-mix(in oklab, var(--background) 94%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+
+.dark .sales-workspace-app [data-shell-surface] {
+  background: color-mix(in oklab, var(--background) 90%, transparent);
+}
+
+/* Light mode safety net for legacy pages that still use dark-theme utility text.
+   Keep branded/semantic buttons untouched while ensuring content remains readable. */
+html:not(.dark) .sales-workspace-app h1,
+html:not(.dark) .sales-workspace-app h2,
+html:not(.dark) .sales-workspace-app h3,
+html:not(.dark) .sales-workspace-app h4,
+html:not(.dark) .sales-workspace-app h5,
+html:not(.dark) .sales-workspace-app h6,
+html:not(.dark) .sales-workspace-app table thead th,
+html:not(.dark) .sales-workspace-app td.text-white,
+html:not(.dark) .sales-workspace-app th.text-white,
+html:not(.dark) .sales-workspace-app .text-slate-50,
+html:not(.dark) .sales-workspace-app .text-slate-100,
+html:not(.dark) .sales-workspace-app .text-gray-50,
+html:not(.dark) .sales-workspace-app .text-gray-100 {
+  color: var(--foreground) !important;
+}
+
+html:not(.dark) .sales-workspace-app button[class*='outline'],
+html:not(.dark) .sales-workspace-app button[class*='ghost'] {
+  color: var(--foreground);
+}
+
+
+/* Readability correction for legacy dark-mode utility classes on light theme pages.
+   Do not override text inside buttons/interactive controls, where white text can be semantic. */
+html:not(.dark) .sales-workspace-app :is(.text-white, .text-slate-50, .text-slate-100, .text-gray-50, .text-gray-100):not(button):not(button *):not([role="button"]):not([role="button"] *) {
+  color: var(--foreground) !important;
+}
+html:not(.dark) .sales-workspace-app table tbody td {
+  color: var(--foreground);
+}
+html:not(.dark) .sales-workspace-app table thead th {
+  color: var(--foreground) !important;
+}

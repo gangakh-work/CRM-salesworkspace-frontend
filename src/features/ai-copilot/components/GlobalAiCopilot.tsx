@@ -9,7 +9,7 @@ import { useAiCopilot } from '@/features/ai-copilot/context/AiCopilotProvider'
 import { transitions } from '@/design-system/animations/motion'
 import { cn } from '@/lib/utils'
 
-export function GlobalAiCopilot() {
+export function GlobalAiCopilot({ showTrigger = true }: { showTrigger?: boolean }) {
   const { isOpen, mode, panelWidth, toggle } = useAiCopilot()
 
   const [isMobile, setIsMobile] = useState(() =>
@@ -153,7 +153,7 @@ export function GlobalAiCopilot() {
       {/* =========================================================
           FLOATING ASSISTANT BUTTON
           ========================================================= */}
-      <motion.div
+      {showTrigger && <motion.div
         className={cn(
           'fixed z-40',
           mode === 'fullscreen'
@@ -188,7 +188,7 @@ export function GlobalAiCopilot() {
             ⌃I
           </kbd>
         </Button>
-      </motion.div>
+      </motion.div>}
     </>
   )
 }
@@ -205,7 +205,7 @@ export function AiCopilotTrigger({
       variant="outline"
       size="sm"
       className={className}
-      onClick={() => open()}
+      onClick={() => { sessionStorage.setItem('assistantReturnPath', window.location.pathname + window.location.search); open({ mode: 'fullscreen' }) }}
     >
       <Sparkles className="size-4" />
       Ask Assistant

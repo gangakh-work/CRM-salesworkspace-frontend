@@ -1,43 +1,21 @@
 import { motion } from 'framer-motion'
-import {
-  DollarSign,
-  Percent,
-  Target,
-  TrendingDown,
-  TrendingUp,
-  Trophy,
-  UserPlus,
-  Users,
-} from 'lucide-react'
+import { DollarSign, Percent, Target, TrendingDown, TrendingUp, Trophy, UserPlus, Users } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { AsyncBoundary } from '@/components/patterns/AsyncBoundary'
 import { KpiGridSkeleton } from '@/components/patterns/skeletons'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
 import { useAnimatedCounter } from '@/features/dashboard/components/AnimatedCounter'
-import { Sparkline } from '@/features/dashboard/components/Sparkline'
 import type { DashboardKpisData } from '@/features/dashboard/api/DashboardApi'
 import { KPI_DESCRIPTIONS } from '@/features/dashboard/config/kpi-descriptions.config'
 import { formatKpiValue } from '@/features/dashboard/lib/dashboard-formatters'
 import { useDashboardKpisQuery } from '@/features/dashboard/hooks/useDashboardQueries'
-import type { KpiMetric, KpiStatus } from '@/features/dashboard/types/dashboard.types'
+import type { KpiMetric } from '@/features/dashboard/types/dashboard.types'
 import { cardHover, staggerContainer } from '@/design-system/animations/motion'
 import { useSettings } from '@/hooks/useSettings'
 
-const statusBadge: Record<KpiStatus, 'success' | 'warning' | 'error' | 'neutral'> = {
-  success: 'success',
-  warning: 'warning',
-  error: 'error',
-  neutral: 'neutral',
-}
-
-function buildSparkline(value: number): number[] {
-  const base = Math.max(value - 4, 0)
-  return [base, base + 1, base + 1, base + 2, base + 2, base + 3, value]
-}
 
 function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
   return [
@@ -49,29 +27,26 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
       trend: 0,
       trendLabel: 'from Dataverse',
       status: 'neutral',
-      sparkline: buildSparkline(data.total_leads),
       icon: UserPlus,
     },
     {
       id: 'open-opportunities',
-      title: 'Active Opportunities',
+      title: 'Open Opportunities',
       value: data.open_opportunities,
       format: 'number',
       trend: 0,
       trendLabel: 'active pipeline',
       status: 'success',
-      sparkline: buildSparkline(data.open_opportunities),
       icon: Target,
     },
     {
       id: 'won-opportunities',
-      title: 'Closed Won',
+      title: 'Won Opportunities',
       value: data.won_opportunities,
       format: 'number',
       trend: 0,
       trendLabel: 'closed won',
       status: 'success',
-      sparkline: buildSparkline(data.won_opportunities),
       icon: Trophy,
     },
     {
@@ -82,7 +57,6 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
       trend: 0,
       trendLabel: 'closed lost',
       status: data.lost_opportunities > 0 ? 'warning' : 'neutral',
-      sparkline: buildSparkline(data.lost_opportunities),
       icon: TrendingDown,
     },
     {
@@ -93,7 +67,6 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
       trend: 0,
       trendLabel: 'open deals',
       status: 'success',
-      sparkline: buildSparkline(Math.round(data.pipeline_value / 1000)),
       icon: TrendingUp,
     },
     {
@@ -104,7 +77,6 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
       trend: 0,
       trendLabel: 'won this month',
       status: 'success',
-      sparkline: buildSparkline(Math.round(data.this_month_revenue / 1000)),
       icon: DollarSign,
     },
     {
@@ -115,7 +87,6 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
       trend: 0,
       trendLabel: 'qualified in CRM',
       status: 'success',
-      sparkline: buildSparkline(data.qualified_leads),
       icon: Users,
     },
     {
@@ -126,7 +97,6 @@ function mapKpisToMetrics(data: DashboardKpisData): KpiMetric[] {
       trend: 0,
       trendLabel: 'qualified vs disqualified',
       status: data.conversion_rate >= 30 ? 'success' : 'warning',
-      sparkline: buildSparkline(data.conversion_rate),
       icon: Percent,
     },
   ]
@@ -151,15 +121,7 @@ function KpiCard({ metric, index }: { metric: KpiMetric; index: number }) {
             <div className="flex size-8 items-center justify-center rounded-lg bg-primary/10">
               <Icon className="size-3.5 text-primary" aria-hidden />
             </div>
-            <Badge variant={statusBadge[metric.status]} className="text-[10px]">
-              {metric.status === 'success'
-                ? 'On track'
-                : metric.status === 'warning'
-                  ? 'Attention'
-                  : metric.status === 'error'
-                    ? 'At risk'
-                    : 'Live'}
-            </Badge>
+
           </div>
 
           <Typography variant="caption" tone="muted" className="mt-3 block">
@@ -175,23 +137,9 @@ function KpiCard({ metric, index }: { metric: KpiMetric; index: number }) {
               : formatKpiValue(metric.value, metric.format)}
           </Typography>
 
-          <div className="mt-2 flex items-end justify-between gap-2">
-            <div className="flex items-center gap-1">
-              {!isNeutral &&
-                (isPositive ? (
-                  <TrendingUp className="size-3.5 text-success" aria-hidden />
-                ) : (
-                  <TrendingDown className="size-3.5 text-destructive" aria-hidden />
-                ))}
-              <Typography variant="caption" tone="muted">
-                {metric.trendLabel}
-              </Typography>
-            </div>
-            <Sparkline
-              data={metric.sparkline ?? []}
-              className="h-7 w-[4.5rem] text-primary"
-              strokeClassName="stroke-primary"
-            />
+          <div className="mt-2 flex items-center gap-1">
+            {!isNeutral && (isPositive ? <TrendingUp className="size-3.5 text-success" aria-hidden /> : <TrendingDown className="size-3.5 text-destructive" aria-hidden />)}
+            <Typography variant="caption" tone="muted">{metric.trendLabel}</Typography>
           </div>
         </CardContent>
       </Card>
@@ -222,14 +170,7 @@ function KpiCard({ metric, index }: { metric: KpiMetric; index: number }) {
 
 export function KpiMetricsGrid() {
   const { data, isLoading, isError, error, refetch } = useDashboardKpisQuery()
-  const metrics = useMemo(() => {
-    if (!data) return []
-    const preferredOrder = ['total-leads', 'qualified-leads', 'open-opportunities', 'won-opportunities']
-    const allMetrics = mapKpisToMetrics(data.data)
-    return preferredOrder
-      .map((id) => allMetrics.find((metric) => metric.id === id))
-      .filter((metric): metric is KpiMetric => Boolean(metric))
-  }, [data])
+  const metrics = useMemo(() => (data ? mapKpisToMetrics(data.data) : []), [data])
 
   return (
     <TooltipProvider delayDuration={300}>

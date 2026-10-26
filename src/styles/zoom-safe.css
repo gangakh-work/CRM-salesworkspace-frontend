@@ -1,0 +1,52 @@
+html,body,#root{min-width:0;min-height:100%;}body{overflow-x:hidden}.sales-workspace-app{width:100%;max-width:100vw;min-width:0}.sales-workspace-app main{min-width:0}.sales-workspace-app [data-shell-surface]{min-width:0}.crm-floating-assistant{position:fixed;left:16px;bottom:18px;z-index:80;display:flex;align-items:center;gap:8px;padding:12px 15px;border-radius:16px;background:linear-gradient(135deg,#7931ec,#4d20b8);color:white;font-size:12px;font-weight:700;text-decoration:none;box-shadow:0 8px 32px #6732d677;transition:transform .2s,box-shadow .2s}.crm-floating-assistant:hover{transform:translateY(-4px);box-shadow:0 12px 42px #8a4dff99}.crm-floating-assistant:focus-visible{outline:3px solid #fff;outline-offset:3px}@media(max-width:800px){.crm-floating-assistant{left:auto;right:16px;bottom:16px}.crm-floating-assistant span{display:none}}.sales-workspace-app table{max-width:none}.sales-workspace-app .overflow-auto,.sales-workspace-app .overflow-x-auto{min-width:0}@media(max-width:650px){.sales-workspace-app [data-dock-frame]{gap:4px;padding-inline:8px}}
+/* Single scrolling surface, responsive header dock and viewport-safe layouts. */
+html,body,#root{height:100%;min-height:0}body{overflow:hidden}.sales-workspace-app{height:100dvh;min-height:0!important;overflow:hidden}.sales-workspace-app main{min-height:0;overscroll-behavior:contain}.sales-workspace-app main>div{min-height:0}.crm-top-dock{position:static!important;transform:none!important;pointer-events:auto!important;display:flex!important;max-width:min(650px,55vw);overflow-x:auto;scrollbar-width:none}.crm-top-dock::-webkit-scrollbar{display:none}.crm-top-dock nav{flex-shrink:0}.crm-floating-assistant{left:auto!important;right:clamp(12px,2vw,24px)!important;bottom:clamp(12px,2vw,24px)!important}.crm-showcase{min-height:0!important;overflow:visible!important}.crm-showcase-dashboard-frame{max-width:100%}.crm-showcase-brand-icon img{width:18px;height:18px;object-fit:contain}.crm-showcase-hero{padding-top:clamp(10px,2vw,26px)!important}.crm-showcase-hero h1{font-size:clamp(30px,4.2vw,68px)}.crm-showcase-frame-links{display:flex!important;flex-wrap:wrap}.sales-workspace-app :is(a,button,[role=button]):focus-visible{outline:2px solid #ff805d;outline-offset:2px}.sales-workspace-app :is(a,button):hover{filter:brightness(1.12)}@media(max-width:900px){.crm-top-dock{max-width:55vw}.crm-top-dock nav{transform:scale(.88);transform-origin:center}.sales-workspace-app header{gap:4px;padding-inline:8px}.crm-floating-assistant span{display:none}}@media(max-width:550px){.crm-top-dock{max-width:52vw}.crm-showcase-frame-top{flex-wrap:wrap}.crm-showcase-hero-actions{flex-wrap:wrap}}
+
+/* Floating assistant remains visible on every page and zoom level. */
+.sales-workspace-app .crm-floating-assistant {position:fixed!important;left:auto!important;right:max(16px,env(safe-area-inset-right))!important;bottom:max(16px,env(safe-area-inset-bottom))!important;z-index:9999!important;max-width:calc(100vw - 32px)}
+/* Workspace tables should consume the available viewport rather than stopping at a fixed short height. */
+[data-workspace-root] {height:100%;min-height:0;min-width:0}
+[data-workspace-root] > .flex.min-h-0.flex-1 {min-height:0;flex:1}
+[data-workspace-root] main {min-height:0;min-width:0}
+[data-workspace-root] .max-h-\[calc\(100vh-22rem\)\] {max-height:none!important;min-height:clamp(280px,calc(100dvh - 19rem),1200px);overflow:auto}
+@media(max-width:650px){.sales-workspace-app .crm-floating-assistant{right:12px!important;bottom:12px!important}}
+
+/* Branding, sidebar affordance, and zoom-safe login */
+.crm-dock-brand-image{width:24px;height:24px;object-fit:contain;display:block;margin:auto}
+.crm-header-logo{width:24px;height:24px;flex-shrink:0;object-fit:contain}
+.crm-sidebar-hover-trigger:hover,.crm-sidebar-hover-trigger:focus-visible{background:var(--accent);box-shadow:0 0 0 1px var(--border);transform:translateY(-1px)}
+.crm-sidebar-chevron{opacity:.85;transition:transform .2s ease,opacity .2s ease}
+.crm-sidebar-hover-trigger:hover .crm-sidebar-chevron,.crm-sidebar-hover-trigger:focus-visible .crm-sidebar-chevron{transform:translateX(4px);opacity:1}
+@media(max-width:650px){.crm-header-logo{width:20px;height:20px}.crm-sidebar-hover-trigger{gap:4px;padding-inline:4px}}
+/* Login page is outside .sales-workspace-app; allow natural scrolling at any browser zoom. */
+body:has(.crm-login-responsive){overflow:auto!important;height:auto!important;min-height:100dvh}
+.crm-login-responsive{min-height:100dvh;height:auto!important;overflow-x:hidden;overflow-y:auto}
+.crm-login-responsive>div{min-width:0}
+@media(max-width:1023px){.crm-login-responsive>div{flex-basis:auto}.crm-login-responsive>div:last-child{min-height:340px}}
+@media(max-height:650px){.crm-login-responsive{align-items:stretch}.crm-login-responsive>div{min-height:max-content}}
+/* Light theme: restrained cool neutral surfaces and stronger structural contrast. */
+html:not(.dark) .sales-workspace-app{background:#f3f6fb;color:#17243a}
+html:not(.dark) .sales-workspace-app [data-shell-surface]{background:#ffffff;border-color:#dbe3ef}
+html:not(.dark) .sales-workspace-app :is(.bg-card,[class~="bg-background"]){box-shadow:0 2px 14px rgba(30,48,80,.035)}
+html:not(.dark) .sales-workspace-app :is(table,thead,tbody){border-color:#dce5f0}
+html:not(.dark) .sales-workspace-app table thead{background:#edf2f9}
+html:not(.dark) .sales-workspace-app table tbody tr:hover{background:#edf4ff}
+html:not(.dark) .sales-workspace-app :is(input,textarea,select){border-color:#cbd7e6}
+
+/* Revision: centre the entire four-item navigation, not just its flex allocation. */
+.sales-workspace-app [data-dock-frame]{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:12px}
+.sales-workspace-app .crm-top-dock{grid-column:2;justify-self:center;flex:none!important;width:max-content;max-width:min(100%,calc(100vw - 28px));overflow:visible!important}
+.sales-workspace-app .crm-top-dock nav{display:flex;align-items:center;gap:4px;max-width:100%;transform:none!important}
+.sales-workspace-app .crm-top-dock .animated-top-dock__item{flex-shrink:0;min-width:0;white-space:nowrap}
+.sales-workspace-app .crm-header-actions{grid-column:3;justify-self:end;min-width:0}
+.sales-workspace-app [data-dock-frame]>.crm-sidebar-hover-trigger{grid-column:1;min-width:0;justify-self:start}
+@media(max-width:1250px){.sales-workspace-app [data-dock-frame]{grid-template-columns:auto minmax(0,1fr) auto}.sales-workspace-app .crm-top-dock{width:100%;overflow-x:auto!important;scrollbar-width:none}.sales-workspace-app .crm-top-dock nav{width:max-content;min-width:max-content;margin-inline:auto}.sales-workspace-app .crm-top-dock::-webkit-scrollbar{display:none}}
+@media(max-width:820px){.sales-workspace-app [data-dock-frame]>.crm-sidebar-hover-trigger .truncate{display:none}.sales-workspace-app [data-dock-frame]>.crm-sidebar-hover-trigger{padding-inline:2px}.sales-workspace-app .crm-top-dock nav{margin-inline:0}.sales-workspace-app .crm-header-actions{gap:2px}}
+/* Login: adapt to effective CSS viewport at 100% and higher zoom without clipping. */
+.crm-login-responsive{background:#090c14!important;align-items:stretch}
+.crm-login-responsive>div:last-child{min-height:100dvh;background:#090c14!important}
+@media(max-width:1279px){.crm-login-responsive>div:last-child{min-height:440px}.crm-login-responsive>div:first-child{min-height:0}}
+@media(min-width:1280px){.crm-login-responsive{min-height:100dvh}.crm-login-responsive>div{min-height:100dvh}}
+@media(max-height:780px) and (min-width:1280px){.crm-login-responsive>div:first-child{overflow-y:auto}.crm-login-responsive>div:last-child{overflow-y:auto}}
+/* Dashboard-inspired orange accent in login, preserving readable contrast. */
+.crm-login-responsive button:focus-visible{outline:2px solid #ff925b;outline-offset:3px}

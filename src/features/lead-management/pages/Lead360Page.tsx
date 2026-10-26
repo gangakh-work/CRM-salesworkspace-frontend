@@ -1,13 +1,12 @@
 import { motion } from 'framer-motion'
-import { AlertCircle, Sparkles } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { AlertCircle, UserRound } from 'lucide-react'
 import { Navigate, useParams } from 'react-router-dom'
 
 import { EmptyState } from '@/components/global/EmptyState'
 import { CardGridSkeleton } from '@/components/patterns/skeletons'
 import { Button } from '@/components/ui/button'
 import { Typography } from '@/components/ui/typography'
-import { useAiCopilot, useRegisterAiContext } from '@/features/ai-copilot/context/AiCopilotProvider'
+import { useRegisterAiContext } from '@/features/ai-copilot/context/AiCopilotProvider'
 import { Lead360BackLink, Lead360LeftPanel } from '@/features/lead-management/components/workspace360/Lead360LeftPanel'
 import { Lead360CenterPanel } from '@/features/lead-management/components/workspace360/Lead360CenterPanel'
 import { Lead360QuickToolbar } from '@/features/lead-management/components/workspace360/Lead360QuickToolbar'
@@ -20,7 +19,6 @@ export function Lead360Page() {
   const { id } = useParams<{ id: string }>()
   const { leads, leadExtras } = useLeadManagement()
   const detailQuery = useLeadDetailQuery(id)
-  const { open, isOpen: isCopilotOpen } = useAiCopilot()
 
   const contextLead = leads.find((l) => l.id === id)
   const lead = contextLead ?? detailQuery.data?.lead
@@ -43,17 +41,6 @@ export function Lead360Page() {
         }
       : null,
   )
-
-  // Open the assistant docked the first time a record is shown — but never
-  // override a layout the user already chose (e.g. full screen), and don't
-  // re-run when the record data refreshes.
-  const autoOpenedFor = useRef<string | null>(null)
-  useEffect(() => {
-    if (!lead || autoOpenedFor.current === lead.id) return
-    autoOpenedFor.current = lead.id
-    if (!isCopilotOpen) open({ mode: 'docked' })
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per record id
-  }, [lead?.id])
 
   if (detailQuery.isLoading && !lead) {
     return (
@@ -100,7 +87,7 @@ export function Lead360Page() {
             <Lead360BackLink />
             <div className="mt-2 flex items-center gap-2.5">
               <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-violet-500/20 shadow-sm">
-                <Sparkles className="size-5 text-primary" />
+                <UserRound className="size-5 text-primary" />
               </div>
               <div className="min-w-0">
                 <Typography variant="heading-m" className="truncate text-xl md:text-2xl">

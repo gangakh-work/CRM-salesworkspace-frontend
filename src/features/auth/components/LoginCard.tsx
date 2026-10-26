@@ -37,18 +37,18 @@ export function LoginCard() {
     >
       
       
-      <div className="relative rounded-2xl border border-border/80 bg-background p-6 shadow-[0_24px_70px_-28px_rgba(0,0,0,0.28)] sm:p-8">
+      <div className="relative rounded-2xl border border-border/80 bg-background p-5 shadow-[0_24px_70px_-28px_rgba(0,0,0,0.28)] sm:p-6">
         <div className="absolute right-4 top-4">
           <ThemeSwitcher />
         </div>
 
-        <CompanyLogo className="mb-7" />
+        <CompanyLogo className="mb-5" />
 
         <motion.div
           initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.18 }}
-          className="mb-7 text-center"
+          className="mb-5 text-center"
         >
           <Typography variant="heading-l" className="mb-2 text-[1.7rem] font-semibold tracking-tight">
             Welcome back

@@ -1,5 +1,4 @@
 import {
-  Bot,
   ChevronDown,
   Columns3,
   Download,
@@ -35,7 +34,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Typography } from '@/components/ui/typography'
-import { useAiCopilot } from '@/features/ai-copilot/context/AiCopilotProvider'
 import {
   SAVED_VIEWS,
   useLeadManagement,
@@ -98,7 +96,6 @@ export function LeadToolbar() {
   } = useLeadManagement()
 
   const selectedCount = selectedIds.size
-  const { open: openAssistant } = useAiCopilot()
 
   /**
    * Share the current Lead Management page.
@@ -262,37 +259,7 @@ export function LeadToolbar() {
             New Lead
           </Button>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" title="Download Excel templates">
-                <Download className="size-4" />
-                Templates
-                <ChevronDown className="size-3.5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Excel templates</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => window.open('/templates/Lead_Template.xlsx', '_blank', 'noopener,noreferrer')}>
-                Download Lead template
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => window.open('/templates/Opportunity_Template.xlsx', '_blank', 'noopener,noreferrer')}>
-                Download Opportunity template
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* Existing AI Assistant - unchanged */}
-          <Button
-            variant="outline"
-            size="icon-sm"
-            aria-label="AI Assistant"
-            title="Open AI Assistant"
-            onClick={() =>
-              openAssistant({ mode: 'docked' })
-            }
-          >
-            <Bot className="size-4" />
-          </Button>
+          <Button variant="outline" size="sm" onClick={() => window.open('/templates/Lead_Template.xlsx', '_blank', 'noopener,noreferrer')}><Download className="size-4" /> Lead Template</Button>
 
           {/* NEW: Share button */}
           <Button

@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sheet'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
-
+import { APP_NAME } from '@/config/constants'
 import { sidebarAnimation } from '@/design-system/animations/motion'
 import { useNavigation } from '@/hooks/useNavigation'
 import { useSidebar } from '@/hooks/useSidebar'
@@ -87,26 +87,16 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
           collapsed && 'justify-center px-2',
         )}
       >
-        
         {!collapsed ? (
-          <img
-            src="/logo.png"
-            alt="Sonata"
-            className="h-8 w-auto max-w-[150px] object-contain"
-          />
+          <div className="flex items-center gap-2"><img src="/logo.png" alt="Company logo" className="h-8 w-8 object-contain" onError={(e) => { e.currentTarget.style.display = "none" }} /><Typography variant="body" className="truncate font-semibold">{APP_NAME}</Typography></div>
         ) : (
-          <img
-            src="/logo.png"
-            alt="Sonata"
-            className="h-7 w-7 object-contain"
-          />
+          <img src="/logo.png" alt="Company logo" className="h-8 w-8 object-contain" onError={(e) => { e.currentTarget.style.display = "none" }} />
         )}
-
       </div>
       <ScrollArea className="flex-1 px-2 py-3">
         <TooltipProvider delayDuration={0}>
           <nav className="space-y-4">
-            {groups.map((group) => (
+            {groups.filter(group => group.id !== "admin").map((group) => (
               <div key={group.id}>
                 {!collapsed && (
                   <Typography
@@ -141,75 +131,38 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
 }
 
 export function AppSidebar() {
-  const { collapsed, mobileOpen, hoverOpen, toggleCollapsed, closeMobile, openHover, closeHover } = useSidebar()
-  const location = useLocation()
-  const isWorkspace = location.pathname.startsWith('/workspace')
+  const { collapsed, mobileOpen, hoverOpen, pinnedOpen, toggleCollapsed, closeMobile, openHover, closeHover, closePinnedOpen } = useSidebar()
 
   return (
     <>
-      {/* Desktop sidebar — normal flow when not on workspace pages */}
-      {!isWorkspace && (
-        <motion.aside
-          initial={false}
-          animate={collapsed ? 'collapsed' : 'expanded'}
-          variants={sidebarAnimation}
-          data-shell-surface
-          className="hidden shrink-0 border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:flex lg:flex-col"
-          style={
-            {
-              '--sidebar-width': 'var(--layout-sidebar-width)',
-              '--sidebar-width-collapsed': 'var(--layout-sidebar-width-collapsed)',
-            } as Record<string, string>
-          }
-        >
-          <SidebarContent collapsed={collapsed} />
-          <div className="border-t border-sidebar-border p-2">
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="w-full"
-              onClick={toggleCollapsed}
-              aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              <ChevronLeft
-                className={cn('size-4 transition-transform', collapsed && 'rotate-180')}
-              />
-            </Button>
-          </div>
-        </motion.aside>
-      )}
-
-      {/* Workspace overlay sidebar — slides in from left on hover, floats over content */}
-      {isWorkspace && (
-        <AnimatePresence>
-          {hoverOpen && (
-            <motion.aside
-              key="workspace-sidebar"
-              initial={{ x: '-100%', opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: '-100%', opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 380, damping: 36, mass: 0.8 }}
-              onMouseEnter={() => openHover()}
-              onMouseLeave={() => closeHover()}
-              data-shell-surface
-              className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-xl lg:flex"
-            >
-              <SidebarContent collapsed={false} />
-              <div className="border-t border-sidebar-border p-2">
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  className="w-full"
-                  onClick={toggleCollapsed}
-                  aria-label="Collapse sidebar"
-                >
-                  <ChevronLeft className="size-4" />
-                </Button>
-              </div>
-            </motion.aside>
-          )}
-        </AnimatePresence>
-      )}
+      {/* Unified hover-to-expand sidebar on all desktop pages. */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-y-0 left-0 z-40 hidden w-3 lg:block"
+        onMouseEnter={openHover}
+      />
+      <AnimatePresence>
+        {(hoverOpen || pinnedOpen) && (
+          <motion.aside
+            key="navigation-overlay"
+            initial={{ x: '-100%', opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: '-100%', opacity: 0 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 36 }}
+            onMouseEnter={openHover}
+            onMouseLeave={closeHover}
+            data-shell-surface
+            className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground shadow-xl lg:flex"
+          >
+            <SidebarContent collapsed={false} />
+            <div className="border-t border-sidebar-border p-2">
+              <Button variant="ghost" size="icon-sm" className="w-full" onClick={closePinnedOpen} aria-label="Close navigation sidebar">
+                <ChevronLeft className="size-4" />
+              </Button>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
 
       {/* Mobile sheet sidebar */}
       <Sheet open={mobileOpen} onOpenChange={(open) => !open && closeMobile()}>

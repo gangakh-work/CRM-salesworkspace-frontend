@@ -6,7 +6,6 @@ import { LoadingState } from '@/components/patterns/state-components'
 import { WORKSPACE_LAYOUT_VARS } from '@/config/workspace-layout'
 import { WorkspaceContent } from '@/features/crm-workspace/components/layout/WorkspaceContent'
 import { WorkspaceNavPanel } from '@/features/crm-workspace/components/layout/WorkspaceNavPanel'
-import { WorkspaceStatusBar } from '@/features/crm-workspace/components/layout/WorkspaceStatusBar'
 import { WorkspaceToolbar } from '@/features/crm-workspace/components/layout/WorkspaceToolbar'
 import { useWorkspace } from '@/features/crm-workspace/context/WorkspaceProvider'
 import { WorkspaceProvider } from '@/features/crm-workspace/context/WorkspaceProvider'
@@ -47,7 +46,7 @@ function WorkspacePanels() {
   return (
     <div
       data-workspace-root
-      className="flex h-full flex-col overflow-hidden bg-background"
+      className="flex h-full min-h-0 flex-col overflow-hidden bg-background"
       style={
         {
           '--workspace-nav-width': WORKSPACE_LAYOUT_VARS.navWidth,
@@ -86,7 +85,6 @@ function WorkspacePanels() {
         <MobileWorkspaceNav />
       </div>
 
-      <WorkspaceStatusBar />
     </div>
   )
 }

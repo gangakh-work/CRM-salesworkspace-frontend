@@ -1,134 +1,50 @@
 import { motion } from 'framer-motion'
-import { useCallback, useState } from 'react'
-
-import { DashboardChartsGrid } from '@/features/dashboard/components/DashboardChartsGrid'
-import { DashboardRefreshIndicator } from '@/features/dashboard/components/DashboardRefreshIndicator'
-import { DashboardSection } from '@/features/dashboard/components/DashboardSection'
-import { DashboardTablesGrid } from '@/features/dashboard/components/DashboardTablesGrid'
-import { DisqualificationReportPanel } from '@/features/dashboard/components/DisqualificationReportPanel'
-import { ExecutiveDashboardPanel } from '@/features/dashboard/components/ExecutiveDashboardPanel'
-import { LeadFunnelPanel } from '@/features/dashboard/components/LeadFunnelPanel'
-import { LeadScoreDistributionPanel } from '@/features/dashboard/components/LeadScoreDistributionPanel'
-import { MyDayPanel } from '@/features/dashboard/components/MyDayPanel'
+import { ArrowUpRight, BookOpen, CalendarDays, CircleDollarSign, CreditCard, LayoutDashboard, RefreshCw, ShieldCheck, Sparkles, TrendingUp, Users, Zap } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { DashboardWelcome } from '@/features/dashboard/components/DashboardWelcome'
+import { KpiMetricsGrid } from '@/features/dashboard/components/KpiMetricsGrid'
 import { RecentActivitiesPanel } from '@/features/dashboard/components/RecentActivitiesPanel'
+import { SalesPipelinePanel } from '@/features/dashboard/components/SalesPipelinePanel'
+import { UpcomingMeetingsPanel } from '@/features/dashboard/components/UpcomingMeetingsPanel'
+import { DashboardTablesGrid } from '@/features/dashboard/components/DashboardTablesGrid'
+import { useDashboardKpisQuery } from '@/features/dashboard/hooks/useDashboardQueries'
 import { pageTransition } from '@/design-system/animations/motion'
-import { useSettings } from '@/hooks/useSettings'
-import { cn } from '@/lib/utils'
+import './dashboard-showcase.css'
 
-const SECTIONS_STORAGE_KEY = 'sw:dashboard-open-sections:v3'
+const benefits = [
+  { path: '/workspace/leads', icon: Zap, title: 'Faster Lead Qualification', description: 'Keep your sales team moving with clear, actionable lead insights.' },
+  { path: '/workspace/opportunities', icon: TrendingUp, title: 'Real-Time Pipeline Tracking', description: 'Follow opportunities and revenue trends as they develop.' },
+  { path: '/accounts', icon: Users, title: 'Connected Customer View', description: 'Bring account and contact activity into one workspace.' },
+  { path: '/workspace/activities', icon: ShieldCheck, title: 'Reliable Sales Operations', description: 'Stay organized with consistent workflows and follow-ups.' },
+  { path: '/ai-assistant', icon: Sparkles, title: 'Intelligent Recommendations', description: 'Prioritize the opportunities that need your attention.' },
+  { path: '/workspace/activities', icon: CalendarDays, title: 'Activities & Follow-Ups', description: 'Keep meetings and next steps visible across your day.' },
+  { path: '/knowledge-base', icon: BookOpen, title: 'Knowledge Base & Training', description: 'Learn to find records, create leads, import Excel templates, and use your AI Assistant.' },
+]
 
-function loadOpenSections(): Set<string> {
-  try {
-    const raw = localStorage.getItem(SECTIONS_STORAGE_KEY)
-    if (raw) return new Set(JSON.parse(raw) as string[])
-  } catch {
-    /* ignore */
-  }
-  // Show the core sales metrics and charts on first visit; deeper reports stay available on demand.
-  return new Set(['analytics', 'tables'])
+function ShowcasePanel({ title, subtitle, children, className = '' }: { title: string; subtitle?: string; children: React.ReactNode; className?: string }) {
+  return <section className={`crm-showcase-panel ${className}`}><div className="crm-showcase-panel-head"><div><h3>{title}</h3>{subtitle && <p>{subtitle}</p>}</div><span className="crm-showcase-panel-dot" /></div>{children}</section>
 }
 
 export function DashboardPage() {
-  const { settings } = useSettings()
-  const [openSections, setOpenSections] = useState<Set<string>>(loadOpenSections)
-
-  const toggle = useCallback((id: string) => {
-    setOpenSections((prev) => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      try {
-        localStorage.setItem(SECTIONS_STORAGE_KEY, JSON.stringify([...next]))
-      } catch {
-        /* ignore */
-      }
-      return next
-    })
-  }, [])
-
-  const sectionProps = (id: string) => ({
-    id,
-    collapsed: !openSections.has(id),
-    onToggle: () => toggle(id),
-  })
-
-  return (
-    <motion.div
-      className={cn('space-y-5 pb-16', settings.compactMode && 'space-y-4')}
-      initial="initial"
-      animate="animate"
-      variants={pageTransition}
-    >
-      <MyDayPanel />
-
-      <div className="mx-auto flex max-w-[1440px] flex-wrap items-end justify-between gap-3 border-t border-border pt-5">
-        <div className="space-y-1">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Sales intelligence</p>
-          <h2 className="text-xl font-semibold tracking-tight md:text-2xl">Pipeline & insights</h2>
-        </div>
-        <DashboardRefreshIndicator />
+  const kpis = useDashboardKpisQuery()
+  return <motion.div className="crm-showcase" initial="initial" animate="animate" variants={pageTransition}>
+    <section className="crm-showcase-hero">
+      <div className="crm-showcase-hero-glow" aria-hidden="true" />
+      
+      <h1>Sales That Grow with<br /><em>Your Ambition</em></h1>
+      <p>Bring every lead, opportunity, and customer relationship together.<br />Make smarter decisions and turn momentum into measurable growth.</p>
+      <div className="crm-showcase-hero-actions"><Link className="crm-showcase-primary" to="/workspace/leads">Explore Leads <ArrowUpRight size={15}/></Link><Link className="crm-showcase-secondary" to="/workspace/opportunities"><TrendingUp size={15}/> View Pipeline</Link><Link className="crm-showcase-secondary" to="/knowledge-base"><BookOpen size={15}/> Learn the CRM</Link></div>
+      <div className="crm-showcase-dashboard-frame">
+        <div className="crm-showcase-frame-top"><div className="crm-showcase-brand"><span className="crm-showcase-brand-icon"><img src="/logo.png" alt="Sonata" onError={(event) => { event.currentTarget.style.display = "none" }} /></span> CRM Sales Workspace</div><div className="crm-showcase-frame-links"><Link className="active" to="/dashboard">Overview</Link><Link to="/workspace/activities">Activity</Link><Link to="/workspace/opportunities">Opportunities</Link><Link to="/accounts">Accounts</Link></div><button type="button" onClick={() => void kpis.refetch()} aria-label="Refresh CRM dashboard"><RefreshCw size={15} className={kpis.isFetching ? 'animate-spin' : ''}/></button></div>
+        <div className="crm-showcase-frame-content"><DashboardWelcome /><div className="crm-showcase-kpi"><KpiMetricsGrid /></div><div className="crm-showcase-frame-panels"><ShowcasePanel title="Sales pipeline" subtitle="Live opportunity distribution"><SalesPipelinePanel /></ShowcasePanel><ShowcasePanel title="Upcoming activities" subtitle="Stay ahead of your next steps"><UpcomingMeetingsPanel /></ShowcasePanel></div></div>
       </div>
+    </section>
 
-      <DashboardSection
-        {...sectionProps('analytics')}
-        title="Performance analytics"
-        description="Opportunity pipeline, revenue trends, and lead distribution"
-        className="border-border/70 bg-card/90"
-      >
-        <DashboardChartsGrid />
-      </DashboardSection>
+    <section className="crm-showcase-section"><div className="crm-showcase-section-heading"><span>YOUR WORKSPACE</span><h2>Everything Your Sales Team Needs</h2><p>Connected tools, meaningful insights, and a clear view of your pipeline.</p></div><div className="crm-showcase-benefits">{benefits.map(({path,icon:Icon,title,description})=><Link to={path} className="crm-showcase-benefit" key={title}><span className="crm-showcase-benefit-icon"><Icon size={22}/></span><h3>{title}</h3><p>{description}</p></Link>)}</div></section>
 
-      <DashboardSection
-        {...sectionProps('tables')}
-        title="Recent records"
-        description="Latest leads, opportunities, upcoming activities, and AI recommendations"
-        className="border-border/70 bg-card/90"
-      >
-        <DashboardTablesGrid />
-      </DashboardSection>
+    <section className="crm-showcase-section crm-showcase-operations"><div className="crm-showcase-section-heading"><span>STAY ON TOP OF WHAT MATTERS</span><h2>Your Pipeline. Your Momentum.</h2><p>A focused view of recent activity and the records that move deals forward.</p></div><div className="crm-showcase-operations-grid"><ShowcasePanel title="Recent sales activity" subtitle="Latest updates from your CRM"><RecentActivitiesPanel /></ShowcasePanel><ShowcasePanel title="Sales records" subtitle="Recently updated leads and opportunities"><DashboardTablesGrid /></ShowcasePanel></div></section>
 
-      <DashboardSection
-        {...sectionProps('executive')}
-        title="Executive Dashboard"
-        description="Role-based KPIs — revenue, forecast, pipeline, win rate, and trends"
-      >
-        <ExecutiveDashboardPanel />
-      </DashboardSection>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <DashboardSection
-          {...sectionProps('funnel')}
-          title="Lead Funnel"
-          description="Lead progression by workflow stage"
-        >
-          <LeadFunnelPanel />
-        </DashboardSection>
-
-        <DashboardSection
-          {...sectionProps('score-distribution')}
-          title="Lead Score Distribution"
-          description="Hot, warm, and cold qualified leads"
-        >
-          <LeadScoreDistributionPanel />
-        </DashboardSection>
-      </div>
-
-      <DashboardSection
-        {...sectionProps('disqualification')}
-        title="Disqualification Insights"
-        description="Reasons and patterns for disqualified leads"
-      >
-        <DisqualificationReportPanel />
-      </DashboardSection>
-
-      <DashboardSection
-        {...sectionProps('recent-activity')}
-        title="Recent Activity"
-        description="Latest lead activity from Dataverse"
-      >
-        <RecentActivitiesPanel />
-      </DashboardSection>
-
-    </motion.div>
-  )
+    <section className="crm-showcase-cta"><span><CircleDollarSign size={18}/> GROW WITH CONFIDENCE</span><h2>Turn Every Opportunity Into Progress</h2><p>Keep your team connected to the work that drives results.</p><Link className="crm-showcase-primary" to="/workspace/opportunities">Open Opportunities <ArrowUpRight size={16}/></Link><div className="crm-showcase-cta-icons" aria-hidden="true"><CreditCard/><TrendingUp/><Sparkles/></div></section>
+    <div className="sr-only" role="status" aria-live="polite">{kpis.isFetching ? 'Refreshing dashboard metrics' : kpis.isError ? 'Dashboard metrics could not be refreshed' : ''}</div>
+  </motion.div>
 }

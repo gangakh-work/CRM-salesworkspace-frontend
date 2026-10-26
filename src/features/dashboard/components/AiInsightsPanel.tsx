@@ -21,6 +21,9 @@ export function AiInsightsPanel() {
       loadingFallback={<Typography variant="caption" tone="muted">Loading AI insights...</Typography>}
       errorTitle="Unable to load AI insights"
     >
+      {(query.data?.data ?? []).length === 0 ? (
+        <div className="rounded-xl border border-dashed border-border p-5 text-sm text-muted-foreground">No AI recommendations are available right now. Recommendations will appear here when the connected service returns them.</div>
+      ) : (
       <div className="grid gap-3 md:grid-cols-2">
         {(query.data?.data ?? []).map((insight) => (
           <div key={insight.id} className="rounded-lg border border-primary/20 bg-primary/5 p-4">
@@ -33,6 +36,7 @@ export function AiInsightsPanel() {
           </div>
         ))}
       </div>
+      )}
     </AsyncBoundary>
   )
 }

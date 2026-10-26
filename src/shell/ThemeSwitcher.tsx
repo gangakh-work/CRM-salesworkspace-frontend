@@ -4,12 +4,21 @@ import { Button } from '@/components/ui/button'
 import { useTheme } from '@/hooks/useTheme'
 
 export function ThemeSwitcher() {
-  const { toggleTheme } = useTheme()
+  const { theme, resolvedTheme, setTheme } = useTheme()
+  const activeTheme = resolvedTheme ?? (theme === 'dark' ? 'dark' : 'light')
+  const nextTheme = activeTheme === 'dark' ? 'light' : 'dark'
 
   return (
-    <Button variant="ghost" size="icon-sm" aria-label="Toggle theme" onClick={toggleTheme}>
-      <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute size-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      aria-label={`Switch to ${nextTheme} theme`}
+      title={`Switch to ${nextTheme} theme`}
+      aria-pressed={activeTheme === 'dark'}
+      onClick={() => setTheme(nextTheme)}
+    >
+      {activeTheme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
     </Button>
   )
 }

@@ -1,7 +1,7 @@
-import { LogOut, Settings, User } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -15,9 +15,11 @@ import { Typography } from '@/components/ui/typography'
 import { routeMeta } from '@/config/routes'
 import { useSession } from '@/features/auth/hooks/useSession'
 import { useUser } from '@/features/auth/hooks/useUser'
+import { useMicrosoftProfilePhoto } from '@/features/auth/hooks/useMicrosoftProfilePhoto'
 
 export function ProfileMenu() {
   const { displayName, email, role, initials } = useUser()
+  const photoUrl = useMicrosoftProfilePhoto(email)
   const { logout } = useSession()
   const navigate = useNavigate()
 
@@ -31,6 +33,7 @@ export function ProfileMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative size-9 rounded-full p-0" aria-label="Profile menu">
           <Avatar className="size-8">
+            {photoUrl && <AvatarImage src={photoUrl} alt={displayName} />}
             <AvatarFallback className="text-xs">{initials}</AvatarFallback>
           </Avatar>
         </Button>
@@ -49,19 +52,6 @@ export function ProfileMenu() {
             </Typography>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to="/settings" className="cursor-pointer">
-            <User className="mr-2 size-4" />
-            Profile
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/settings" className="cursor-pointer">
-            <Settings className="mr-2 size-4" />
-            Settings
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer" onClick={() => void handleLogout()}>
           <LogOut className="mr-2 size-4" />

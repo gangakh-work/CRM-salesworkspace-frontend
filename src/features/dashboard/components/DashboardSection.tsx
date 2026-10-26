@@ -28,18 +28,18 @@ export function DashboardSection({
   className,
 }: DashboardSectionProps) {
   return (
-    <section className={cn('space-y-4 rounded-xl border border-border bg-card p-4 shadow-sm md:p-5', className)}>
+    <section className={cn('space-y-3', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           {onToggle ? (
-            <button type="button" onClick={onToggle} className="rounded-sm text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-              <Typography variant="heading-m" className="text-base font-semibold tracking-tight">{title}</Typography>
+            <button type="button" onClick={onToggle} className="text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm">
+              <Typography variant="heading-m" className="text-sm">{title}</Typography>
             </button>
           ) : (
-            <Typography variant="heading-m" className="text-base font-semibold tracking-tight">{title}</Typography>
+            <Typography variant="heading-m" className="text-sm">{title}</Typography>
           )}
           {description && (
-            <Typography variant="caption" tone="muted" className="mt-1 block leading-5">
+            <Typography variant="caption" tone="muted" className="mt-0.5">
               {description}
             </Typography>
           )}

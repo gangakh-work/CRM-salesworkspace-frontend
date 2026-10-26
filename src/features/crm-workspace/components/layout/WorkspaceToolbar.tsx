@@ -22,7 +22,7 @@ import { QUICK_ACTIONS } from '@/features/crm-workspace/lib/workspace-config'
 import { useWorkspace } from '@/features/crm-workspace/context/WorkspaceProvider'
 import { QUICK_FILTERS, WORKSPACE_TABS } from '@/features/crm-workspace/types/workspace.types'
 import { NotificationCenter } from '@/shell/NotificationCenter'
-import { useAiCopilot } from '@/features/ai-copilot/context/AiCopilotProvider'
+
 import { cn } from '@/lib/utils'
 
 export function WorkspaceToolbar() {
@@ -38,7 +38,7 @@ export function WorkspaceToolbar() {
   } = useWorkspace()
 
   const tabConfig = WORKSPACE_TABS.find((t) => t.id === activeTab)
-  const { open: openAssistant } = useAiCopilot()
+
 
   return (
     <header className="shrink-0 border-b border-border/60 bg-background/80 px-4 py-3 backdrop-blur-xl">
@@ -91,15 +91,7 @@ export function WorkspaceToolbar() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button
-            variant="outline"
-            size="icon-sm"
-            aria-label="AI Assistant"
-            title="Open AI Assistant"
-            onClick={() => openAssistant({ mode: 'docked' })}
-          >
-            <Bot className="size-4" />
-          </Button>
+
 
           <Button
             variant="outline"

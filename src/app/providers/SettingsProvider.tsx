@@ -6,7 +6,7 @@ export interface AppSettings {
   compactMode: boolean
   showBreadcrumbs: boolean
   animationsEnabled: boolean
-  /** ThreeUI Energy Orb behind every page (forces the dark theme). */
+  /** Optional ThreeUI Energy Orb behind every page. */
   animatedBackground: boolean
 }
 
@@ -20,7 +20,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   compactMode: false,
   showBreadcrumbs: true,
   animationsEnabled: true,
-  animatedBackground: true,
+  animatedBackground: false,
 }
 
 const SETTINGS_CHANGED_EVENT = 'sw:settings-changed' // also read by ThemeProvider

@@ -15,6 +15,9 @@ interface SidebarContextValue {
   mobileOpen: boolean
   /** True when the sidebar overlay is visible on workspace pages */
   hoverOpen: boolean
+  pinnedOpen: boolean
+  togglePinnedOpen: () => void
+  closePinnedOpen: () => void
   toggleCollapsed: () => void
   setCollapsed: (value: boolean) => void
   /** Open the hover sidebar immediately */
@@ -40,6 +43,7 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   const [collapsed, setCollapsedState] = useState(readCollapsed)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [hoverOpen, setHoverOpen] = useState(false)
+  const [pinnedOpen, setPinnedOpen] = useState(false)
 
   // Timer ref used to debounce the close so mouse can travel between
   // the TopNav trigger and the sidebar without the sidebar disappearing.
@@ -67,11 +71,25 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const closeHover = useCallback(() => {
+    if (pinnedOpen) return
     // 120 ms grace period — enough to move from the button into the sidebar
     closeTimerRef.current = setTimeout(() => {
       setHoverOpen(false)
       closeTimerRef.current = null
     }, 120)
+  }, [pinnedOpen])
+
+  const togglePinnedOpen = useCallback(() => {
+    setPinnedOpen((current) => {
+      const next = !current
+      setHoverOpen(next)
+      return next
+    })
+  }, [])
+
+  const closePinnedOpen = useCallback(() => {
+    setPinnedOpen(false)
+    setHoverOpen(false)
   }, [])
 
   const value = useMemo<SidebarContextValue>(
@@ -79,6 +97,9 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
       collapsed,
       mobileOpen,
       hoverOpen,
+      pinnedOpen,
+      togglePinnedOpen,
+      closePinnedOpen,
       toggleCollapsed,
       setCollapsed,
       openHover,
@@ -87,7 +108,18 @@ export function SidebarProvider({ children }: { children: ReactNode }) {
       closeMobile: () => setMobileOpen(false),
       toggleMobile: () => setMobileOpen((prev) => !prev),
     }),
-    [collapsed, mobileOpen, hoverOpen, toggleCollapsed, setCollapsed, openHover, closeHover],
+    [
+      collapsed,
+      mobileOpen,
+      hoverOpen,
+      pinnedOpen,
+      toggleCollapsed,
+      setCollapsed,
+      openHover,
+      closeHover,
+      togglePinnedOpen,
+      closePinnedOpen,
+    ],
   )
 
   return <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>

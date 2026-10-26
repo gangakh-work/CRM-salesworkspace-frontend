@@ -38,9 +38,8 @@ export function AiCopilotHeader({ showHistory, onToggleHistory }: AiCopilotHeade
   const handleBackToCrm = () => {
     close()
     if (location.pathname.startsWith('/workspace')) return
-    const crmPage =
-      pageContext.page?.startsWith('/workspace') ? pageContext.page : '/workspace/leads'
-    navigate(crmPage)
+    const previousPage = sessionStorage.getItem('assistantReturnPath')
+    navigate(previousPage || (pageContext.page?.startsWith('/workspace') ? pageContext.page : '/workspace'))
   }
 
   const isFullscreen = mode === 'fullscreen'
