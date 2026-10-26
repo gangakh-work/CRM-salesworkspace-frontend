@@ -1,5 +1,4 @@
 import {
-  Bot,
   Download,
   Filter,
   MoreHorizontal,

@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronLeft, Menu } from 'lucide-react'
 import type { ComponentType } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,7 +15,6 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
 import { APP_NAME } from '@/config/constants'
-import { sidebarAnimation } from '@/design-system/animations/motion'
 import { useNavigation } from '@/hooks/useNavigation'
 import { useSidebar } from '@/hooks/useSidebar'
 import { cn } from '@/lib/utils'
@@ -131,7 +130,7 @@ function SidebarContent({ collapsed, onNavigate }: { collapsed: boolean; onNavig
 }
 
 export function AppSidebar() {
-  const { collapsed, mobileOpen, hoverOpen, pinnedOpen, toggleCollapsed, closeMobile, openHover, closeHover, closePinnedOpen } = useSidebar()
+  const { mobileOpen, hoverOpen, pinnedOpen, closeMobile, openHover, closeHover, closePinnedOpen } = useSidebar()
 
   return (
     <>

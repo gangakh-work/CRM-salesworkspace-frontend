@@ -9,16 +9,13 @@ import {
 import { Link } from 'react-router-dom'
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Typography } from '@/components/ui/typography'
 import { LeadScoreBadge, PriorityBadge, QualificationRatingBadge, StatusBadge, DisqualificationReasonBadge } from '@/features/lead-management/components/LeadBadges'
 import type { Lead360Profile } from '@/features/lead-management/types/lead.types'
 import type { Lead } from '@/features/lead-management/types/lead.types'
 import { fadeIn } from '@/design-system/animations/motion'
-import { cn } from '@/lib/utils'
 
 function initials(name: string) {
   return name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()

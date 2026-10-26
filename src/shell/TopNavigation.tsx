@@ -7,18 +7,12 @@ import { Separator } from '@/components/ui/separator'
 import { Typography } from '@/components/ui/typography'
 import { useNavigation } from '@/hooks/useNavigation'
 import { useSidebar } from '@/hooks/useSidebar'
-import { useLocation } from 'react-router-dom'
 import { APP_NAME } from '@/config/constants'
 import { cn } from '@/lib/utils'
 
-interface TopNavigationProps {
-  onOpenCommandBar: () => void
-}
-
-export function TopNavigation({ onOpenCommandBar }: TopNavigationProps) {
+export function TopNavigation() {
   const { currentFeature } = useNavigation()
   const { openHover, closeHover, hoverOpen, pinnedOpen, togglePinnedOpen } = useSidebar()
-  const location = useLocation()
   const isWorkspace = true
 
   return (

@@ -19,7 +19,7 @@ export interface KpiMetric {
   trend: number
   trendLabel: string
   status: KpiStatus
-  sparkline: number[]
+  sparkline?: number[]
   icon: LucideIcon
 }
 

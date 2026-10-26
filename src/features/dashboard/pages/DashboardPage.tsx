@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, BookOpen, CalendarDays, CircleDollarSign, CreditCard, LayoutDashboard, RefreshCw, ShieldCheck, Sparkles, TrendingUp, Users, Zap } from 'lucide-react'
+import { ArrowUpRight, BookOpen, CalendarDays, CircleDollarSign, CreditCard, RefreshCw, ShieldCheck, Sparkles, TrendingUp, Users, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { DashboardWelcome } from '@/features/dashboard/components/DashboardWelcome'
 import { KpiMetricsGrid } from '@/features/dashboard/components/KpiMetricsGrid'
