@@ -34,6 +34,9 @@ jobs:
       - name: Build Frontend
         run: npm run build
 
+      - name: Copy Azure Static Web Apps configuration
+        run: cp staticwebapp.config.json dist/staticwebapp.config.json
+
       - name: Verify Build Output
         run: |
           test -f dist/index.html
