@@ -6,9 +6,10 @@ import Icon from './components/Icon'
 
 const AuthContext = createContext({ profile: null, photo: '', signOut: () => {} })
 export const useAuth = () => useContext(AuthContext)
-const clientId = import.meta.env.VITE_ENTRA_CLIENT_ID || ''
-const tenantId = import.meta.env.VITE_ENTRA_TENANT_ID || 'common'
-const redirectUri = import.meta.env.VITE_ENTRA_REDIRECT_URI || window.location.origin
+// Support both the legacy VITE_ENTRA_* names and the current VITE_MSAL_* names.
+const clientId = import.meta.env.VITE_MSAL_CLIENT_ID || import.meta.env.VITE_ENTRA_CLIENT_ID || ''
+const tenantId = import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID || 'common'
+const redirectUri = import.meta.env.VITE_MSAL_REDIRECT_URI || import.meta.env.VITE_ENTRA_REDIRECT_URI || window.location.origin
 const msal = new PublicClientApplication({ auth: { clientId: clientId || '00000000-0000-0000-0000-000000000000', authority: `https://login.microsoftonline.com/${tenantId}`, redirectUri }, cache: { cacheLocation: 'localStorage', storeAuthStateInCookie: false } })
 const scopes = ['User.Read', 'email', 'profile']
 
@@ -103,7 +104,7 @@ function SignInGate({ children }) {
   const resolvedProfile = profile || (account ? { displayName: account.name, mail: account.username, userPrincipalName: account.username } : null)
   const authValue = { profile: resolvedProfile, photo, signOut: () => instance.logoutRedirect() }
   if (authenticated) return <AuthContext.Provider value={authValue}><div className="signed-shell">{children}{error && <div className="auth-note">Microsoft profile: {error}</div>}</div></AuthContext.Provider>
-  const startMicrosoftSignIn = () => { if (!clientId || !import.meta.env.VITE_ENTRA_TENANT_ID || !backendScope) { setError('Microsoft sign-in configuration is incomplete. Check VITE_ENTRA_CLIENT_ID, VITE_ENTRA_TENANT_ID and VITE_MSAL_API_SCOPE, then restart Vite.'); return } instance.loginRedirect({ scopes, prompt: 'select_account' }) }
+  const startMicrosoftSignIn = () => { if (!clientId || !(import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID) || !backendScope) { setError('Microsoft sign-in configuration is incomplete. Check VITE_MSAL_CLIENT_ID, VITE_MSAL_TENANT_ID and VITE_MSAL_API_SCOPE (or their VITE_ENTRA_* aliases), then restart Vite.'); return } instance.loginRedirect({ scopes, prompt: 'select_account' }) }
   return <main className="login-screen">
     <div className="login-bg-image"/><div className="login-warm-overlay"/>
     <header className="login-topbar"><div className="login-top-brand"><SonataMark/><span><b>SONATA</b><small>CRM Sales Workspace</small></span></div></header>
@@ -121,7 +122,7 @@ function SignInGate({ children }) {
         {passwordNotice&&<p className="login-feedback" role="status">{passwordNotice}</p>}
         <div className="login-divider"><span/>or continue with<span/></div>
         <button className="microsoft-signin" disabled={!clientId} onClick={startMicrosoftSignIn}><span className="ms-grid"><i/><i/><i/><i/></span>Sign in with Microsoft</button>
-        {(!clientId || !import.meta.env.VITE_ENTRA_TENANT_ID || !backendScope)&&<p className="auth-note">Microsoft sign-in requires VITE_ENTRA_CLIENT_ID, VITE_ENTRA_TENANT_ID and VITE_MSAL_API_SCOPE in the frontend .env file. Restart Vite after updating it.</p>}
+        {(!clientId || !import.meta.env.VITE_ENTRA_TENANT_ID || !backendScope)&&<p className="auth-note">Microsoft sign-in requires VITE_MSAL_CLIENT_ID, VITE_MSAL_TENANT_ID and VITE_MSAL_API_SCOPE (or their VITE_ENTRA_* aliases) in the frontend .env file. Restart Vite after updating it.</p>}
         <small className="login-foot">Secure access to your CRM workspace</small>
       </section>
     </div>
