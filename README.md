@@ -1,179 +1,54 @@
-<<<<<<< HEAD
-# CRM-salesworkspace-frontend
-=======
-# Sales Workspace — Frontend
+# SONATA CRM Sales Workspace — Frontend
 
-Enterprise React SPA foundation for Sales Workspace.
+This is the frontend-only package for the CRM Sales Workspace. It retains the existing React/Vite application, CRM API client, Microsoft Entra authentication, Microsoft Graph profile/photo retrieval, and the existing CRM pages.
 
-## Prerequisites
+## What changed in this update
 
-- Node.js 22+
-- npm 10+
+- Reworked the Overview dashboard to match the supplied warm-brown glassmorphism reference.
+- Central dashboard: Pipeline Value, Leads, Top Opportunities, Sales Activity, and Opportunity Wins.
+- Right analytics rail: Leads count, Total Sales Pipeline value, and Opportunity Wins trend.
+- Dashboard values are calculated from the existing CRM API responses where available; no fixed sample KPI values were introduced.
+- Rebuilt the sign-in screen to match the same warm gold/brown glass theme.
+- Removed all top navigation links/buttons from the login screen. The header contains only the SONATA brand.
+- Kept Microsoft Entra sign-in and Microsoft Graph profile/photo retrieval.
 
-## Installation
+## Requirements
+
+- Node.js 20.19+ or 22.12+
+- npm
+- The existing FastAPI backend running separately
+
+## Setup
+
+1. Extract this folder.
+2. Copy `.env.example` to `.env`.
+3. Set the values for your environment:
+
+   ```env
+   VITE_API_BASE_URL=http://localhost:8000/api/v1
+   VITE_ENTRA_CLIENT_ID=your-application-client-id
+   VITE_ENTRA_TENANT_ID=your-tenant-id
+   VITE_ENTRA_REDIRECT_URI=http://localhost:5173
+   ```
+
+4. From this folder run:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+5. Open `http://localhost:5173`.
+
+## Build
 
 ```bash
-cd frontend
-cp .env.example .env    # Windows: copy .env.example .env
-npm install
+npm run build
 ```
 
-## Commands
+## Notes
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Vite dev server at http://localhost:5173 |
-| `npm run build` | Type-check and production build |
-| `npm run preview` | Preview production build |
-| `npm run lint` | Run ESLint |
-| `npm run typecheck` | TypeScript type check only |
-
-## Application Shell Architecture
-
-The frontend core delivers a production-ready **Application Shell** — navigation, layout, providers, and placeholder routes — without business module implementation.
-
-### Folder Structure
-
-```
-src/
-├── app/
-│   ├── App.tsx                 # Root component
-│   ├── providers/              # Theme, Query, Settings, Sidebar, Notifications
-│   └── router/                 # React Router configuration
-├── shell/                      # Application shell components
-│   ├── AppShell.tsx            # Main layout orchestrator
-│   ├── AppSidebar.tsx          # Responsive sidebar navigation
-│   ├── TopNavigation.tsx       # Header with search, theme, notifications, profile
-│   ├── CommandBar.tsx          # ⌘K command palette
-│   ├── GlobalSearch.tsx        # Search trigger
-│   ├── NotificationCenter.tsx  # Notification popover
-│   ├── ProfileMenu.tsx         # User profile dropdown
-│   ├── AppBreadcrumb.tsx       # Contextual breadcrumbs
-│   ├── ThemeSwitcher.tsx       # Light/dark toggle
-│   └── ShellFooter.tsx         # Application footer
-├── config/
-│   ├── constants.ts            # App constants and layout dimensions
-│   ├── feature-registry.ts     # Central feature enable/disable registry
-│   ├── navigation.ts           # Nav groups derived from registry
-│   ├── routes.ts               # Route metadata and definitions
-│   └── theme.ts                # Theme configuration
-├── components/
-│   ├── global/                 # LoadingOverlay, ProgressBar, ErrorBoundary, EmptyState
-│   ├── ui/                     # shadcn/ui primitives
-│   └── patterns/               # Design system patterns
-├── pages/                      # Global pages (Coming Soon, 404, etc.)
-├── hooks/                      # useTheme, useSidebar, useNavigation, etc.
-├── design-system/              # Tokens, themes, catalog
-└── features/                   # Business modules (future — not implemented)
-```
-
-### Component Structure
-
-```
-App
-└── ErrorBoundary
-    └── AppProviders
-        ├── DesignSystemProvider (Theme + Toast)
-        ├── QueryProvider (TanStack Query)
-        ├── SettingsProvider
-        ├── SidebarProvider
-        └── NotificationProvider
-            └── RouterProvider
-                └── ShellLayout → AppShell
-                    ├── AppSidebar (desktop + mobile sheet)
-                    ├── TopNavigation
-                    │   ├── GlobalSearch → CommandBar (⌘K)
-                    │   ├── ThemeSwitcher
-                    │   ├── NotificationCenter
-                    │   └── ProfileMenu
-                    ├── AppBreadcrumb
-                    ├── Outlet (page content)
-                    └── ShellFooter
-```
-
-### Route Structure
-
-| Route | Page | Shell |
-|-------|------|-------|
-| `/` | Redirect → `/dashboard` | Yes |
-| `/dashboard` | Coming Soon | Yes |
-| `/leads` | Coming Soon | Yes |
-| `/opportunities` | Coming Soon | Yes |
-| `/activities` | Coming Soon | Yes |
-| `/documents` | Coming Soon | Yes |
-| `/reports` | Coming Soon | Yes |
-| `/ai-assistant` | Coming Soon | Yes |
-| `/settings` | Coming Soon | Yes |
-| `/administration` | Coming Soon | Yes |
-| `/design-system` | Design System Catalog (dev) | Yes |
-| `/unauthorized` | Unauthorized | No |
-| `/maintenance` | Maintenance | No |
-| `*` | Not Found | Yes |
-
-### Feature Registry
-
-Modules are registered centrally in `config/feature-registry.ts`. Set `enabled: false` to disable a module (removes from nav and routes).
-
-| Feature | Enabled | Nav |
-|---------|---------|-----|
-| Dashboard | ✅ | ✅ |
-| Leads | ✅ | ✅ |
-| Opportunities | ✅ | ✅ |
-| Activities | ✅ | ✅ |
-| Documents | ✅ | ✅ |
-| Reports | ✅ | ✅ |
-| AI Assistant | ✅ | ✅ |
-| Settings | ✅ | ✅ |
-| Administration | ✅ | ✅ |
-| Proposal Evaluator | ❌ | ❌ |
-| KM Portal | ❌ | ❌ |
-| Commercial Checker | ❌ | ❌ |
-| Commission Agent | ❌ | ❌ |
-
-### Global Hooks
-
-| Hook | Purpose |
-|------|---------|
-| `useTheme()` | Theme mode (light/dark/system) |
-| `useSidebar()` | Sidebar collapsed/mobile state |
-| `useNavigation()` | Nav items, active route, breadcrumbs |
-| `useNotification()` | Notification list and read state |
-| `useSettings()` | User preferences (breadcrumbs, animations) |
-
-### Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `⌘K` / `Ctrl+K` | Open command palette |
-
-## Environment Variables
-
-Copy `.env.example` to `.env`:
-
-| Variable | Description |
-|----------|-------------|
-| `VITE_APP_NAME` | Application display name |
-| `VITE_API_BASE_URL` | Backend API base URL |
-| `VITE_MSAL_CLIENT_ID` | Azure AD app client ID (future auth) |
-
-## Technology Stack
-
-- React 19, Vite, TypeScript
-- Tailwind CSS v4, shadcn/ui
-- Framer Motion, React Router, TanStack Query
-- Lucide Icons, next-themes, Sonner
-
-## Status
-
-**Frontend Core complete.** Application shell, routing, providers, and placeholder pages are ready.
-
-**Mock Authentication complete.** Premium login experience with localStorage session, protected routes, and user context on dashboard. No MSAL or backend integration.
-
-**Executive Dashboard complete.** Premium dashboard with KPI cards, AI insights, pipeline funnel, activities, meetings, notifications, and floating AI widget. Mock data only.
-
-**CRM Workspace complete.** Three-panel sales workspace with 7 tabs, 6 view modes, AI context panel, toolbar, and status bar. Mock data only.
-
-**Lead Management complete.** Enterprise lead module with table/kanban/cards/timeline views, detail drawer, 5-step create wizard, and AI placeholders. Mock data only.
-
-See feature READMEs in `src/features/`.
->>>>>>> master
+- This package intentionally does not include `.env`, access tokens, client secrets, or the backend source.
+- Email/password fields are included to match the supplied design. The current project authentication flow is Microsoft Entra; local email/password authentication is not configured in the existing backend. Submitting that form displays an explanatory message instead of pretending to authenticate.
+- Microsoft sign-in requires a valid Entra app registration and the redirect URI above to be registered. Microsoft Graph photo/profile display requires the approved delegated `User.Read` scope and user consent/tenant approval.
+- CRM records and dashboard data depend on the configured backend and Dataverse connection. If the backend is unavailable, the dashboard displays the API warning already present in the app.

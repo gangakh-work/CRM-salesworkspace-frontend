@@ -1,0 +1,216 @@
+/* Approved charcoal workspace theme. Keeps the existing glass layout and interaction language. */
+body { background: #111315; }
+.env-photo { background: radial-gradient(ellipse at 18% 22%, rgba(78,88,101,.22), transparent 42%), radial-gradient(ellipse at 82% 78%, rgba(74,83,93,.18), transparent 44%), linear-gradient(135deg,#0e1012 0%,#191d21 52%,#0c0e10 100%); }
+.env-veil { background: radial-gradient(120% 80% at 50% 45%, transparent 45%, rgba(0,0,0,.34)), linear-gradient(180deg,rgba(8,10,12,.12),rgba(8,10,12,.32)); }
+.login-screen { background: #101214; }
+.login-bg-image { background: radial-gradient(ellipse at 18% 30%,rgba(94,104,118,.25),transparent 42%), radial-gradient(ellipse at 85% 80%,rgba(87,96,107,.2),transparent 44%), linear-gradient(135deg,#101214,#1b1e22 55%,#0d0f11); filter:none; }
+.login-warm-overlay { background: linear-gradient(105deg,rgba(12,14,16,.72),rgba(25,28,32,.58) 48%,rgba(10,12,14,.76)),radial-gradient(ellipse at 20% 45%,rgba(196,164,125,.10),transparent 45%); }
+.login-topbar { background: rgba(12,14,16,.48); }
+.login-form-card { background: linear-gradient(145deg,rgba(255,255,255,.13),rgba(33,37,42,.42)); border-color: rgba(230,235,242,.26); box-shadow: 0 32px 90px rgba(0,0,0,.48),inset 0 1px rgba(255,255,255,.2); }
+.login-input { background: rgba(10,12,14,.28); }
+.lead-detail-link { color: inherit; font: inherit; font-weight: 650; text-align: left; text-decoration: none; }
+.lead-detail-link:hover,.opportunities-deal-name:hover { text-decoration: underline; text-underline-offset: 3px; }
+button.opportunities-deal-name { display: inline; color: inherit; font: inherit; font-weight: 650; text-align: left; }
+.sidebar-initial{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#667085,#aeb8c8);color:#111827;font-weight:750;flex:0 0 auto}.sidebar-account .sidebar-initial{width:34px;height:34px}
+
+
+/* Unified Glassy form language: apply to every modal, wizard and page form. */
+:root {
+  --glassy-field-bg: rgba(10, 13, 17, .42);
+  --glassy-field-border: rgba(224, 232, 242, .22);
+  --glassy-field-focus: rgba(112, 164, 255, .55);
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select, textarea {
+  color: var(--text, #f4f6fa);
+  background: var(--glassy-field-bg) !important;
+  border: 1px solid var(--glassy-field-border) !important;
+  border-radius: 11px !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.035);
+  min-height: 40px;
+  padding: 10px 12px;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+input::placeholder, textarea::placeholder { color: rgba(224,230,239,.48); }
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: var(--glassy-field-focus) !important;
+  box-shadow: 0 0 0 3px rgba(112,164,255,.12), inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+select option { color: #eef2f7; background: #20252b; }
+form label { display: grid; gap: 7px; color: var(--muted, #aeb6c2); font-size: 12px; font-weight: 600; }
+form button, .modal button { transition: transform .18s ease, filter .18s ease, background .18s ease; }
+form button:hover:not(:disabled), .modal button:hover:not(:disabled) { filter: brightness(1.08); }
+form button:active:not(:disabled), .modal button:active:not(:disabled) { transform: translateY(1px) scale(.99); }
+
+/* Detail summaries: readable, consistent two-column data cards. */
+.glass-record-card {
+  color: #f3f5f8;
+  background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.045)) !important;
+  border: 1px solid rgba(220,230,242,.2) !important;
+  box-shadow: 0 16px 42px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.record-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 0 18px;
+}
+.record-row {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  min-width: 0; padding: 12px 0;
+  border-bottom: 1px solid rgba(225,232,241,.11);
+}
+.record-row span, .lead-profile-contact small { color: rgba(222,229,238,.62); font-size: 11px; }
+.record-row b, .lead-profile-contact b { max-width: 100%; overflow-wrap: anywhere; color: #f5f7fa; font-size: 13px; font-weight: 650; }
+.lead-notes-layout, .opportunity-notes-layout { display: grid; grid-template-columns: minmax(280px,.8fr) minmax(0,1.2fr); gap: 16px; }
+.lead-note-compose, .lead-note-list, .opportunity-note-compose, .opportunity-note-list { padding: 20px; min-width: 0; }
+.lead-note-compose, .opportunity-note-compose { display: flex; flex-direction: column; gap: 14px; }
+.opportunity-note { padding: 14px 0; border-bottom: 1px solid rgba(225,232,241,.11); }
+.opportunity-note p { white-space: pre-wrap; overflow-wrap: anywhere; color: rgba(239,243,248,.82); }
+.opportunity-note small { color: rgba(222,229,238,.55); }
+.stage-action select { min-width: 140px; }
+
+
+/* Charcoal-only scene: keep the CRM environment free of photographic backgrounds. */
+body { background: #111315 !important; }
+.env-photo {
+  background:
+    radial-gradient(ellipse at 16% 18%, rgba(87,99,116,.18), transparent 42%),
+    radial-gradient(ellipse at 82% 76%, rgba(75,88,104,.15), transparent 46%),
+    linear-gradient(135deg,#0d0f11 0%,#1a1e23 54%,#0b0d0f 100%) !important;
+}
+.env-veil {
+  background: radial-gradient(120% 80% at 50% 45%, transparent 44%, rgba(0,0,0,.38)) !important;
+}
+
+/* Match every CRM modal and multi-step form to the existing translucent glass language. */
+.lead-modal,
+.opportunity-modal,
+.clw-modal,
+.qualify-modal,
+.disqualify-modal,
+.opportunity-action-modal,
+.modal,
+.dialog {
+  color: #f3f6fa !important;
+  background:
+    linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.055) 52%,rgba(255,255,255,.025)),
+    rgba(27,31,36,.78) !important;
+  border: 1px solid rgba(226,235,246,.23) !important;
+  border-radius: 22px !important;
+  box-shadow: 0 26px 78px rgba(0,0,0,.48), inset 0 1px rgba(255,255,255,.17) !important;
+  backdrop-filter: blur(28px) saturate(135%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(135%) !important;
+}
+.lead-modal-backdrop,
+.clw-backdrop {
+  background: rgba(4,6,9,.62) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+.lead-modal-head,
+.opportunity-header,
+.clw-header,
+.qualify-header,
+.disqualify-header { color:#f4f7fb; }
+.lead-modal-head p,
+.opportunity-header p,
+.clw-header p,
+.qualify-header p,
+.disqualify-header p { color:rgba(222,231,241,.62) !important; }
+.clw-document,
+.clw-review,
+.qualify-warning,
+.disqualify-warning {
+  background:rgba(255,255,255,.055) !important;
+  border-color:rgba(225,235,247,.17) !important;
+  border-radius:14px !important;
+}
+.clw-field input,.clw-field select,.clw-field textarea,
+.opportunity-field input,.opportunity-field select,.opportunity-field textarea,
+.qualify-field input,.qualify-field select,.qualify-field textarea,
+.disqualify-field input,.disqualify-field select,.disqualify-field textarea,
+.lead-modal input,.lead-modal select,.lead-modal textarea {
+  color:#f3f6fa !important;
+  background:rgba(8,11,15,.42) !important;
+  border:1px solid rgba(226,235,246,.22) !important;
+  border-radius:12px !important;
+}
+.clw-upload span,.clw-actions button,.opportunity-cancel,.opportunity-create,
+.qualify-footer button,.disqualify-footer button {
+  border-radius:12px !important;
+  border-color:rgba(226,235,246,.2) !important;
+  background:rgba(255,255,255,.075) !important;
+  color:#eef3fa !important;
+}
+.clw-actions .clw-primary-button,.opportunity-create,.qualify-footer .primary,
+.disqualify-footer .primary {
+  background:linear-gradient(135deg,#72aaff,#397ef0) !important;
+  border-color:rgba(182,211,255,.45) !important;
+  color:#fff !important;
+  box-shadow:0 8px 22px rgba(49,113,220,.25),inset 0 1px rgba(255,255,255,.3) !important;
+}
+
+.qualify-footer .qualify-primary,
+.disqualify-footer .disqualify-primary {
+  color:#fff !important;
+  background:linear-gradient(135deg,#72aaff,#397ef0) !important;
+  border:1px solid rgba(182,211,255,.45) !important;
+  border-radius:12px !important;
+  box-shadow:0 8px 22px rgba(49,113,220,.25),inset 0 1px rgba(255,255,255,.3) !important;
+}
+.qualify-footer .qualify-secondary,
+.disqualify-footer .disqualify-secondary,
+.qualify-footer .qualify-text-button,
+.disqualify-footer .disqualify-text-button,
+.opportunity-action-modal button {
+  border-radius:12px !important;
+}
+.opportunity-action-overlay {
+  background:rgba(4,6,9,.64) !important;
+  backdrop-filter:blur(14px) !important;
+  -webkit-backdrop-filter:blur(14px) !important;
+}
+.opportunity-action-modal header,
+.opportunity-action-modal .opportunity-action-content,
+.opportunity-action-modal footer { color:#f3f6fa; }
+
+
+/* Fix: the opportunity-card arrow-button sizing rule must not affect
+   the Create Opportunity modal's submit button. */
+.opportunities-workspace .opportunity-modal .opportunity-actions {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+}
+
+.opportunities-workspace .opportunity-modal .opportunity-actions button,
+.opportunities-workspace .opportunity-modal .opportunity-actions button:last-child {
+  display: inline-flex !important;
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 40px !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 9px 14px !important;
+  border-radius: 12px !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+}
+
+.opportunities-workspace .opportunity-modal .opportunity-actions .opportunity-create {
+  color: #fff !important;
+  background: linear-gradient(135deg,#72aaff,#397ef0) !important;
+  border: 1px solid rgba(182,211,255,.45) !important;
+  box-shadow: 0 8px 22px rgba(49,113,220,.25), inset 0 1px rgba(255,255,255,.3) !important;
+}
