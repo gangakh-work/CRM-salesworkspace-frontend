@@ -22,8 +22,8 @@ const AuthContext = createContext({
 
 export const useAuth = () => useContext(AuthContext)
 
-const clientId = import.meta.env.VITE_ENTRA_CLIENT_ID || ''
-const tenantId = import.meta.env.VITE_ENTRA_TENANT_ID || 'common'
+const clientId = import.meta.env.VITE_MSAL_CLIENT_ID || import.meta.env.VITE_ENTRA_CLIENT_ID || ''
+const tenantId = import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID || 'common'
 const redirectUri =
   import.meta.env.VITE_ENTRA_REDIRECT_URI || window.location.origin
 
@@ -222,7 +222,7 @@ function SignInGate({ children }) {
   const startMicrosoftSignIn = () => {
     if (
       !clientId ||
-      !import.meta.env.VITE_ENTRA_TENANT_ID ||
+      !(import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID) ||
       !backendScope
     ) {
       setError(
@@ -260,7 +260,7 @@ function SignInGate({ children }) {
 
           <h1>
             The AI-Powered
-            
+
 
             CRM for <em>Sales Teams</em>
           </h1>
@@ -344,7 +344,7 @@ function SignInGate({ children }) {
           )}
 
           {(!clientId ||
-            !import.meta.env.VITE_ENTRA_TENANT_ID ||
+            !(import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID) ||
             !backendScope) && (
             <p className="auth-note">
               Microsoft sign-in requires VITE_ENTRA_CLIENT_ID,
@@ -381,4 +381,4 @@ export default function AuthShell({ children }) {
     </MsalProvider>
   )
 }
- 
+
