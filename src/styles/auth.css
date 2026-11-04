@@ -1,215 +1,822 @@
-.login-screen{position:fixed;inset:0;z-index:1000;overflow:auto;color:#fffaf3;font-family:Manrope,Inter,sans-serif;background:#21170f;isolation:isolate}
-.login-bg-image{position:absolute;inset:0;background:radial-gradient(ellipse at 18% 28%,rgba(86,98,115,.22),transparent 44%),radial-gradient(ellipse at 82% 78%,rgba(78,90,105,.17),transparent 46%),linear-gradient(135deg,#101214,#1b1e22 55%,#0d0f11);filter:none;transform:none;z-index:-3}.login-warm-overlay{position:absolute;inset:0;background:linear-gradient(105deg,rgba(40,23,11,.78),rgba(65,39,20,.58) 48%,rgba(24,18,14,.72)),radial-gradient(ellipse at 20% 45%,rgba(212,147,82,.25),transparent 45%);z-index:-2}
-.login-topbar{height:76px;display:flex;align-items:center;padding:0 38px;border-bottom:1px solid rgba(255,255,255,.16);background:rgba(30,20,14,.35);backdrop-filter:blur(22px)}.login-top-brand{display:flex;align-items:center;gap:16px}.login-top-brand>span:last-child{display:grid;gap:1px}.login-top-brand b{font-size:20px;letter-spacing:2px}.login-top-brand small{font-size:12px;opacity:.78}.sonata-mark{width:44px;height:39px;display:flex;align-items:flex-end;justify-content:space-around;gap:2px;padding:3px 3px 2px;background:#f7f1e9;border-radius:2px;box-shadow:0 2px 8px #0004;position:relative;flex:0 0 auto}.sonata-mark b{position:absolute;left:0;right:0;top:0;height:18px;display:grid;place-items:center;background:#d71920;color:#fff;font:700 10px Georgia,serif;letter-spacing:.3px}.sonata-mark i{height:15px;width:4px;background:#171717;display:block}
-.login-landing{position:relative;z-index:1;max-width:1500px;min-height:calc(100% - 76px);margin:auto;padding:70px 6.5% 90px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(420px,.9fr);align-items:center;gap:7%}.login-hero{max-width:780px;padding-bottom:12px}.login-badge{display:inline-flex;align-items:center;gap:10px;padding:9px 15px;border:1px solid rgba(255,213,168,.4);border-radius:30px;background:rgba(141,90,45,.22);font-size:13px;font-weight:600;box-shadow:inset 0 1px rgba(255,255,255,.13)}.login-badge i{width:9px;height:9px;border-radius:50%;background:#ffd7a8;box-shadow:0 0 0 5px rgba(255,215,168,.14),0 0 16px #ffd7a8}.login-hero h1{font-size:clamp(44px,5.3vw,76px);line-height:1.08;letter-spacing:-3.8px;font-weight:700;margin:28px 0 22px;text-shadow:0 4px 30px #0003}.login-hero h1 em{font-style:normal;background:linear-gradient(100deg,#fff4e4,#eab982 70%,#f8d7ae);background-clip:text;-webkit-background-clip:text;color:transparent}.login-hero-copy{font-size:clamp(15px,1.45vw,21px);line-height:1.65;color:rgba(255,249,239,.82);margin:0;max-width:700px}.login-features{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin-top:42px}.login-features>div{display:grid;justify-items:start;gap:8px;min-width:0}.login-features>div>span{width:68px;height:68px;display:grid;place-items:center;border-radius:17px;border:1px solid rgba(255,211,163,.48);background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(161,104,52,.1));color:#f4c99a;box-shadow:inset 0 1px rgba(255,255,255,.15),0 10px 24px #170d0733}.login-features b{font-size:14px;white-space:nowrap}.login-features small{font-size:10px;line-height:1.5;color:rgba(255,247,235,.64);white-space:nowrap}
-.login-form-card{width:100%;max-width:560px;justify-self:end;padding:42px 46px 35px;border:1px solid rgba(255,235,210,.34);border-radius:38px;background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(70,46,30,.34));box-shadow:0 32px 90px rgba(12,7,3,.42),inset 0 1px rgba(255,255,255,.22),0 0 38px rgba(236,177,117,.1);backdrop-filter:blur(32px);position:relative}.login-form-card:before{content:'';position:absolute;left:12%;right:12%;top:-1px;height:2px;background:linear-gradient(90deg,transparent,#ffe3c1,transparent);filter:blur(1px)}.login-card-brand{display:flex;justify-content:center;margin-bottom:24px}.login-card-brand .sonata-mark{width:58px;height:48px}.login-card-brand .sonata-mark b{height:23px;font-size:13px}.login-card-brand .sonata-mark i{height:19px;width:5px}.login-form-card h2{text-align:center;font-size:29px;letter-spacing:-1px;margin:0 0 7px}.login-card-sub{text-align:center;color:rgba(255,248,238,.72);font-size:14px;margin:0 0 29px}.login-form-card form>label{display:block;font-size:13px;font-weight:600;margin:0 0 8px}.login-input{height:52px;display:flex;align-items:center;gap:13px;padding:0 15px;margin-bottom:20px;border:1px solid rgba(255,255,255,.27);border-radius:13px;background:rgba(36,25,19,.28);box-shadow:inset 0 1px 4px #0002;transition:border-color .2s,background .2s}.login-input:focus-within{border-color:rgba(255,211,163,.8);background:rgba(36,25,19,.4)}.login-input>svg{color:#fff2e3;flex:0 0 auto}.login-input input{width:100%;border:0;outline:0;background:transparent;color:#fff;font:inherit;font-size:13px;min-width:0}.login-input input::placeholder{color:rgba(255,255,255,.58)}.login-input button{border:0;background:none;color:#fff0dd;padding:3px;display:grid;place-items:center}.login-options{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 24px;font-size:12px}.remember{display:flex;align-items:center;gap:8px}.remember input{accent-color:#dca875;width:16px;height:16px}.forgot{border:0;background:none;color:#f2c18f;font:inherit;font-weight:600}.login-submit{width:100%;height:51px;border:1px solid rgba(255,236,211,.45);border-radius:13px;background:linear-gradient(100deg,#f6d0a3,#d79d66);color:#281b12;font-weight:800;font-size:15px;box-shadow:0 9px 24px rgba(17,9,3,.22),inset 0 1px rgba(255,255,255,.5);transition:transform .2s,filter .2s}.login-submit:hover{transform:translateY(-2px);filter:brightness(1.06)}.login-divider{display:flex;align-items:center;gap:15px;margin:26px 0 22px;font-size:12px;color:rgba(255,248,238,.8);white-space:nowrap}.login-divider span{height:1px;flex:1;background:rgba(255,255,255,.24)}.microsoft-signin{width:100%;height:50px;display:flex;align-items:center;justify-content:center;gap:12px;border:1px solid rgba(255,239,218,.48);border-radius:13px;background:rgba(43,30,21,.22);color:#fff9f0;font-size:14px;font-weight:600;transition:background .2s,border-color .2s}.microsoft-signin:hover:not(:disabled){background:rgba(255,255,255,.12);border-color:rgba(255,239,218,.75)}.microsoft-signin:disabled{opacity:.5;cursor:not-allowed}.ms-grid{display:grid;grid-template-columns:repeat(2,8px);grid-template-rows:repeat(2,8px);gap:2px}.ms-grid i:nth-child(1){background:#f25022}.ms-grid i:nth-child(2){background:#7fba00}.ms-grid i:nth-child(3){background:#00a4ef}.ms-grid i:nth-child(4){background:#ffb900}.login-foot{display:block;text-align:center;font-size:10px;opacity:.55;margin-top:22px}.auth-note{font-size:11px;color:#ffe0b9;line-height:1.5;margin-top:12px}.login-feedback{font-size:11px;line-height:1.5;color:#ffe0b9;background:rgba(80,47,23,.38);padding:9px 11px;border-radius:9px;margin:12px 0 0}.login-waves{position:absolute;z-index:0;bottom:-4px;left:0;width:100%;height:230px;pointer-events:none;opacity:.8}.login-waves path{fill:none;stroke:#e9b982;stroke-width:1.4;filter:drop-shadow(0 0 8px rgba(255,202,146,.75))}.signed-shell{height:100%;width:100%}.signed-user{position:fixed;z-index:30;top:10px;right:12px;display:flex;align-items:center;gap:8px;padding:5px 9px;border:1px solid rgba(255,255,255,.15);border-radius:13px;background:rgba(27,25,26,.85);backdrop-filter:blur(15px);color:#fff;font-size:10px}.signed-user img,.signed-user>span{width:28px;height:28px;border-radius:50%;object-fit:cover;display:grid;place-items:center;background:#a9b5ff;color:#262536}.signed-user div{max-width:150px}.signed-user b,.signed-user small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.signed-user small{opacity:.55;font-size:9px;margin-top:2px}.signed-user button{border:0;background:transparent;color:#f3c28e;font-size:10px;margin-left:6px}
-@media(max-width:1100px){.login-landing{grid-template-columns:1fr minmax(370px,.85fr);gap:4%;padding:50px 4% 80px}.login-hero h1{font-size:clamp(40px,5vw,60px)}.login-features{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}.login-form-card{padding:34px 30px}}
-@media(max-width:760px){.login-topbar{height:64px;padding:0 20px}.login-landing{min-height:calc(100% - 64px);grid-template-columns:1fr;padding:38px 20px 70px;gap:30px}.login-hero{max-width:640px}.login-hero h1{font-size:clamp(38px,10vw,58px);letter-spacing:-2.4px;margin:20px 0 15px}.login-hero-copy{font-size:14px}.desktop-break{display:none}.login-features{margin-top:24px;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.login-features>div>span{width:52px;height:52px}.login-form-card{justify-self:center;max-width:520px;padding:30px 24px;border-radius:27px}.login-waves{height:120px}.signed-user{top:5px;right:5px}}
-@media(max-width:420px){.login-features small{font-size:9px}.login-form-card{padding:27px 19px}.login-options{font-size:11px}}
 
+/* =========================================
+   LOGIN SCREEN - FULL VIEWPORT
+========================================= */
 
-/* ============================================================
-   Viewport-fit login layout
-   Keeps the desktop landing screen within the visible browser
-   viewport at normal zoom, without clipping the sign-in controls.
-   ============================================================ */
 .login-screen {
+  position: fixed;
+  inset: 0;
+  width: 100%;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  z-index: 1000;
+  color: #fffaf3;
+  font-family: Manrope, Inter, sans-serif;
+  background: #151719;
+  isolation: isolate;
 }
+
+.login-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(ellipse at 18% 28%, rgba(86, 98, 115, .22), transparent 44%),
+    radial-gradient(ellipse at 82% 78%, rgba(78, 90, 105, .17), transparent 46%),
+    linear-gradient(135deg, #101214, #1b1e22 55%, #0d0f11);
+}
+
+.login-warm-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(
+      105deg,
+      rgba(40, 23, 11, .55),
+      rgba(65, 39, 20, .35) 48%,
+      rgba(24, 18, 14, .58)
+    ),
+    radial-gradient(
+      ellipse at 20% 45%,
+      rgba(212, 147, 82, .18),
+      transparent 45%
+    );
+}
+
+/* =========================================
+   HEADER
+========================================= */
 
 .login-topbar {
-  height: clamp(54px, 9.2vh, 76px);
-  min-height: 0;
+  height: 64px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+  border-bottom: 1px solid rgba(255, 255, 255, .13);
+  background: rgba(30, 20, 14, .3);
+  backdrop-filter: blur(20px);
 }
+
+.login-top-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.login-top-brand > span:last-child {
+  display: grid;
+  gap: 1px;
+}
+
+.login-top-brand small {
+  font-size: 12px;
+  opacity: .8;
+}
+
+/* =========================================
+   REUSABLE SONATA LOGO
+========================================= */
+
+.sonata-logo {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.sonata-logo-header {
+  width: 100px;
+  max-height: 54px;
+  border-radius: 7px;
+}
+
+.sonata-logo-card {
+  width: 158px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .2);
+}
+
+/* =========================================
+   MAIN LAYOUT
+========================================= */
 
 .login-landing {
-  height: calc(100vh - clamp(54px, 9.2vh, 76px));
-  height: calc(100dvh - clamp(54px, 9.2vh, 76px));
-  min-height: 0;
-  padding: clamp(12px, 3.2vh, 34px) 6.5%;
-  gap: clamp(24px, 4vw, 7%);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: calc(100% - 64px);
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 24px 6.1%;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(350px, .82fr);
   align-items: center;
+  gap: 5%;
+  overflow: hidden;
 }
 
+/* =========================================
+   LEFT HERO SECTION
+========================================= */
+
 .login-hero {
-  padding-bottom: 0;
+  width: 100%;
+  max-width: 760px;
   min-width: 0;
+  padding-bottom: 0;
+}
+
+.login-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 213, 168, .4);
+  border-radius: 30px;
+  background: rgba(141, 90, 45, .22);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: inset 0 1px rgba(255, 255, 255, .13);
+}
+
+.login-badge i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #ffd7a8;
+  box-shadow:
+    0 0 0 5px rgba(255, 215, 168, .14),
+    0 0 16px #ffd7a8;
 }
 
 .login-hero h1 {
-  font-size: clamp(38px, min(5.1vw, 8.2vh), 76px);
-  line-height: 1.04;
-  margin: clamp(14px, 2.6vh, 28px) 0 clamp(12px, 2.2vh, 22px);
-  letter-spacing: clamp(-3.8px, -0.22vw, -1.5px);
+  font-size: clamp(38px, 4.6vw, 68px);
+  line-height: 1.08;
+  letter-spacing: -3px;
+  font-weight: 750;
+  margin: 23px 0 17px;
+  text-shadow: 0 4px 30px #0003;
+}
+
+.login-hero h1 em {
+  font-style: normal;
+  background: linear-gradient(
+    100deg,
+    #fff4e4,
+    #eab982 70%,
+    #f8d7ae
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .login-hero-copy {
-  font-size: clamp(14px, min(1.35vw, 2.5vh), 21px);
-  line-height: 1.48;
+  font-size: clamp(13px, 1.3vw, 18px);
+  line-height: 1.65;
+  color: rgba(255, 249, 239, .82);
+  margin: 0;
+  max-width: 680px;
 }
 
+/* =========================================
+   FEATURE ITEMS
+========================================= */
+
 .login-features {
-  margin-top: clamp(18px, 4.5vh, 42px);
-  gap: clamp(8px, 1.2vw, 18px);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 32px;
 }
 
 .login-features > div {
-  gap: clamp(4px, 0.9vh, 8px);
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
 }
 
 .login-features > div > span {
-  width: clamp(42px, 7.8vh, 68px);
-  height: clamp(42px, 7.8vh, 68px);
-  border-radius: clamp(12px, 2vh, 17px);
-}
-
-.login-features > div > span svg {
-  width: clamp(21px, 3.5vh, 30px);
-  height: clamp(21px, 3.5vh, 30px);
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 211, 163, .48);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, .13),
+    rgba(161, 104, 52, .1)
+  );
+  color: #f4c99a;
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, .15),
+    0 10px 24px #170d0733;
 }
 
 .login-features b {
-  font-size: clamp(11px, 1.7vh, 14px);
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .login-features small {
-  font-size: clamp(8px, 1.25vh, 10px);
+  font-size: 9px;
+  line-height: 1.4;
+  color: rgba(255, 247, 235, .64);
+  white-space: nowrap;
 }
+
+/* =========================================
+   MICROSOFT-ONLY LOGIN CARD
+========================================= */
 
 .login-form-card {
-  max-height: 100%;
-  padding: clamp(18px, 3.5vh, 38px) clamp(22px, 2.8vw, 46px);
-  border-radius: clamp(22px, 3.5vh, 38px);
-  overflow: auto;
-  scrollbar-width: none;
+  width: 100%;
+  max-width: 440px;
+  justify-self: end;
+  padding: 30px 34px 24px;
+  border: 1px solid rgba(255, 235, 210, .3);
+  border-radius: 30px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, .15),
+    rgba(70, 46, 30, .34)
+  );
+  box-shadow:
+    0 25px 75px rgba(12, 7, 3, .38),
+    inset 0 1px rgba(255, 255, 255, .2),
+    0 0 35px rgba(236, 177, 117, .08);
+  backdrop-filter: blur(28px);
+  position: relative;
 }
 
-.login-form-card::-webkit-scrollbar {
-  display: none;
+.login-form-card:before {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: -1px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #ffe3c1,
+    transparent
+  );
+  filter: blur(1px);
 }
 
 .login-card-brand {
-  margin-bottom: clamp(10px, 2.1vh, 24px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 13px;
 }
 
-.login-card-brand .sonata-mark {
-  width: clamp(46px, 6.2vh, 58px);
-  height: clamp(40px, 5.8vh, 48px);
-}
-
-.login-card-brand .sonata-mark b {
-  height: clamp(19px, 2.8vh, 23px);
-  font-size: clamp(11px, 1.6vh, 13px);
-}
-
-.login-card-brand .sonata-mark i {
-  height: clamp(15px, 2.3vh, 19px);
+.login-card-eyebrow {
+  text-align: center;
+  color: #e6c7a8;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 13px;
 }
 
 .login-form-card h2 {
-  font-size: clamp(22px, 3.5vh, 29px);
+  text-align: center;
+  font-size: clamp(23px, 2vw, 29px);
+  letter-spacing: -1px;
+  margin: 0 0 9px;
+  color: #fffaf3;
 }
 
 .login-card-sub {
-  margin-bottom: clamp(14px, 2.8vh, 29px);
-  font-size: clamp(12px, 1.7vh, 14px);
+  text-align: center;
+  color: rgba(255, 248, 238, .76);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 25px;
 }
 
-.login-form-card form > label {
-  margin-bottom: clamp(4px, 0.9vh, 8px);
-  font-size: clamp(11px, 1.55vh, 13px);
-}
-
-.login-input {
-  height: clamp(40px, 6.3vh, 52px);
-  margin-bottom: clamp(9px, 1.8vh, 20px);
-}
-
-.login-options {
-  margin-bottom: clamp(12px, 2.7vh, 24px);
-}
-
-.login-submit {
-  height: clamp(42px, 6.2vh, 51px);
-}
-
-.login-divider {
-  margin: clamp(14px, 2.8vh, 26px) 0 clamp(12px, 2.4vh, 22px);
-}
+/* =========================================
+   MICROSOFT SIGN-IN BUTTON
+========================================= */
 
 .microsoft-signin {
-  height: clamp(42px, 6.1vh, 50px);
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, .85);
+  border-radius: 13px;
+  background: #fff;
+  color: #242424;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition:
+    transform .2s ease,
+    background .2s ease,
+    box-shadow .2s ease;
+  box-shadow: 0 7px 20px rgba(0, 0, 0, .15);
 }
 
-.login-foot {
-  margin-top: clamp(10px, 2.2vh, 22px);
+.microsoft-signin:hover:not(:disabled) {
+  background: #f2f2f2;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, .2);
 }
+
+.microsoft-signin:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.microsoft-signin:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+/* Microsoft four-colour icon */
+
+.ms-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 9px);
+  grid-template-rows: repeat(2, 9px);
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.ms-grid i:nth-child(1) {
+  background: #f25022;
+}
+
+.ms-grid i:nth-child(2) {
+  background: #7fba00;
+}
+
+.ms-grid i:nth-child(3) {
+  background: #00a4ef;
+}
+
+.ms-grid i:nth-child(4) {
+  background: #ffb900;
+}
+
+/* =========================================
+   CARD FOOTER AND ERROR MESSAGE
+========================================= */
+
+.login-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 24px;
+  color: rgba(255, 248, 238, .65);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.auth-note {
+  font-size: 11px;
+  color: #ffe0b9;
+  line-height: 1.5;
+  margin-top: 13px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   BOTTOM WAVES
+========================================= */
 
 .login-waves {
-  height: clamp(90px, 27vh, 230px);
+  position: absolute;
+  z-index: 0;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  pointer-events: none;
+  opacity: .65;
 }
 
-/* Short desktop/laptop viewports: compact the content instead of
-   allowing the document to become taller than the screen. */
-@media (min-width: 761px) and (max-height: 760px) {
+.login-waves path {
+  fill: none;
+  stroke: #e9b982;
+  stroke-width: 1.4;
+  filter: drop-shadow(
+    0 0 8px rgba(255, 202, 146, .65)
+  );
+}
+
+/* =========================================
+   AUTHENTICATED USER
+========================================= */
+
+.signed-shell {
+  height: 100%;
+  width: 100%;
+}
+
+.signed-user {
+  position: fixed;
+  z-index: 30;
+  top: 10px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 13px;
+  background: rgba(27, 25, 26, .85);
+  backdrop-filter: blur(15px);
+  color: #fff;
+  font-size: 10px;
+}
+
+.signed-user img,
+.signed-user > span {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: grid;
+  place-items: center;
+  background: #a9b5ff;
+  color: #262536;
+}
+
+.signed-user div {
+  max-width: 150px;
+}
+
+.signed-user b,
+.signed-user small {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.signed-user small {
+  opacity: .55;
+  font-size: 9px;
+  margin-top: 2px;
+}
+
+.signed-user button {
+  border: 0;
+  background: transparent;
+  color: #f3c28e;
+  font-size: 10px;
+  margin-left: 6px;
+}
+
+/* =========================================
+   LAPTOP / SMALL DESKTOP
+========================================= */
+
+@media (max-width: 1100px) {
   .login-landing {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
+    gap: 4%;
+    padding: 20px 4%;
   }
+
   .login-hero h1 {
-    font-size: clamp(34px, 6.8vh, 54px);
-    margin-top: 12px;
-    margin-bottom: 10px;
+    font-size: clamp(36px, 4.5vw, 54px);
+    letter-spacing: -2.5px;
   }
+
+  .login-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 12px;
+    margin-top: 24px;
+  }
+
+  .login-form-card {
+    padding: 27px 26px 22px;
+  }
+
+  .sonata-logo-card {
+    width: 145px;
+  }
+}
+
+/* =========================================
+   SHORT DESKTOP SCREENS
+========================================= */
+
+@media (min-width: 761px) and (max-height: 720px) {
+  .login-topbar {
+    height: 54px;
+  }
+
+  .login-landing {
+    height: calc(100% - 54px);
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .login-hero h1 {
+    font-size: clamp(34px, 4vw, 52px);
+    margin: 15px 0 12px;
+  }
+
   .login-hero-copy {
     font-size: 13px;
+    line-height: 1.5;
   }
+
   .login-features {
-    margin-top: 14px;
+    margin-top: 20px;
+    gap: 10px;
   }
+
+  .login-features > div > span {
+    width: 46px;
+    height: 46px;
+  }
+
   .login-form-card {
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding: 20px 28px 18px;
   }
+
   .login-card-brand {
     margin-bottom: 8px;
   }
-  .login-card-sub {
-    margin-bottom: 12px;
+
+  .sonata-logo-card {
+    width: 118px;
   }
-  .login-input {
+
+  .login-card-eyebrow {
     margin-bottom: 8px;
   }
-  .login-options {
-    margin-bottom: 10px;
+
+  .login-form-card h2 {
+    font-size: 23px;
   }
-  .login-divider {
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+  .login-card-sub {
+    font-size: 12px;
+    margin-bottom: 17px;
   }
-  .login-foot {
-    margin-top: 8px;
+
+  .microsoft-signin {
+    min-height: 46px;
+  }
+
+  .login-card-footer {
+    margin-top: 16px;
+  }
+
+  .login-waves {
+    height: 100px;
   }
 }
 
-/* On narrow screens the two-column landing page becomes a stacked
-   sign-in flow; allow natural scrolling rather than hiding controls. */
+/* =========================================
+   TABLET AND MOBILE
+========================================= */
+
 @media (max-width: 760px) {
-  .login-screen {
-    position: fixed;
-    height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
+  .login-topbar {
+    height: 52px;
+    padding: 0 16px;
   }
+
+  .sonata-logo-header {
+    width: 82px;
+    max-height: 44px;
+  }
+
+  .login-top-brand {
+    gap: 10px;
+  }
+
+  .login-top-brand small {
+    font-size: 10px;
+  }
+
   .login-landing {
-    height: auto;
-    min-height: calc(100dvh - 64px);
-    padding: 28px 20px 52px;
+    height: calc(100% - 52px);
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    align-content: center;
+    justify-items: center;
+    gap: clamp(12px, 2.5vh, 22px);
+    padding: 12px 18px;
   }
+
+  .login-hero {
+    max-width: 540px;
+    text-align: center;
+  }
+
+  .login-badge {
+    font-size: 10px;
+    padding: 6px 11px;
+  }
+
+  .login-hero h1 {
+    font-size: clamp(27px, 6vw, 42px);
+    letter-spacing: -1.8px;
+    line-height: 1.08;
+    margin: 12px 0 9px;
+  }
+
+  .login-hero-copy {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .desktop-break {
+    display: none;
+  }
+
+  .login-features {
+    margin-top: 13px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .login-features > div {
+    justify-items: center;
+    text-align: center;
+    gap: 4px;
+  }
+
+  .login-features > div > span {
+    width: 37px;
+    height: 37px;
+    border-radius: 10px;
+  }
+
+  .login-features > div > span svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .login-features b {
+    font-size: 9px;
+    white-space: normal;
+  }
+
+  .login-features small {
+    display: none;
+  }
+
   .login-form-card {
-    max-height: none;
-    overflow: visible;
+    width: min(100%, 390px);
+    max-width: 390px;
+    justify-self: center;
+    padding: 18px 22px 15px;
+    border-radius: 23px;
+  }
+
+  .login-card-brand {
+    margin-bottom: 7px;
+  }
+
+  .sonata-logo-card {
+    width: 112px;
+  }
+
+  .login-card-eyebrow {
+    font-size: 9px;
+    margin-bottom: 7px;
+  }
+
+  .login-form-card h2 {
+    font-size: 21px;
+    margin-bottom: 5px;
+  }
+
+  .login-card-sub {
+    font-size: 11px;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+
+  .microsoft-signin {
+    min-height: 45px;
+    font-size: 12px;
+  }
+
+  .login-card-footer {
+    margin-top: 13px;
+    font-size: 9px;
+  }
+
+  .login-waves {
+    height: 75px;
   }
 }
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 420px) {
+  .login-landing {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 12px;
+  }
+
+  .login-hero h1 {
+    font-size: clamp(25px, 7vw, 34px);
+  }
+
+  .login-hero-copy {
+    font-size: 10px;
+  }
+
+  .login-features {
+    margin-top: 10px;
+  }
+
+  .login-features > div > span {
+    width: 33px;
+    height: 33px;
+  }
+
+  .login-features b {
+    font-size: 8px;
+  }
+
+  .login-form-card {
+    padding: 15px 17px 13px;
+  }
+
+  .sonata-logo-card {
+    width: 100px;
+  }
+}
+
+/* =========================================
+   VERY SHORT MOBILE SCREENS
+========================================= */
+
+@media (max-width: 760px) and (max-height: 650px) {
+  .login-landing {
+    gap: 8px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+
+  .login-hero h1 {
+    font-size: 27px;
+    margin: 8px 0 6px;
+  }
+
+  .login-features {
+    margin-top: 8px;
+  }
+
+  .login-form-card {
+    padding: 11px 18px;
+  }
+
+  .sonata-logo-card {
+    width: 82px;
+  }
+
+  .login-card-brand {
+    margin-bottom: 4px;
+  }
+
+  .login-card-eyebrow {
+    margin-bottom: 4px;
+  }
+
+  .login-card-sub {
+    margin-bottom: 9px;
+  }
+
+  .login-card-footer {
+    margin-top: 8px;
+  }
+
+  .login-waves {
+    display: none;
+  }
+}
+
