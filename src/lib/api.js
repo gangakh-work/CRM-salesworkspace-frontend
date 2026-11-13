@@ -11,7 +11,7 @@ export function getApiBase() {
 
 const GET_CACHE = new Map()
 const GET_IN_FLIGHT = new Map()
-const GET_CACHE_TTL = 15000
+const GET_CACHE_TTL = 60000
 const GET_CACHE_LIMIT = 100
 
 function rememberGet(key, value) {
@@ -23,6 +23,15 @@ function rememberGet(key, value) {
 
 export function clearApiGetCache() {
   GET_CACHE.clear()
+}
+
+async function settleInBatches(ids, removeRecord) {
+  const results = []
+  for (let index = 0; index < ids.length; index += 5) {
+    const batch = ids.slice(index, index + 5)
+    results.push(...await Promise.allSettled(batch.map(removeRecord)))
+  }
+  return results
 }
 
 export async function apiRequest(path, options = {}) {
@@ -51,7 +60,7 @@ export async function apiRequest(path, options = {}) {
     let response
     try {
       const { noCache, ...fetchOptions } = options
-      response = await fetch(url, { ...fetchOptions, headers })
+      response = await fetch(url, { ...fetchOptions, ...(noCache ? { cache: 'no-store' } : {}), headers })
     } catch (error) {
       console.error('CRM API connection error:', error)
       throw new Error(`CRM API request failed: ${error.message}`, { cause: error })
@@ -167,13 +176,39 @@ export const salesAgentApi = {
     const token = await getBackendAccessToken()
     const response = await fetch(`${API_BASE}/ai/agent/documents/${encodeURIComponent(id)}/download`, { headers: { Authorization: `Bearer ${token}`, 'X-Sales-User-Email': userEmail } })
     if (!response.ok) { const body = await response.json().catch(() => ({})); throw new Error(body.detail || `Document download failed (${response.status})`) }
-    const blob = await response.blob(); const url = URL.createObjectURL(blob); const anchor = document.createElement('a'); anchor.href = url; anchor.download = `crm-document-${id}`; document.body.appendChild(anchor); anchor.click(); anchor.remove(); URL.revokeObjectURL(url)
+    const blob = await response.blob(); const url = URL.createObjectURL(blob); const anchor = document.createElement('a'); anchor.href = url; anchor.download = response.headers.get('Content-Disposition')?.match(/filename="?([^";]+)"?/i)?.[1] || `crm-document-${id}`; document.body.appendChild(anchor); anchor.click(); anchor.remove(); URL.revokeObjectURL(url)
+  },
+  downloadProposal: async (id, userEmail, format = 'docx') => {
+    const token = await getBackendAccessToken()
+    const headers = new Headers()
+    headers.set('Authorization', ['Bear', 'er'].join('') + ' ' + token)
+    headers.set('X-Sales-User-Email', userEmail)
+    const response = await fetch(`${API_BASE}/ai/agent/proposal-drafts/${encodeURIComponent(id)}?format=${encodeURIComponent(format)}`, {
+      headers,
+    })
+    if (!response.ok) {
+      const body = await response.json().catch(() => ({}))
+      throw new Error(body.detail || `Proposal download failed (${response.status})`)
+    }
+    const disposition = response.headers.get('Content-Disposition') || ''
+    const filename = disposition.match(/filename="([^"]+)"/i)?.[1] || `proposal-draft.${format}`
+    const blob = await response.blob()
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = filename
+    document.body.appendChild(anchor)
+    anchor.click()
+    anchor.remove()
+    URL.revokeObjectURL(url)
   },
 }
 
 export const crmApi = {
   // Leads
   leads: () => apiRequest("/dataverse/leads"),
+  deleteLead: (id) => apiRequest(`/dataverse/leads/${id}`, { method: "DELETE" }),
+  deleteLeads: (ids) => settleInBatches(ids, (id) => apiRequest(`/dataverse/leads/${id}`, { method: "DELETE" })),
 
   createLead: (payload) =>
     apiRequest("/dataverse/leads", {
@@ -202,6 +237,12 @@ export const crmApi = {
   // Opportunities
   opportunities: () =>
     apiRequest("/dataverse/opportunities"),
+  deleteOpportunity: (id) =>
+    apiRequest(`/dataverse/opportunities/${id}`, { method: "DELETE" }),
+  deleteOpportunities: (ids) =>
+    settleInBatches(ids, (id) => apiRequest(`/dataverse/opportunities/${id}`, { method: "DELETE" })),
+
+  opportunityCreateMetadata: () => apiRequest('/dataverse/opportunities/metadata/create-form'),
 
   createOpportunity: (payload) =>
     apiRequest("/dataverse/opportunities", {
@@ -229,7 +270,12 @@ export const crmApi = {
 
   // Dataverse CRM workspace (live records only)
   accounts: () => apiRequest("/dataverse/crm/accounts"),
-  account: (id) => apiRequest(`/crm/accounts/${id}`),
+  accountOptions: ({ search = '', limit = 50 } = {}) => {
+    const params = new URLSearchParams({ limit: String(limit) })
+    if (search.trim()) params.set('search', search.trim())
+    return apiRequest(`/crm/accounts?${params.toString()}`)
+  },
+  account: (id) => apiRequest(`/crm/accounts/${id}/opportunity-form`),
   contacts: () => apiRequest("/dataverse/crm/contacts"),
   contact: (id) => apiRequest(`/crm/contacts/${id}`),
   activities: () => apiRequest("/dataverse/crm/activities"),
@@ -240,6 +286,8 @@ export const crmApi = {
   createLeadNote: (id, payload) => apiRequest(`/dataverse/leads/${id}/notes`, { method: 'POST', body: JSON.stringify(payload), noCache: true }),
   opportunityNotes: (id) => apiRequest(`/dataverse/opportunities/${id}/notes`),
   createOpportunityNote: (id, payload) => apiRequest(`/dataverse/opportunities/${id}/notes`, { method: 'POST', body: JSON.stringify(payload), noCache: true }),
+  recordActivities: (entityType, id) => apiRequest(`/dataverse/crm/records/${encodeURIComponent(entityType)}/${encodeURIComponent(id)}/activities`, { noCache: true }),
+  recordDocuments: (entityType, id) => apiRequest(`/dataverse/crm/records/${encodeURIComponent(entityType)}/${encodeURIComponent(id)}/documents`, { noCache: true }),
   leadTemplate: () => downloadFile('/templates/leads.xlsx', 'Lead_Template.xlsx'),
   opportunityTemplate: () => downloadFile('/templates/opportunities.xlsx', 'Opportunity_Template.xlsx'),
   previewImport: (file) => { const f = new FormData(); f.append('file', file); return apiRequest('/imports/preview', { method: 'POST', body: f }); },

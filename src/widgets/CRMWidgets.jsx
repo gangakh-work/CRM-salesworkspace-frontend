@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
 import Icon from '../components/Icon'
-import { useApp } from '../lib/store'
-import { useAuth } from '../auth'
 import { crmApi } from '../lib/api'
 
 const list = (v) => Array.isArray(v) ? v : (v?.value || v?.items || v?.data || [])
 const pick = (o, keys, fallback = 0) => { for (const k of keys) if (o?.[k] != null) return o[k]; return fallback }
-const money = (v) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 1, notation: Number(v) >= 10000000 ? 'compact' : 'standard' }).format(Number(v || 0))
+const money = (v) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 1, notation: Number(v) >= 1000000 ? 'compact' : 'standard' }).format(Number(v || 0))
 
 export default function CRMWidgets() {
-  const { go } = useApp()
-  const { profile, photo } = useAuth()
   const [leads, setLeads] = useState([])
   const [opportunities, setOpportunities] = useState([])
   useEffect(() => {
@@ -34,19 +30,17 @@ export default function CRMWidgets() {
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
   const monthly = months.map((_, i) => won.filter(o => { const d = new Date(pick(o, ['actualclosedate'], '')); return !Number.isNaN(d.getTime()) && d.getMonth() === i }).length)
   const max = Math.max(1, ...monthly)
-  const first = (profile?.displayName || 'there').split(/\s+/)[0]
   return <div className="crm-right-stack">
-    <section className="crm-side-card leads-side hl" onClick={() => go('leads')} role="button" tabIndex={0} onKeyDown={e => e.key === 'Enter' && go('leads')}>
-      <div className="side-card-head"><span>LEADS</span><span className="side-avatar">{photo ? <img src={photo} alt=""/> : first.slice(0,1)}</span></div>
+    <section className="crm-side-card leads-side hl">
+      <div className="side-card-head"><span>LEADS</span></div>
       <strong className="side-big">{totalLeads.toLocaleString('en-IN')}</strong>
       <div className="side-new">{newLeads} new this month <b>↗ Live CRM</b></div>
       <div className="side-pill-bars">{leadMonths.map((v,i)=><i key={i} style={{height:`${Math.max(5,v/Math.max(1,...leadMonths)*100)}%`}}/>)}</div>
-      <button onClick={(e)=>{e.stopPropagation();go('leads')}}>View leads <Icon name="arrowRight" size={15}/></button>
     </section>
     <section className="crm-side-card pipeline-side hl">
       <small>SALES PERFORMANCE</small><h3><Icon name="pipeline" size={17}/> Total Sales Pipeline</h3>
       <div className="pipeline-value">{money(pipeline)}</div>
-      <div className="pipeline-foot"><span>{opportunities.length} opportunities</span><button onClick={()=>go('opportunities')} aria-label="View opportunities"><Icon name="plus" size={18}/></button></div>
+      <div className="pipeline-foot"><span>{opportunities.length} opportunities</span></div>
     </section>
     <section className="crm-side-card won-side hl">
       <div className="won-side-title"><div><small>PERFORMANCE</small><h3>Opportunity Wins</h3></div><span className="won-badge">{won.length} won</span></div>
@@ -54,7 +48,6 @@ export default function CRMWidgets() {
       <p>{money(wonValue)} closed-won value</p>
       <div className="won-line-chart"><svg viewBox="0 0 300 112" preserveAspectRatio="none" role="img" aria-label="Monthly opportunity wins"><defs><linearGradient id="wonFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fff" stopOpacity=".26"/><stop offset="1" stopColor="#fff" stopOpacity="0"/></linearGradient></defs><path d={`M ${monthly.map((v,i)=>`${i*27.2} ${96-(v/max)*76}`).join(' L ')}`} fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round"/><path d={`M 0 96 L ${monthly.map((v,i)=>`${i*27.2} ${96-(v/max)*76}`).join(' L ')} L 300 112 L 0 112 Z`} fill="url(#wonFill)"/><circle cx="299" cy={96-(monthly[11]/max)*76} r="4.5" fill="#fff"/></svg></div>
       <div className="won-dates"><span>Jan</span><span>Jun</span><span>Dec</span></div>
-      <button onClick={()=>go('opportunities')}>View opportunities <Icon name="arrowRight" size={15}/></button>
     </section>
   </div>
 }

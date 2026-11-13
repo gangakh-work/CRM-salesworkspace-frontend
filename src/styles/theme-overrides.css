@@ -11,7 +11,7 @@ body { background: #111315; }
 .lead-detail-link { color: inherit; font: inherit; font-weight: 650; text-align: left; text-decoration: none; }
 .lead-detail-link:hover,.opportunities-deal-name:hover { text-decoration: underline; text-underline-offset: 3px; }
 button.opportunities-deal-name { display: inline; color: inherit; font: inherit; font-weight: 650; text-align: left; }
-.sidebar-initial{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#667085,#aeb8c8);color:#111827;font-weight:750;flex:0 0 auto}.sidebar-account .sidebar-initial{width:34px;height:34px}
+.sidebar-initial{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#667085,#aeb8c8);color:#111827;font-weight:750;flex:0 0 auto}.sidebar-account .sidebar-initial{width:26px;height:26px;font-size:10px}
 
 
 /* Unified Glassy form language: apply to every modal, wizard and page form. */

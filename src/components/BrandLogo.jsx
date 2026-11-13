@@ -1,9 +1,11 @@
-﻿export default function BrandLogo({ className = '' }) {
+
+export default function BrandLogo({ className = '', alt = 'Sonata Software' }) {
   return (
     <img
-      src="/logo.png"
-      alt="Sonata Software"
-      className={className}
+      className={`sonata-logo ${className}`.trim()}
+      src="/sonata-logo.png"
+      alt={alt}
+      draggable="false"
     />
   )
 }

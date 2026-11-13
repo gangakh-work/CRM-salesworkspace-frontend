@@ -8,7 +8,6 @@ import Palette from './components/Palette'
 import Toasts from './components/Toasts'
 import CRMWidgets from './widgets/CRMWidgets'
 const Overview = lazy(() => import('./pages/Overview'))
-const Inbox = lazy(() => import('./pages/Inbox'))
 const Leads = lazy(() => import('./pages/Leads'))
 const Opportunities = lazy(() => import('./pages/Opportunities'))
 const Assistant = lazy(() => import('./pages/Assistant'))
@@ -16,15 +15,12 @@ const Contacts = lazy(() => import('./pages/Contacts'))
 const Companies = lazy(() => import('./pages/Companies'))
 const Tasks = lazy(() => import('./pages/Tasks'))
 const Calendar = lazy(() => import('./pages/Calendar'))
-const Integrations = lazy(() => import('./pages/Integrations'))
 const Support = lazy(() => import('./pages/Support'))
 const LeadDetail = lazy(() => import('./pages/LeadDetail'))
 const OpportunityDetail = lazy(() => import('./pages/OpportunityDetail'))
-const ConversationInsights = lazy(() => import('./pages/ConversationInsights'))
 
 const VIEWS = {
   overview: Overview,
-  inbox: Inbox,
   leads: Leads,
   opportunities: Opportunities,
   assistant: Assistant,
@@ -32,9 +28,6 @@ const VIEWS = {
   companies: Companies,
   tasks: Tasks,
   calendar: Calendar,
-  reports: ConversationInsights,
-  'conversation-insights': ConversationInsights,
-  integrations: Integrations,
   support: Support,
   'lead-detail': LeadDetail,
   'opportunity-detail': OpportunityDetail,
@@ -75,6 +68,7 @@ export default function App() {
   const [toasts, setToasts] = useState([])
   const [booting, setBooting] = useState(true)
   const [recordDetail, setRecordDetail] = useState(null)
+  const [activeDashboardView, setActiveDashboardView] = useState(null)
   const [spatial, setSpatial] = useState(() => innerWidth >= SPATIAL_MIN)
   const stage = useRef(null)
 
@@ -103,7 +97,12 @@ export default function App() {
     history.pushState(null, '', id === 'overview' ? location.pathname : `#/${id}`)
     toTop()
     setPage(id)
+    if (id !== 'assistant') setActiveDashboardView(null)
   }, [])
+  const openDashboardView = useCallback((view) => {
+    go(view.page)
+    setActiveDashboardView(view)
+  }, [go])
   useEffect(() => {
     const pop = () => {
       toTop()
@@ -213,8 +212,8 @@ export default function App() {
   }, [])
 
   const ctx = useMemo(
-    () => ({ page, go, settings, set, toast, openSheet: setSheet, spatial, side, setSide, right, setRight, recordDetail, setRecordDetail }),
-    [page, go, settings, set, toast, spatial, side, right, recordDetail],
+    () => ({ page, go, settings, set, toast, openSheet: setSheet, spatial, side, setSide, right, setRight, recordDetail, setRecordDetail, activeDashboardView, openDashboardView }),
+    [page, go, settings, set, toast, spatial, side, right, recordDetail, activeDashboardView, openDashboardView],
   )
 
   const View = VIEWS[page]
