@@ -8,6 +8,7 @@ import App from './App.jsx'
 import AuthShell from './auth.jsx'
 import './styles/auth.css'
 import './styles/theme-overrides.css'
+import './styles/light-theme.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

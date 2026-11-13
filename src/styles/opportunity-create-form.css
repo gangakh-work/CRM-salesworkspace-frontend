@@ -1,0 +1,88 @@
+/* Premium, isolated Create Opportunity dialog. All selectors are component-scoped. */
+.opportunity-create-backdrop{position:fixed!important;inset:0!important;z-index:20000!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:clamp(12px,2vw,28px)!important;box-sizing:border-box!important;background:rgba(4,8,14,1)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;overflow:hidden!important;border:0!important;outline:0!important;background-image:none!important}
+.opportunity-create-backdrop:before,.opportunity-create-backdrop:after,.opportunity-create-modal:before,.opportunity-create-modal:after{content:none!important;display:none!important;border:0!important;background:none!important;box-shadow:none!important}
+.opportunity-create-modal{position:relative!important;isolation:isolate!important;display:flex!important;flex-direction:column!important;width:min(920px,calc(100vw - 48px))!important;max-width:920px!important;height:min(78dvh,780px)!important;max-height:84dvh!important;min-height:min(500px,60dvh)!important;margin:0!important;padding:0!important;overflow:hidden!important;box-sizing:border-box!important;border:1px solid rgba(190,211,240,.27)!important;border-radius:22px!important;background:linear-gradient(145deg,rgba(35,43,54,.99),rgba(20,26,34,.99))!important;box-shadow:0 32px 100px rgba(0,0,0,.62),inset 0 1px 0 rgba(255,255,255,.09)!important;color:#f4f7fb!important}
+.opportunity-create-modal>.opportunity-header{position:relative!important;flex:0 0 auto!important;display:flex!important;align-items:flex-start!important;justify-content:space-between!important;gap:20px!important;padding:26px 32px 20px!important;margin:0!important;border:0!important;border-bottom:1px solid rgba(220,232,248,.12)!important;background:linear-gradient(110deg,rgba(255,255,255,.075),rgba(255,255,255,.018))!important}
+.opportunity-create-modal>.opportunity-header h2{margin:0 0 7px!important;font-size:22px!important;line-height:1.25!important;font-weight:750!important;letter-spacing:-.025em!important;color:#f8fbff!important}
+.opportunity-create-modal>.opportunity-header p{margin:0!important;font-size:12px!important;line-height:1.55!important;color:#aebdce!important}
+.opportunity-create-modal .opportunity-close{width:36px!important;height:36px!important;flex:0 0 36px!important;border-radius:11px!important;border:1px solid rgba(255,255,255,.12)!important;background:rgba(255,255,255,.055)!important;color:#dce7f5!important;font-size:23px!important;cursor:pointer!important}
+.opportunity-create-modal form{display:flex!important;flex:1 1 auto!important;flex-direction:column!important;min-height:0!important;overflow:hidden!important}
+.opportunity-form-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:13px 20px!important;align-content:start!important;flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:18px 26px 22px!important;scrollbar-width:thin!important;scrollbar-color:rgba(150,177,211,.48) transparent!important;box-sizing:border-box!important}
+.opportunity-form-grid::-webkit-scrollbar{width:8px!important}.opportunity-form-grid::-webkit-scrollbar-track{background:transparent!important}.opportunity-form-grid::-webkit-scrollbar-thumb{background:rgba(150,177,211,.38)!important;border-radius:10px!important}
+.opportunity-create-modal .opportunity-field{display:flex!important;flex-direction:column!important;gap:8px!important;min-width:0!important;margin:0!important;color:#e8eef7!important;font-size:12px!important;font-weight:650!important}
+.opportunity-create-modal .opportunity-field>span{display:flex!important;align-items:center!important;gap:7px!important;min-height:19px!important;color:#dce6f3!important;font-size:12px!important;font-weight:650!important;letter-spacing:.005em!important}
+.opportunity-create-modal .opportunity-field input:not([type=checkbox]),.opportunity-create-modal .opportunity-field select,.opportunity-create-modal .opportunity-field textarea{display:block!important;width:100%!important;min-width:0!important;min-height:42px!important;box-sizing:border-box!important;padding:10px 12px!important;border:1px solid rgba(190,207,229,.22)!important;border-radius:10px!important;background:rgba(8,13,20,.58)!important;color:#f5f8fc!important;font:500 12px/1.4 inherit!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.18)!important;outline:none!important;transition:border-color .18s ease,box-shadow .18s ease,background .18s ease!important}
+.opportunity-create-modal .opportunity-field textarea{min-height:108px!important;resize:vertical!important}.opportunity-create-modal .opportunity-field input:focus,.opportunity-create-modal .opportunity-field select:focus,.opportunity-create-modal .opportunity-field textarea:focus{border-color:rgba(112,164,255,.9)!important;box-shadow:0 0 0 3px rgba(88,145,255,.16)!important;background:rgba(8,15,26,.78)!important}
+.opportunity-create-modal .opportunity-field select option{background:#1d2632!important;color:#f4f7fb!important}.opportunity-create-modal .opportunity-field input[type=checkbox]{width:19px!important;height:19px!important;min-height:19px!important;accent-color:#6b9fff!important}
+.opportunity-create-modal .opportunity-account-results{color:#aebdce!important;font-size:11px!important;font-weight:450!important;line-height:1.4!important}
+.opportunity-create-modal .opportunity-field-wide{grid-column:1/-1!important}.opportunity-tooltip{color:#8db8ff!important;font-size:14px!important;cursor:help!important}.opportunity-account-note{margin:0 32px 12px!important;color:#b8d2ff!important;font-size:12px!important;line-height:1.5!important}
+.opportunity-create-modal .opportunity-error{margin:0 32px 12px!important;color:#ffc2c7!important;font-size:12px!important}
+.opportunity-create-modal .opportunity-actions{position:relative!important;flex:0 0 auto!important;display:flex!important;justify-content:flex-end!important;gap:12px!important;margin:0!important;padding:18px 32px 22px!important;border:0!important;border-top:1px solid rgba(220,232,248,.13)!important;background:rgba(16,22,30,.97)!important;box-shadow:0 -10px 28px rgba(0,0,0,.16)!important}
+.opportunity-create-modal .opportunity-actions button{min-width:150px!important;min-height:44px!important;padding:11px 20px!important;border-radius:11px!important;font-size:12px!important;font-weight:700!important;cursor:pointer!important}
+.opportunity-create-modal .opportunity-cancel{border:1px solid rgba(197,213,234,.22)!important;background:rgba(255,255,255,.055)!important;color:#e2eaf5!important}.opportunity-create-modal .opportunity-create{border:1px solid rgba(139,181,255,.55)!important;background:linear-gradient(135deg,#6fa6ff,#397de8)!important;color:white!important;box-shadow:0 8px 20px rgba(48,112,222,.25)!important}.opportunity-create-modal button:disabled{opacity:.58!important;cursor:not-allowed!important}
+@media(max-width:760px){.opportunity-create-backdrop{padding:8px!important}.opportunity-create-modal{width:calc(100vw - 16px)!important;height:96dvh!important;max-height:96dvh!important;min-height:0!important;border-radius:16px!important}.opportunity-create-modal>.opportunity-header{padding:18px 18px 14px!important}.opportunity-form-grid{grid-template-columns:minmax(0,1fr)!important;gap:14px!important;padding:18px!important}.opportunity-create-modal .opportunity-field-wide{grid-column:auto!important}.opportunity-create-modal .opportunity-actions{padding:14px 18px 18px!important}.opportunity-create-modal .opportunity-actions button{flex:1;min-width:0!important}.opportunity-account-note,.opportunity-create-modal .opportunity-error{margin-left:18px!important;margin-right:18px!important}}
+@media(prefers-reduced-motion:reduce){.opportunity-create-modal *{transition:none!important}}
+
+.opportunity-edit-modal{width:min(960px,calc(100vw - 48px))!important;max-width:960px!important;height:min(74dvh,640px)!important;max-height:88dvh!important;min-height:min(520px,64dvh)!important}
+.opportunity-edit-modal .opportunity-form-grid{gap:20px 26px!important;padding:28px 36px 32px!important}
+.opportunity-edit-modal .opportunity-field input:not([type=checkbox]),.opportunity-edit-modal .opportunity-field select,.opportunity-edit-modal .opportunity-field textarea{min-height:52px!important;padding:14px 15px!important;font-size:14px!important}
+.opportunity-edit-modal .opportunity-field>span{font-size:13px!important}
+@media(max-width:760px){.opportunity-edit-modal{width:calc(100vw - 16px)!important;height:96dvh!important;max-height:96dvh!important;min-height:0!important}.opportunity-edit-modal .opportunity-form-grid{gap:14px!important;padding:18px!important}}
+
+/* Prevent page/workspace grid decorations from bleeding through this isolated dialog. */
+.opportunity-create-backdrop,
+.opportunity-create-modal,
+.opportunity-create-modal form,
+.opportunity-create-modal .opportunity-form-grid {
+  background-image: none !important;
+}
+.opportunity-create-modal {
+  contain: layout paint style !important;
+  isolation: isolate !important;
+}
+.opportunity-create-modal .opportunity-form-grid,
+.opportunity-create-modal .opportunity-field {
+  position: relative !important;
+  background-image: none !important;
+}
+.opportunity-create-modal .opportunity-form-grid::before,
+.opportunity-create-modal .opportunity-form-grid::after,
+.opportunity-create-modal .opportunity-field::before,
+.opportunity-create-modal .opportunity-field::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Compact, wide create form: show more fields at once while retaining a scroll fallback. */
+.opportunity-create-modal:not(.opportunity-edit-modal){width:min(1440px,calc(100vw - 32px))!important;max-width:1440px!important;height:min(92dvh,960px)!important;max-height:96dvh!important;min-height:min(560px,76dvh)!important}
+.opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header{padding:14px 22px 11px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header h2{margin-bottom:3px!important;font-size:18px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header p{font-size:10px!important;line-height:1.35!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-close{width:30px!important;height:30px!important;flex-basis:30px!important;font-size:19px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-form-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px 13px!important;padding:12px 20px 14px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field{gap:4px!important;font-size:10px!important;font-weight:600!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field>span{min-height:14px!important;font-size:10px!important;line-height:1.2!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-tooltip{font-size:12px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field input:not([type=checkbox]),
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field select,
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field textarea{min-height:32px!important;padding:6px 9px!important;border-radius:8px!important;font:500 10px/1.3 var(--font,Arial,sans-serif)!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field textarea{min-height:52px!important;resize:vertical!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field input[type=checkbox]{width:15px!important;height:15px!important;min-height:15px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-account-results{font-size:9px!important;line-height:1.2!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-account-note,
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-error{margin:0 20px 7px!important;font-size:10px!important;line-height:1.3!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-actions{gap:8px!important;padding:10px 20px 12px!important}
+.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-actions button{min-width:112px!important;min-height:34px!important;padding:7px 14px!important;border-radius:9px!important;font-size:10px!important}
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal){color:#17212f!important;background:linear-gradient(145deg,rgba(255,255,255,.98),rgba(238,243,250,.97))!important;border-color:rgba(71,91,119,.24)!important}
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header{border-bottom-color:rgba(52,68,91,.15)!important}
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header h2,
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field,
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field>span{color:#243247!important}
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header p,
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-account-results{color:#5f6b7c!important}
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field input:not([type=checkbox]),
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field select,
+:root[data-theme='light'] .opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field textarea{color:#17212f!important;background:rgba(255,255,255,.9)!important;border-color:rgba(59,76,101,.22)!important}
+@media(max-width:1050px){.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-form-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:760px){.opportunity-create-modal:not(.opportunity-edit-modal){width:calc(100vw - 16px)!important;height:96dvh!important;max-height:96dvh!important;min-height:0!important}.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-form-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px 10px!important;padding:12px!important}.opportunity-create-modal:not(.opportunity-edit-modal)>.opportunity-header{padding:13px 15px 10px!important}.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field-wide{grid-column:1/-1!important}.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-actions{padding:9px 14px 12px!important}}
+@media(max-width:440px){.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-form-grid{grid-template-columns:minmax(0,1fr)!important}.opportunity-create-modal:not(.opportunity-edit-modal) .opportunity-field-wide{grid-column:auto!important}}

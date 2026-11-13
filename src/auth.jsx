@@ -13,6 +13,8 @@ import {
 
 import Icon from './components/Icon'
 import BrandLogo from './components/BrandLogo'
+import ThemeToggle from './components/ThemeToggle'
+import { ThemeProvider } from './theme'
 
 const AuthContext = createContext({
   profile: null,
@@ -22,8 +24,8 @@ const AuthContext = createContext({
 
 export const useAuth = () => useContext(AuthContext)
 
-const clientId = import.meta.env.VITE_MSAL_CLIENT_ID || import.meta.env.VITE_ENTRA_CLIENT_ID || ''
-const tenantId = import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID || 'common'
+const clientId = import.meta.env.VITE_ENTRA_CLIENT_ID || ''
+const tenantId = import.meta.env.VITE_ENTRA_TENANT_ID || 'common'
 const redirectUri =
   import.meta.env.VITE_ENTRA_REDIRECT_URI || window.location.origin
 
@@ -222,7 +224,7 @@ function SignInGate({ children }) {
   const startMicrosoftSignIn = () => {
     if (
       !clientId ||
-      !(import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID) ||
+      !import.meta.env.VITE_ENTRA_TENANT_ID ||
       !backendScope
     ) {
       setError(
@@ -249,6 +251,7 @@ function SignInGate({ children }) {
             <small>CRM Sales Workspace</small>
           </span>
         </div>
+        <ThemeToggle />
       </header>
 
       <div className="login-landing">
@@ -260,8 +263,7 @@ function SignInGate({ children }) {
 
           <h1>
             The AI-Powered
-
-
+            <br />
             CRM for <em>Sales Teams</em>
           </h1>
 
@@ -344,7 +346,7 @@ function SignInGate({ children }) {
           )}
 
           {(!clientId ||
-            !(import.meta.env.VITE_MSAL_TENANT_ID || import.meta.env.VITE_ENTRA_TENANT_ID) ||
+            !import.meta.env.VITE_ENTRA_TENANT_ID ||
             !backendScope) && (
             <p className="auth-note">
               Microsoft sign-in requires VITE_ENTRA_CLIENT_ID,
@@ -376,9 +378,10 @@ function SignInGate({ children }) {
 
 export default function AuthShell({ children }) {
   return (
-    <MsalProvider instance={msal}>
-      <SignInGate>{children}</SignInGate>
-    </MsalProvider>
+    <ThemeProvider>
+      <MsalProvider instance={msal}>
+        <SignInGate>{children}</SignInGate>
+      </MsalProvider>
+    </ThemeProvider>
   )
 }
-

@@ -398,7 +398,7 @@ export default function QualifyLeadWizard({
                 'Timeline Confirmed',
               )}
 
-              <label className={fieldClass('painPoints')}>
+              <label className={`${fieldClass('painPoints')} qualify-field-wide`}>
                 <span>Pain Points *</span>
 
                 <textarea

@@ -59,6 +59,7 @@ const stageMap = (raw) => {
 
 const normalizeOpportunity = (row) => ({
   id: row.opportunityid ?? row.id,
+  crmId: row.opportunityid ?? row.id,
 
   name:
     row.name ??
@@ -125,11 +126,14 @@ const getOpportunityRows = (result) => {
 }
 
 export default function Opportunities() {
-  const { toast, go, setRecordDetail } = useApp()
+  const { toast, go, setRecordDetail, activeDashboardView } = useApp()
 
   const [deals, setDeals] = useState([])
+  const [search, setSearch] = useState('')
   const [liveState, setLiveState] = useState('loading')
   const [error, setError] = useState('')
+  const [selectedIds, setSelectedIds] = useState(() => new Set())
+  const [deleting, setDeleting] = useState(false)
 
   const [selectedWonOpportunity, setSelectedWonOpportunity] =
     useState(null)
@@ -168,6 +172,7 @@ export default function Opportunities() {
       const rows = getOpportunityRows(result)
 
       setDeals(rows.filter((row) => row.opportunityid || row.id).map(normalizeOpportunity))
+      setSelectedIds(new Set())
       setLiveState('live')
     } catch (err) {
       setLiveState('error')
@@ -206,6 +211,59 @@ export default function Opportunities() {
       0
     )
 
+  const normalizedSearch = search.trim().toLowerCase()
+  const filteredDeals = deals.filter((deal) => {
+    const searchMatch = !normalizedSearch || [deal.name, deal.company, deal.stage, deal.owner, deal.crmId]
+      .some((value) => String(value || '').toLowerCase().includes(normalizedSearch))
+    const dashboardMatch = activeDashboardView?.page !== 'opportunities' ||
+      activeDashboardView.recordIds.includes(String(deal.crmId))
+    return searchMatch && dashboardMatch
+  })
+  const visibleOpen = filteredDeals.filter((deal) => !['won', 'lost'].includes(deal.stage))
+  const visibleTotal = visibleOpen.reduce((sum, deal) => sum + deal.value, 0)
+  const visibleForecast = visibleOpen.reduce((sum, deal) => sum + deal.value * (PROB[deal.stage] ?? 0), 0)
+  const visibleWon = filteredDeals.filter((deal) => deal.stage === 'won').reduce((sum, deal) => sum + deal.value, 0)
+
+  const toggleOpportunity = (id) => {
+    setSelectedIds((current) => {
+      const next = new Set(current)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const toggleVisibleOpportunities = () => {
+    setSelectedIds((current) => {
+      const next = new Set(current)
+      const allSelected = filteredDeals.length > 0 && filteredDeals.every((deal) => next.has(deal.id))
+      filteredDeals.forEach((deal) => allSelected ? next.delete(deal.id) : next.add(deal.id))
+      return next
+    })
+  }
+
+  const deleteSelectedOpportunities = async () => {
+    const ids = [...selectedIds]
+    if (!ids.length || deleting) return
+    if (!window.confirm(`Delete ${ids.length} selected opportunit${ids.length === 1 ? 'y' : 'ies'} from Dataverse? This cannot be undone.`)) return
+
+    setDeleting(true)
+    const results = await crmApi.deleteOpportunities(ids)
+    const deletedIds = ids.filter((_, index) => results[index].status === 'fulfilled')
+    const failures = results.filter((result) => result.status === 'rejected')
+    if (deletedIds.length) {
+      setDeals((current) => current.filter((deal) => !deletedIds.includes(deal.id)))
+      setSelectedIds((current) => new Set([...current].filter((id) => !deletedIds.includes(id))))
+    }
+    if (failures.length) {
+      const firstError = failures[0].reason?.message || 'Permission denied or CRM delete failed.'
+      toast({ icon: 'target', title: 'Some opportunities could not be deleted', text: `${deletedIds.length} deleted; ${failures.length} failed. ${firstError}` })
+    } else {
+      toast({ icon: 'check', title: 'Opportunities deleted', text: `${deletedIds.length} opportunit${deletedIds.length === 1 ? 'y' : 'ies'} deleted from Dataverse.` })
+    }
+    setDeleting(false)
+  }
+
   // Existing Create Opportunity callback.
   const handleOpportunityCreated = async () => {
     setShowCreateOpportunity(false)
@@ -223,8 +281,17 @@ export default function Opportunities() {
     <div className="opportunities-workspace">
       <PageHead
         title="Opportunities"
-        sub="Your sales opportunities, values and expected close dates in one place"
+        sub={activeDashboardView?.page === 'opportunities' ? activeDashboardView.label : 'Your sales opportunities, values and expected close dates in one place'}
       >
+        <label className="search opportunity-search">
+          <Icon name="search" size={17} />
+          <input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search opportunities"
+            aria-label="Search opportunities"
+          />
+        </label>
         <button type="button" className="chip opportunity-template-btn" onClick={downloadOpportunityTemplate}>
           <Icon name="download" size={15} /> Download template
         </button>
@@ -268,21 +335,21 @@ export default function Opportunities() {
         <div>
           <small>Open pipeline</small>
           <strong className="figure">
-            {money(total)}
+            {money(activeDashboardView?.page === 'opportunities' ? visibleTotal : total)}
           </strong>
         </div>
 
         <div>
           <small>Weighted forecast</small>
           <strong className="figure">
-            {money(forecast)}
+            {money(activeDashboardView?.page === 'opportunities' ? visibleForecast : forecast)}
           </strong>
         </div>
 
         <div>
           <small>Won this month</small>
           <strong className="figure">
-            {money(won)}
+            {money(activeDashboardView?.page === 'opportunities' ? visibleWon : won)}
           </strong>
         </div>
 
@@ -291,23 +358,36 @@ export default function Opportunities() {
 
       {/* Opportunity list: no stage lanes or stage labels */}
       <section className="card opportunity-list-card">
-        <header className="opportunity-list-heading"><div><h2>All opportunities</h2><p>{deals.length} records from connected CRM</p></div><button type="button" className="chip" onClick={loadOpportunities}><Icon name="refresh" size={14}/> Refresh</button></header>
+        <header className="opportunity-list-heading"><div><h2>All opportunities</h2><p>{filteredDeals.length} of {deals.length} records from connected CRM</p></div><div className="opportunity-list-toolbar">{selectedIds.size > 0&&<button type="button" className="chip danger" onClick={deleteSelectedOpportunities} disabled={deleting}><Icon name="trash" size={14}/>{deleting? 'Deleting…':`Delete selected (${selectedIds.size})`}</button>}<button type="button" className="chip" onClick={loadOpportunities}><Icon name="refresh" size={14}/> Refresh</button></div></header>
+        {filteredDeals.length > 0 && <label className="opportunity-select-all"><input className="record-select-checkbox" type="checkbox" aria-label="Select all visible opportunities" checked={filteredDeals.every((deal) => selectedIds.has(deal.id))} onChange={toggleVisibleOpportunities}/> Select visible</label>}
         {deals.length===0&&liveState==='live'&&<p className="record-empty">No opportunities returned by Dataverse.</p>}
+        {deals.length>0&&filteredDeals.length===0&&<p className="record-empty">No opportunities match your search.</p>}
         <div className="opportunity-list">
-          {deals.map(deal=><article className="opportunity-list-row" key={deal.id}>
-            <button className="opportunity-list-main" type="button" onClick={()=>openDetail(deal)}>
-              <span className="opportunity-list-icon" aria-hidden="true">{opportunityInitials(deal.name)}</span>
-              <span className="opportunity-list-name"><b>{deal.name}</b><small>{deal.company}</small></span>
-            </button>
-            <div className="opportunity-list-value"><small>Expected value</small><b>{money(deal.value)}</b></div>
-            <div className="opportunity-list-meta"><small>Expected close</small><b>{deal.close&&deal.close!=='—'?new Date(deal.close).toLocaleDateString():'—'}</b></div>
-            <div className="opportunity-list-meta"><small>Owner</small><b>{deal.owner||'Unassigned'}</b></div>
-            <div className="opportunity-list-actions">
-              <button type="button" className="opportunity-won-btn" onClick={()=>handleOpportunityWon(deal)}>Won</button>
-              <button type="button" className="opportunity-lost-btn" onClick={()=>handleOpportunityLost(deal)}>Lost</button>
-              <button type="button" className="opportunity-next-btn" aria-label={`Open ${deal.name}`} onClick={()=>openDetail(deal)}><Icon name="arrowRight" size={14}/></button>
-            </div>
-          </article>)}
+          {filteredDeals.map((deal) => (
+            <article className="opportunity-list-row" key={deal.id}>
+              <input
+                className="record-select-checkbox"
+                type="checkbox"
+                aria-label={`Select ${deal.name}`}
+                checked={selectedIds.has(deal.id)}
+                onChange={() => toggleOpportunity(deal.id)}
+              />
+              <button className="opportunity-list-main" type="button" onClick={() => openDetail(deal)}>
+                <span className="opportunity-list-icon" aria-hidden="true">{opportunityInitials(deal.name)}</span>
+                <span className="opportunity-list-name"><b>{deal.name}</b><small>{deal.company}</small></span>
+              </button>
+              <div className="opportunity-list-metrics">
+                <div className="opportunity-list-value"><small>Expected value</small><b>{money(deal.value)}</b></div>
+                <div className="opportunity-list-meta"><small>Expected close</small><b>{deal.close && deal.close !== '—' ? new Date(deal.close).toLocaleDateString() : '—'}</b></div>
+                <div className="opportunity-list-meta"><small>Owner</small><b>{deal.owner || 'Unassigned'}</b></div>
+              </div>
+              <div className="opportunity-list-actions">
+                <button type="button" className="opportunity-won-btn" onClick={() => handleOpportunityWon(deal)}>Won</button>
+                <button type="button" className="opportunity-lost-btn" onClick={() => handleOpportunityLost(deal)}>Lost</button>
+                <button type="button" className="opportunity-next-btn" aria-label={`Open ${deal.name}`} onClick={() => openDetail(deal)}><Icon name="arrowRight" size={14} /></button>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 

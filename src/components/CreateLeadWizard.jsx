@@ -265,7 +265,7 @@ export default function CreateLeadWizard({ onClose, onCreated }) {
           <div>
             <h2 id="clw-title">Create Lead</h2>
             <p>
-              Step {step + 1} of 5: {STEPS[step]} · Owner: Eati Ramya Sri
+              Step {step + 1} of 5: {STEPS[step]}
             </p>
           </div>
           <button className="clw-close" type="button" onClick={onClose} aria-label="Close">

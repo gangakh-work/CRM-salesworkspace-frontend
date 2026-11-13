@@ -274,7 +274,7 @@ export default function DisqualifyLeadWizard({
                 />
               </label>
 
-              <label className="disqualify-field">
+              <label className="disqualify-field disqualify-field-wide">
                 <span>Remarks</span>
 
                 <textarea

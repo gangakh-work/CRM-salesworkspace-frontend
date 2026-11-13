@@ -38,6 +38,19 @@ const statusText = (value) => {
   return String(value).trim() || 'New'
 }
 
+const normalizeLeadStatus = (value) => {
+  const status = statusText(value)
+  const normalized = status.toLowerCase()
+
+  if (/disqual|unqual|lost|cancel|cannot contact|not interested/.test(normalized)) {
+    return 'Unqualified'
+  }
+  if (normalized.includes('qualif')) return 'Qualified'
+  if (normalized.includes('contact')) return 'Contacted'
+  if (normalized === 'new' || normalized === 'open') return 'New'
+  return status
+}
+
 const displayText = (value, fallback = '—') => {
   if (value === null || value === undefined || value === '') {
     return fallback
@@ -45,6 +58,9 @@ const displayText = (value, fallback = '—') => {
 
   return String(value)
 }
+
+const formattedValue = (row, field) =>
+  row[`${field}@OData.Community.Display.V1.FormattedValue`]
 
 function normalizeLead(row) {
   const source =
@@ -76,11 +92,13 @@ function normalizeLead(row) {
     score: Number.isFinite(score)
       ? Math.max(0, Math.min(100, score))
       : 50,
-    status: statusText(
-      row.status ??
-      row.status_label ??
+    status: normalizeLeadStatus(
       row.statuscode_label ??
-      row.statecode_label
+      row.status_label ??
+      formattedValue(row, 'statuscode') ??
+      formattedValue(row, 'statecode') ??
+      row.statecode_label ??
+      row.status
     ),
     owner:
       row.owner ??
@@ -121,7 +139,7 @@ function getLeadRows(result) {
 }
 
 export default function Leads() {
-  const { toast, go, setRecordDetail } = useApp()
+  const { toast, go, setRecordDetail, activeDashboardView } = useApp()
 
   const [leads, setLeads] = useState([])
   const [showCreateLead, setShowCreateLead] = useState(false)
@@ -129,6 +147,8 @@ export default function Leads() {
   const [status, setStatus] = useState('All')
   const [q, setQ] = useState('')
   const [error, setError] = useState('')
+  const [selectedIds, setSelectedIds] = useState(() => new Set())
+  const [deleting, setDeleting] = useState(false)
 
   // Qualification wizard
   const [qualifyingId, setQualifyingId] = useState(null)
@@ -148,6 +168,7 @@ export default function Leads() {
       const rows = getLeadRows(result)
 
       setLeads(rows.filter((row) => row.leadid || row.id || row.leadId).map(normalizeLead))
+      setSelectedIds(new Set())
       setLiveState('live')
     } catch (err) {
       setLiveState('error')
@@ -164,7 +185,7 @@ export default function Leads() {
     const search = q.trim().toLowerCase()
 
     return leads.filter((lead) => {
-      const leadStatus = statusText(lead.status).toLowerCase()
+      const leadStatus = normalizeLeadStatus(lead.status).toLowerCase()
 
       const statusMatch =
         status === 'All' ||
@@ -174,6 +195,7 @@ export default function Leads() {
         !search ||
         [
           lead.name,
+          lead.id,
           lead.company,
           lead.email,
           lead.source,
@@ -184,9 +206,52 @@ export default function Leads() {
           .toLowerCase()
           .includes(search)
 
-      return statusMatch && searchMatch
+      const dashboardMatch = activeDashboardView?.page !== 'leads' ||
+        activeDashboardView.recordIds.includes(String(lead.id))
+
+      return statusMatch && searchMatch && dashboardMatch
     })
-  }, [leads, q, status])
+  }, [leads, q, status, activeDashboardView])
+
+  const toggleLead = (id) => {
+    setSelectedIds((current) => {
+      const next = new Set(current)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const toggleVisibleLeads = () => {
+    setSelectedIds((current) => {
+      const next = new Set(current)
+      const allSelected = rows.length > 0 && rows.every((lead) => next.has(lead.id))
+      rows.forEach((lead) => allSelected ? next.delete(lead.id) : next.add(lead.id))
+      return next
+    })
+  }
+
+  const deleteSelectedLeads = async () => {
+    const ids = [...selectedIds]
+    if (!ids.length || deleting) return
+    if (!window.confirm(`Delete ${ids.length} selected lead${ids.length === 1 ? '' : 's'} from Dataverse? This cannot be undone.`)) return
+
+    setDeleting(true)
+    const results = await crmApi.deleteLeads(ids)
+    const deletedIds = ids.filter((_, index) => results[index].status === 'fulfilled')
+    const failures = results.filter((result) => result.status === 'rejected')
+    if (deletedIds.length) {
+      setLeads((current) => current.filter((lead) => !deletedIds.includes(lead.id)))
+      setSelectedIds((current) => new Set([...current].filter((id) => !deletedIds.includes(id))))
+    }
+    if (failures.length) {
+      const firstError = failures[0].reason?.message || 'Permission denied or CRM delete failed.'
+      toast({ icon: 'target', title: 'Some leads could not be deleted', text: `${deletedIds.length} deleted; ${failures.length} failed. ${firstError}` })
+    } else {
+      toast({ icon: 'check', title: 'Leads deleted', text: `${deletedIds.length} lead${deletedIds.length === 1 ? '' : 's'} deleted from Dataverse.` })
+    }
+    setDeleting(false)
+  }
 
   const openDetail=async(lead)=>{setRecordDetail({id:lead.id,summary:lead});go('lead-detail')}
 
@@ -285,7 +350,7 @@ export default function Leads() {
     <>
       <PageHead
         title="Leads"
-        sub="Score, qualify and convert new prospects"
+        sub={activeDashboardView?.page === 'leads' ? activeDashboardView.label : 'Score, qualify and convert new prospects'}
       >
         <label className="search">
           <Icon name="search" size={17} />
@@ -380,6 +445,12 @@ export default function Leads() {
             stroke={2}
           />
         </button>
+        {selectedIds.size > 0 && (
+          <button type="button" className="chip danger" onClick={deleteSelectedLeads} disabled={deleting}>
+            <Icon name="trash" size={14} />
+            {deleting ? 'Deleting…' : `Delete selected (${selectedIds.size})`}
+          </button>
+        )}
       </div>
 
       {/* Existing lead table */}
@@ -391,6 +462,15 @@ export default function Leads() {
           <table className="table">
             <thead>
               <tr>
+                <th>
+                  <input
+                    type="checkbox"
+                    className="record-select-checkbox"
+                    aria-label="Select all visible leads"
+                    checked={rows.length > 0 && rows.every((lead) => selectedIds.has(lead.id))}
+                    onChange={toggleVisibleLeads}
+                  />
+                </th>
                 <th>Lead</th>
                 <th>Source</th>
                 <th>Score</th>
@@ -426,6 +506,15 @@ export default function Leads() {
                     key={lead.id}
                     style={{ '--i': index }}
                   >
+                    <td>
+                      <input
+                        type="checkbox"
+                        className="record-select-checkbox"
+                        aria-label={`Select ${lead.name}`}
+                        checked={selectedIds.has(lead.id)}
+                        onChange={() => toggleLead(lead.id)}
+                      />
+                    </td>
                     <td>
                       <span className="who">
                         <Avatar

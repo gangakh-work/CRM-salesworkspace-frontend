@@ -322,3 +322,145 @@
     justify-content: flex-end;
   }
 }
+
+.clw-backdrop {
+  padding: clamp(16px, 3vw, 32px);
+}
+
+.clw-modal {
+  width: min(100%, 760px);
+  max-height: min(92dvh, 860px);
+  padding: 28px 30px 24px;
+  border-radius: 22px;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, .38), inset 0 1px 0 rgba(255, 255, 255, .08);
+}
+
+.clw-header h2 {
+  font-size: 23px;
+  letter-spacing: -.025em;
+}
+
+.clw-header p {
+  font-size: 13px;
+}
+
+.clw-close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 12px;
+  font-size: 24px;
+}
+
+.clw-progress {
+  gap: 7px;
+  margin: 20px 0 26px;
+}
+
+.clw-progress span {
+  height: 5px;
+}
+
+.clw-document {
+  margin-bottom: 22px;
+  padding: 16px 18px;
+  border-radius: 14px;
+}
+
+.clw-document strong {
+  font-size: 14px;
+}
+
+.clw-document p {
+  max-width: 470px;
+  font-size: 12px;
+}
+
+.clw-upload span {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.clw-form {
+  gap: 20px 18px;
+}
+
+.clw-field {
+  gap: 8px;
+  font-size: 13px;
+}
+
+.clw-field input,
+.clw-field select,
+.clw-field textarea {
+  padding: 11px 13px;
+  border-radius: 11px;
+  font-size: 14px;
+}
+
+.clw-field input,
+.clw-field select {
+  height: 46px;
+}
+
+.clw-field textarea {
+  min-height: 112px;
+}
+
+.clw-review {
+  padding: 14px 18px;
+  border-radius: 14px;
+}
+
+.clw-review-row {
+  padding: 10px 0;
+  font-size: 13px;
+}
+
+.clw-actions {
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+.clw-actions button {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.clw-navigation {
+  gap: 10px;
+}
+
+@media (max-width: 700px) {
+  .clw-modal {
+    padding: 20px 18px 18px;
+  }
+
+  .clw-form {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .clw-field,
+  .clw-full,
+  .clw-review,
+  .clw-error,
+  .clw-success,
+  .clw-actions {
+    grid-column: 1;
+  }
+
+  .clw-actions {
+    align-items: stretch;
+  }
+
+  .clw-navigation {
+    width: 100%;
+  }
+}

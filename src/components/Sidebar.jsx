@@ -3,6 +3,7 @@ import Icon from './Icon'
 import { useAuth } from '../auth'
 import { PAGES } from '../data/pages'
 import { useApp } from '../lib/store'
+import BrandLogo from './BrandLogo'
 
 /** The bent-back left panel of the main window: workspace and navigation. */
 export default function Sidebar() {
@@ -12,8 +13,6 @@ export default function Sidebar() {
   const email = profile?.mail || profile?.userPrincipalName || ''
   const nav = useRef(null)
   const [ind, setInd] = useState(null)
-  const [seen, setSeen] = useState(false)
-  if (page === 'inbox' && !seen) setSeen(true)
 
   /* slide the highlight to the active row */
   useLayoutEffect(() => {
@@ -38,18 +37,14 @@ export default function Sidebar() {
     >
       <Icon name={p.icon} size={21} />
       <span>{p.label}</span>
-      {p.badge && !seen && <b className="badge">{p.badge}</b>}
+      {p.badge && <b className="badge">{p.badge}</b>}
     </button>
   )
 
   return (
     <nav className="win side" aria-label="Main">
-      <div className="ws">
-        {photo ? <img src={photo} alt="" /> : <span className="sidebar-initial">{displayName.slice(0,1).toUpperCase()}</span>}
-        <div>
-          <strong>{displayName}</strong>
-          <span>{email}</span>
-        </div>
+      <div className="sidebar-brand">
+        <BrandLogo className="sidebar-logo" />
       </div>
 
       <div className="nav" ref={nav}>
@@ -59,7 +54,10 @@ export default function Sidebar() {
       </div>
       <div className="sidebar-account">
         {photo ? <img src={photo} alt="" /> : <span className="sidebar-initial">{displayName.slice(0,1).toUpperCase()}</span>}
-        <div><b>{displayName}</b><small>{email}</small></div>
+        <div className="sidebar-user">
+          <b>{displayName}</b>
+          <small>{email}</small>
+        </div>
         <button type="button" onClick={signOut} title="Sign out">Sign out</button>
       </div>
     </nav>

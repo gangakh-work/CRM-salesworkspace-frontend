@@ -11,13 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@azure/msal-browser": "^4.26.0",
-    "@azure/msal-react": "^3.0.24",
-    "framer-motion": "^14.9.1",
-    "lucide-react": "^1.68.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "sonner": "^2.0.8"
+    "@azure/msal-browser": "^4.26.0",
+    "@azure/msal-react": "^3.0.24"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
