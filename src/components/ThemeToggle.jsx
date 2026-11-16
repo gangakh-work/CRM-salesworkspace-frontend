@@ -13,7 +13,6 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
     >
       <span aria-hidden="true">{theme === 'dark' ? '☀' : '☾'}</span>
-      {theme === 'dark' ? 'Light mode' : 'Dark mode'}
     </button>
   )
 }

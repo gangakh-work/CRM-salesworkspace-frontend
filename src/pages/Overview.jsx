@@ -42,7 +42,7 @@ const getStage = (row) => {
 }
 
 function Header() {
-  const { profile, photo } = useAuth()
+  const { profile } = useAuth()
   const first = (profile?.displayName || 'there').trim().split(/\s+/)[0]
   return (
     <header className="ov-head crm-dashboard-head">
@@ -52,7 +52,6 @@ function Header() {
       </div>
       <div className="ov-tools">
         <ThemeToggle />
-        {photo && <img className="crm-profile-photo" src={photo} alt={`${profile?.displayName || 'Microsoft account'} profile`} />}
       </div>
     </header>
   )

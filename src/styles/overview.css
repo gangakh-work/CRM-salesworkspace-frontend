@@ -1194,7 +1194,6 @@ kbd {
 .crm-dashboard-head{flex:0 0 auto}
 .crm-dashboard-head .hello{font-size:clamp(24px,2.2vw,34px)}
 .crm-dashboard-head .ov-tools{gap:12px}
-.crm-profile-photo{width:36px;height:36px;flex:0 0 36px;object-fit:cover;border-radius:50%;border:1px solid rgba(255,255,255,.36);box-shadow:0 3px 12px rgba(0,0,0,.2)}
 .sales-dashboard-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px;align-content:start}
 .sales-dashboard-grid>.card{min-width:0;color:var(--ink,#f4f6fa);border-radius:20px;background:linear-gradient(145deg,rgba(255,255,255,.15),rgba(255,255,255,.055));border:1px solid rgba(255,255,255,.13);box-shadow:inset 0 1px rgba(255,255,255,.17),0 12px 30px rgba(0,0,0,.15);backdrop-filter:blur(20px) saturate(125%);-webkit-backdrop-filter:blur(20px) saturate(125%)}
 .sales-kpi{grid-column:span 2;position:relative;display:flex;flex-direction:column;justify-content:center;min-height:104px;padding:13px 15px 20px;overflow:hidden;text-align:left;color:inherit;font:inherit;cursor:pointer;transition:transform .28s var(--spring),background .25s ease,border-color .25s ease,box-shadow .3s ease,backdrop-filter .3s ease}
@@ -1266,7 +1265,7 @@ kbd {
 :root[data-theme='light'] .priority-check{border-color:rgba(52,68,91,.5)}
 :root[data-theme='light'] .priority-count{background:rgba(59,95,158,.12)}
 @media(max-width:1100px){.sales-dashboard-grid{grid-template-columns:repeat(6,minmax(0,1fr))}.sales-kpi{grid-column:span 2}.sales-dashboard-grid>.performance-panel{grid-column:span 4}.sales-dashboard-grid>.priorities-panel{grid-column:span 2}.sales-dashboard-grid>.attention-panel{grid-column:span 3}.sales-dashboard-grid>.stage-panel{grid-column:span 3}.sales-dashboard-grid>.win-panel{grid-column:span 6}.win-chart{height:48px}}
-@media(max-width:760px){.sales-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sales-kpi{grid-column:span 1}.sales-dashboard-grid>.performance-panel,.sales-dashboard-grid>.priorities-panel,.sales-dashboard-grid>.attention-panel,.sales-dashboard-grid>.stage-panel,.sales-dashboard-grid>.win-panel{grid-column:1/-1}.sales-month-chart{width:58%}.crm-profile-photo{width:32px;height:32px;flex-basis:32px}}
+@media(max-width:760px){.sales-dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.sales-kpi{grid-column:span 1}.sales-dashboard-grid>.performance-panel,.sales-dashboard-grid>.priorities-panel,.sales-dashboard-grid>.attention-panel,.sales-dashboard-grid>.stage-panel,.sales-dashboard-grid>.win-panel{grid-column:1/-1}.sales-month-chart{width:58%}}
 @media(max-width:430px){.sales-kpi{padding:11px 10px 20px}.sales-kpi-heading h2{font-size:9px}.sales-kpi-value{font-size:20px}.attention-head,.attention-row{grid-template-columns:minmax(0,1.7fr) minmax(48px,.7fr) minmax(65px,1fr)}.attention-head>span:last-child,.attention-row>small{display:none}.sales-performance-content{grid-template-columns:minmax(0,1fr)}.sales-month-chart{width:100%;padding:0}}
 
 /* Fit every dashboard card inside the main window without an inner scrollbar. */
