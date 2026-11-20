@@ -23,11 +23,22 @@ const asDate = (value) => {
   const date = new Date(value)
   return Number.isNaN(date.getTime()) ? null : date
 }
-const leadRevenue = (record) => Number(pick(
-  record,
-  ['estimatedvalue', 'expectedrevenue', 'value', 'expectedRevenue', 'estimated_value', 'estimatedamount'],
-  0,
-)) || 0
+const leadRevenue = (record) => {
+  const values = [
+    record?.estimatedvalue,
+    record?.estimatedamount,
+    record?.estimatedamount_base,
+    record?.expectedrevenue,
+    record?.expectedRevenue,
+    record?.estimated_value,
+    record?.value,
+  ]
+  for (const value of values) {
+    const revenue = Number(value)
+    if (Number.isFinite(revenue) && revenue !== 0) return revenue
+  }
+  return 0
+}
 const isWon = (row) => pick(row, ['statecode']) === 1 ||
   String(pick(row, ['statuscode_label', 'statecode_label', 'status', 'statuscode'], '')).toLowerCase().includes('won')
 const isLost = (row) => pick(row, ['statecode']) === 2 ||

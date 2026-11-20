@@ -50,8 +50,9 @@
 .knowledge-step li,
 .knowledge-chapter li,
 .knowledge-note li {
-  color: var(--muted);
+  color: var(--ink-2);
   font-size: 13px;
+  font-weight: 550;
   line-height: 1.75;
 }
 
@@ -107,6 +108,8 @@
   gap: 6px;
   margin: 0;
   padding-left: 16px;
+  list-style: disc;
+  list-style-position: outside;
 }
 
 .knowledge-step li {

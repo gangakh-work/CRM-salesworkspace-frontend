@@ -327,7 +327,7 @@
   z-index: 2;
   min-width: 0;
   min-height: 0;
-  border-radius: 0 var(--r) var(--r) 0;
+  border-radius: 0;
   --gd: 0.2s;
   animation: mainIn 1.2s var(--ease) 0.05s backwards;
 }
@@ -344,6 +344,12 @@
   transition: opacity 0.5s;
 }
 .no-side .main {
+  border-radius: var(--r) 0 0 var(--r);
+}
+.no-right .main {
+  border-radius: 0 var(--r) var(--r) 0;
+}
+.no-side.no-right .main {
   border-radius: var(--r);
 }
 .no-side .main::after {
