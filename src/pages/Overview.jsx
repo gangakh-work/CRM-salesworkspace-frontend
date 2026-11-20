@@ -23,11 +23,11 @@ const asDate = (value) => {
   const date = new Date(value)
   return Number.isNaN(date.getTime()) ? null : date
 }
-const leadScore = (record) => {
-  const rawScore = pick(record, ['leadscore', 'score', 'qualification_score', 'qualificationScore'], 50)
-  const score = Number(rawScore)
-  return Number.isFinite(score) ? Math.min(100, Math.max(0, score)) : 50
-}
+const leadRevenue = (record) => Number(pick(
+  record,
+  ['estimatedvalue', 'expectedrevenue', 'value', 'expectedRevenue', 'estimated_value', 'estimatedamount'],
+  0,
+)) || 0
 const isWon = (row) => pick(row, ['statecode']) === 1 ||
   String(pick(row, ['statuscode_label', 'statecode_label', 'status', 'statuscode'], '')).toLowerCase().includes('won')
 const isLost = (row) => pick(row, ['statecode']) === 2 ||
@@ -132,7 +132,7 @@ function TopRecordsCard({ title, icon, records, kind, onRecordClick }) {
             : ['fullname', 'name', 'full_name', 'subject', 'companyname'], `Unnamed ${kind === 'opportunities' ? 'opportunity' : 'lead'}`)
           const detail = kind === 'opportunities'
             ? money(pick(record, ['estimatedvalue', 'expectedrevenue', 'value'], 0))
-            : `Score ${leadScore(record)}`
+            : money(leadRevenue(record))
           return (
             <button type="button" className="sales-record-row" key={recordId || `${name}-${index}`} onClick={() => recordId && onRecordClick(String(recordId))} disabled={!recordId}>
               <span className="sales-record-rank">{index + 1}</span>
@@ -303,9 +303,9 @@ export default function Overview() {
     .filter((deal) => deal.opportunityid || deal.id)
     .sort((a, b) => Number(pick(b, ['estimatedvalue', 'expectedrevenue', 'value'], 0)) - Number(pick(a, ['estimatedvalue', 'expectedrevenue', 'value'], 0)))
     .slice(0, 5), [opportunities])
-  const topLeads = useMemo(() => leads
+  const topLeads = useMemo(() => [...leads]
     .filter((lead) => lead.leadid || lead.id || lead.leadId)
-    .sort((a, b) => leadScore(b) - leadScore(a))
+    .sort((a, b) => leadRevenue(b) - leadRevenue(a))
     .slice(0, 5), [leads])
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
   const riskDeals = openOpportunities.filter((deal) => {

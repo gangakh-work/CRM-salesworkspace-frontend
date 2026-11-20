@@ -47,9 +47,9 @@
 }
 
 .knowledge-hero p,
-.knowledge-step p,
-.knowledge-chapter p,
-.knowledge-note p {
+.knowledge-step li,
+.knowledge-chapter li,
+.knowledge-note li {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.75;
@@ -100,9 +100,32 @@
   font-size: 14px;
 }
 
-.knowledge-step p {
+.knowledge-step ul,
+.knowledge-chapter ul,
+.knowledge-note ul {
+  display: grid;
+  gap: 6px;
   margin: 0;
-  font-size: 11px;
+  padding-left: 16px;
+}
+
+.knowledge-step li {
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+.knowledge-step li::marker,
+.knowledge-chapter li::marker,
+.knowledge-note li::marker {
+  color: #a9c2ff;
+}
+
+.knowledge-chapter ul {
+  gap: 8px;
+}
+
+.knowledge-chapter li {
+  font-size: 12px;
   line-height: 1.65;
 }
 
@@ -143,15 +166,6 @@
   letter-spacing: -.01em;
 }
 
-.knowledge-chapter p {
-  margin: 0 0 10px;
-  font-size: 12px;
-}
-
-.knowledge-chapter p:last-child {
-  margin-bottom: 0;
-}
-
 .knowledge-note {
   display: flex;
   align-items: flex-start;
@@ -168,13 +182,23 @@
   margin-top: 2px;
 }
 
-.knowledge-note p {
-  margin: 0;
-  font-size: 12px;
+.knowledge-note > div {
+  min-width: 0;
 }
 
 .knowledge-note strong {
+  display: block;
+  margin-bottom: 6px;
   color: var(--ink);
+  font-size: 12px;
+}
+
+.knowledge-note ul {
+  gap: 4px;
+}
+
+.knowledge-note li {
+  font-size: 11px;
 }
 
 :root[data-theme='light'] .knowledge-hero {
@@ -190,6 +214,12 @@
 :root[data-theme='light'] .knowledge-chapter-icon,
 :root[data-theme='light'] .knowledge-note {
   color: #456b9f;
+}
+
+:root[data-theme='light'] .knowledge-step li::marker,
+:root[data-theme='light'] .knowledge-chapter li::marker,
+:root[data-theme='light'] .knowledge-note li::marker {
+  color: #527eaf;
 }
 
 :root[data-theme='light'] .knowledge-hero-mark {
