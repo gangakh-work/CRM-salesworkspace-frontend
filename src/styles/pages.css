@@ -1575,85 +1575,6 @@
   object-fit: cover;
 }
 
-/* ---------------- support ---------------- */
-.ways {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 14px;
-}
-.way {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-}
-.way-ic {
-  width: 46px;
-  height: 46px;
-  border-radius: 16px;
-  margin-bottom: 8px;
-}
-.way h3 {
-  font-size: 16px;
-  font-weight: 600;
-}
-.way p {
-  font-size: 13px;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-.faq {
-  padding: 20px 22px 10px;
-}
-.faq h2 {
-  margin-bottom: 8px;
-  font-size: 18px;
-  font-weight: 600;
-}
-.faq-item {
-  border-bottom: 1px solid var(--line);
-}
-.faq-item:last-child {
-  border-bottom: 0;
-}
-.faq-item > button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 16px 0;
-  font-size: 15px;
-  font-weight: 500;
-  text-align: left;
-}
-.faq-item > button svg {
-  flex-shrink: 0;
-  transition: transform 0.45s var(--spring);
-}
-.faq-item.open > button svg {
-  transform: rotate(180deg);
-}
-.faq-a {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.45s var(--ease);
-}
-.faq-a p {
-  min-height: 0;
-  overflow: hidden;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-.faq-item.open .faq-a {
-  grid-template-rows: 1fr;
-}
-.faq-item.open .faq-a p {
-  padding-bottom: 16px;
-}
-
 /* ---------------- narrow screens ---------------- */
 @media (max-width: 1000px) {
   .stats {
@@ -1661,7 +1582,6 @@
   }
   .rep-grid,
   .set-grid,
-  .ways,
   .cal-wrap {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -2945,13 +2865,20 @@
   overflow-wrap: anywhere;
   word-break: break-word;
 }
-.contacts-table td { padding: 12px; vertical-align: middle; }
-.contacts-table td:nth-child(2) { width: 22%; }
-.contacts-table td:nth-child(3) { width: 25%; }
-.contacts-table td:nth-child(4) { width: 18%; }
-.contacts-table td:nth-child(5) { width: 15%; }
-.contacts-table td:nth-child(6) { width: 16%; }
-.contacts-table .who { min-width: 0; }
+.contacts-table th,
+.contacts-table td { padding: 12px 10px; vertical-align: middle; }
+.contacts-table th:nth-child(1),
+.contacts-table td:nth-child(1) { width: 23%; }
+.contacts-table th:nth-child(2),
+.contacts-table td:nth-child(2) { width: 25%; }
+.contacts-table th:nth-child(3),
+.contacts-table td:nth-child(3) { width: 22%; }
+.contacts-table th:nth-child(4),
+.contacts-table td:nth-child(4) { width: 13%; }
+.contacts-table th:nth-child(5),
+.contacts-table td:nth-child(5) { width: 17%; }
+.contacts-table .who { min-width: 0; gap: 8px; }
+.contacts-table .box { width: 16px; height: 16px; flex: 0 0 16px; font-size: 10px; }
 .contacts-table .who b { min-width: 0; overflow-wrap: anywhere; white-space: normal; }
 
 /* Expanded opportunity creation form */

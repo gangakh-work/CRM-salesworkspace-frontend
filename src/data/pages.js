@@ -8,5 +8,5 @@ export const PAGES = [
   { id: 'companies', label: 'Companies', icon: 'building' },
   { id: 'tasks', label: 'Tasks', icon: 'task' },
   { id: 'calendar', label: 'Calendar', icon: 'calendar' },
-  { id: 'support', label: 'Support', icon: 'help', low: true },
+  { id: 'knowledge', label: 'Knowledge Book', icon: 'doc', low: true },
 ]
