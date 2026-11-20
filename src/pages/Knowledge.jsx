@@ -5,23 +5,23 @@ import '../styles/knowledge.css'
 const workflows = [
   {
     number: '01',
-    title: 'Get oriented',
-    text: 'Start on Overview to understand the current pipeline, lead activity, priorities, and opportunity performance. Select a dashboard item to open the related CRM records.',
+    title: 'Start with Overview',
+    steps: ['Check sales totals and due tasks.', 'Select a top record to open its CRM page.'],
   },
   {
     number: '02',
-    title: 'Find the right record',
-    text: 'Use the Leads, Opportunities, Contacts, and Companies pages to search and review records from the connected CRM. Open a record when you need its full details.',
+    title: 'Find a record',
+    steps: ['Choose Leads, Opportunities, Contacts, or Companies.', 'Search by name, then open the record you need.'],
   },
   {
     number: '03',
-    title: 'Work with context',
-    text: 'Update records in their dedicated workflow, or ask the AI Assistant to summarize information, draft next steps, or help prepare a change.',
+    title: 'Ask for help',
+    steps: ['Open AI Assistant and describe what you need.', 'Include a name or company so it finds the right record.'],
   },
   {
     number: '04',
-    title: 'Review and verify',
-    text: 'Check names, values, owners, and dates before confirming an action. Refresh the relevant page afterwards to verify the CRM reflects the change.',
+    title: 'Check your work',
+    steps: ['Review names, owners, amounts, and dates.', 'Refresh the page to confirm the saved change.'],
   },
 ]
 
@@ -29,42 +29,51 @@ const chapters = [
   {
     icon: 'grid',
     title: 'Reading your Overview',
-    paragraphs: [
-      'Overview brings together current sales signals from the CRM. Top Opportunities are ranked by expected value, while Top Leads are ranked by their available lead score. The right-hand rail summarizes lead volume, open pipeline value, and won opportunities.',
-      'Today’s Priorities highlights open tasks due today or overdue. Deals at Risk surfaces opportunities that are nearing their expected close date or have a risk signal. Select a dashboard card or record to jump into the matching page and review the underlying items.',
+    steps: [
+      'Use the KPI cards to review leads, opportunities, pipeline, and sales performance.',
+      'Check Today’s Priorities for tasks due today or past due.',
+      'Select a card or record to open the related list.',
     ],
   },
   {
     icon: 'target',
     title: 'Managing leads',
-    paragraphs: [
-      'Open Leads to search prospects and review their contact details, source, score, status, owner, and expected value. Selecting a lead opens its record so you can check the available context before deciding what to do next.',
-      'Use the qualification workflow to record whether need, budget, authority, and timeline have been confirmed. The qualification score reflects those answers; it is a guide for prioritization, not a guarantee of conversion. Review the completed information before submitting any CRM update.',
+    steps: [
+      'Open Leads and search for a person or company.',
+      'Open a lead to review its contact details, status, owner, and expected revenue.',
+      'Choose Qualify and answer the questions about need, budget, decision-maker, and timing.',
+      'Review your answers before submitting the qualification.',
     ],
   },
   {
     icon: 'pipeline',
     title: 'Managing opportunities',
-    paragraphs: [
-      'The Opportunities page shows open pipeline, a weighted forecast, and won value alongside the current opportunity list. Search by opportunity, customer, stage, owner, or CRM identifier, and open a record for its details.',
-      'Create an opportunity with the New Opportunity action. When marking one Won or Lost, review the confirmation details and provide any requested close information. These actions update CRM data, so verify the selected record and values before confirming.',
+    steps: [
+      'Open Opportunities to review pipeline, forecast, and current deals.',
+      'Search by opportunity, customer, stage, or owner; select a row for details.',
+      'Use New Opportunity to add a deal, and check its name, customer, value, and close date.',
+      'Before choosing Won or Lost, verify the deal and review the confirmation details.',
     ],
   },
   {
     icon: 'sparkle',
     title: 'Working with the AI Assistant',
-    paragraphs: [
-      'Ask the Assistant in plain language for help with CRM work, such as finding or summarizing a lead, reviewing an opportunity, drafting a follow-up, or suggesting a next action. Include a person, company, opportunity name, or other identifying detail to help it select the right context.',
-      'If a request could refer to more than one record or needs missing information, answer the follow-up question. When the Assistant presents a form, complete each step, review the summary, and submit only when the details are correct. Treat generated summaries and drafts as suggestions that need your review.',
-      'The Assistant uses the configured sales-agent service and connected CRM data. If that service or the CRM connection is unavailable, the page will report the issue; the guide and Assistant cannot replace missing permissions or a running backend.',
+    steps: [
+      'Ask in everyday language, for example: “Summarize the Contoso opportunity.”',
+      'Include a person, company, or deal name so the Assistant can find the right record.',
+      'Answer follow-up questions if the request is unclear or information is missing.',
+      'If a form appears, complete it, review every detail, then submit only when it is correct.',
+      'Check AI summaries and drafts yourself; they are suggestions, not final decisions.',
+      'The Assistant needs the configured backend and CRM connection to retrieve records or make changes.',
     ],
   },
   {
     icon: 'calendar',
     title: 'Keeping work coordinated',
-    paragraphs: [
-      'Contacts and Companies help you understand who is involved in an account. Tasks and Calendar help you follow through on planned work; check the owner and due date so the next step is clear to the right person.',
-      'Use refresh controls after a change if a list still shows older information. A visible connection warning means the CRM data may not be current, so resolve the connection before relying on dashboard totals or record details.',
+    steps: [
+      'Use Contacts and Companies to find people and the organizations they belong to.',
+      'Use Tasks and Calendar to check owners, due dates, and planned follow-ups.',
+      'If information looks old, choose Refresh and check the connection warning if one appears.',
     ],
   },
 ]
@@ -73,18 +82,17 @@ export default function Knowledge() {
   return (
     <div className="knowledge-book">
       <PageHead
-        title="Knowledge Book"
-        sub="A practical guide to the workspace, the CRM, and the sales agent."
+        title="CRM User Guide – Everything You Need to Get Started"
+        sub="A simple, beginner-friendly guide to using your CRM."
       />
 
       <section className="knowledge-hero">
         <div className="knowledge-hero-copy">
           <span className="knowledge-eyebrow"><Icon name="doc" size={15} /> WORKSPACE FIELD GUIDE</span>
-          <h2>From first look to confident action</h2>
+          <h2>Start with the essentials</h2>
           <p>
-            Use this guide to understand where information lives, how the
-            Assistant supports your work, and what to review before a change
-            reaches the CRM.
+            New to the CRM? Follow these simple steps to find information, work
+            with the Assistant, and safely save your updates.
           </p>
         </div>
         <div className="knowledge-hero-mark" aria-hidden="true"><Icon name="sparkle" size={34} /></div>
@@ -95,7 +103,7 @@ export default function Knowledge() {
           <article className="knowledge-step" key={step.number}>
             <span className="knowledge-step-number">{step.number}</span>
             <h3>{step.title}</h3>
-            <p>{step.text}</p>
+            <ul>{step.steps.map((text) => <li key={text}>{text}</li>)}</ul>
           </article>
         ))}
       </section>
@@ -106,7 +114,7 @@ export default function Knowledge() {
             <div className="knowledge-chapter-icon"><Icon name={chapter.icon} size={19} /></div>
             <div className="knowledge-chapter-body">
               <h2>{chapter.title}</h2>
-              {chapter.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+              <ul>{chapter.steps.map((text) => <li key={text}>{text}</li>)}</ul>
             </div>
           </article>
         ))}
@@ -114,12 +122,13 @@ export default function Knowledge() {
 
       <aside className="knowledge-note">
         <Icon name="help" size={18} />
-        <p>
-          <strong>Keep the source of truth in mind.</strong> CRM records and
-          sales-agent actions depend on the configured backend and Dataverse
-          connection. Review generated content, confirm record changes
-          deliberately, and check the CRM when accuracy matters.
-        </p>
+        <div>
+          <strong>Before you finish</strong>
+          <ul>
+            <li>CRM information comes from your connected Dataverse environment.</li>
+            <li>Review any change before submitting it, then refresh to confirm it was saved.</li>
+          </ul>
+        </div>
       </aside>
     </div>
   )

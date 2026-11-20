@@ -387,13 +387,44 @@
   z-index: 1;
   width: calc(376px - var(--gap-r));
   justify-self: end;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 16px;
   min-height: 0;
+  box-sizing: border-box;
+  padding: 18px 14px;
+  border-radius: 0 var(--r) var(--r) 0;
+  isolation: isolate;
   transform-origin: 0% 50%;
   transform: rotateY(calc(var(--curve) * -1));
   animation: rightIn 1.3s var(--ease) 0.15s backwards;
+}
+.right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02) 38%, rgba(255, 255, 255, 0) 70%),
+    rgb(var(--glass-rgb) / var(--tint));
+  backdrop-filter: var(--glass-filter);
+  -webkit-backdrop-filter: var(--glass-filter);
+  box-shadow: var(--rim), var(--drop);
+  pointer-events: none;
+}
+.right::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  bottom: 18px;
+  left: 0;
+  z-index: 1;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent);
+  pointer-events: none;
+  transition: opacity 0.5s;
 }
 @keyframes rightIn {
   from {
@@ -407,7 +438,9 @@
   transition: opacity 0.4s var(--ease);
 }
 .no-right .right > *,
-.no-right .right .win::before {
+.no-right .right .win::before,
+.no-right .right::before,
+.no-right .right::after {
   opacity: 0;
 }
 .no-right .right {
@@ -645,6 +678,7 @@
 }
 [data-layout='flat'] .nav-ind,
 [data-layout='flat'] .main::after,
+[data-layout='flat'] .right::after,
 [data-layout='flat'] .grabber {
   display: none;
 }
