@@ -16,13 +16,10 @@
 
   color: #f8f3ec;
 
-  background: #30251e !important;
-
-  border: 1px solid rgba(210, 174, 126, 0.3);
-  border-radius: 18px;
-
-  overflow: hidden;
-  isolation: isolate;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0;
+  overflow: visible;
 }
 
 /* Prevent dashboard transparency */
@@ -793,8 +790,8 @@
 
 /* Latest Glassy refinements: list cards, action pills and native stage control */
 .opportunities-workspace {
-  background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025)) !important;
-  border: 1px solid rgba(255,255,255,.16) !important;
+  background: transparent !important;
+  border: 0 !important;
   color: var(--text, #f5f6f8);
 }
 .opportunities-workspace .opportunity-list-icon {

@@ -15,7 +15,7 @@ const Contacts = lazy(() => import('./pages/Contacts'))
 const Companies = lazy(() => import('./pages/Companies'))
 const Tasks = lazy(() => import('./pages/Tasks'))
 const Calendar = lazy(() => import('./pages/Calendar'))
-const Support = lazy(() => import('./pages/Support'))
+const Knowledge = lazy(() => import('./pages/Knowledge'))
 const LeadDetail = lazy(() => import('./pages/LeadDetail'))
 const OpportunityDetail = lazy(() => import('./pages/OpportunityDetail'))
 
@@ -28,7 +28,7 @@ const VIEWS = {
   companies: Companies,
   tasks: Tasks,
   calendar: Calendar,
-  support: Support,
+  knowledge: Knowledge,
   'lead-detail': LeadDetail,
   'opportunity-detail': OpportunityDetail,
 }

@@ -65,7 +65,7 @@
 .space {
   --side-w: 236px;
   --right-w: 376px;
-  --gap-r: 28px;
+  --gap-r: 0px;
   --r: 40px;
 
   position: relative;
@@ -687,7 +687,7 @@
 .sidebar-brand{display:flex;align-items:center;justify-content:center;padding:2px 0 16px}.sidebar-logo{width:112px;max-height:84px;border-radius:9px;box-shadow:0 8px 22px rgba(0,0,0,.16)}
 
 /* Dashboard side analytics: three glass cards matching the reference proportions */
-.crm-right-stack{height:100%;display:grid;grid-template-rows:1.18fr .55fr 1.2fr;gap:14px;padding:4px;min-height:0}
+.crm-right-stack{height:100%;display:grid;grid-template-rows:1.18fr .55fr 1.2fr;gap:14px;padding:0;min-height:0}
 .crm-side-card{min-height:0;padding:19px 21px;border:1px solid rgba(255,255,255,.2);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.19),rgba(255,255,255,.065));box-shadow:0 18px 45px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.16);backdrop-filter:blur(26px);display:flex;flex-direction:column;justify-content:center;gap:9px;overflow:hidden}
 .crm-side-card>small,.crm-side-card small{font-size:8px;letter-spacing:1.6px;opacity:.58}.crm-side-card h3{font-size:17px;margin:0;display:flex;align-items:center;gap:8px}.crm-side-card p{font-size:10px;line-height:1.5;opacity:.68;margin:0}.crm-side-card button{align-self:flex-start;display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);color:inherit;padding:8px 11px;border-radius:10px;font-size:10px;white-space:nowrap;transition:background .2s,transform .2s}.crm-side-card button:hover{background:rgba(255,255,255,.18);transform:translateY(-1px)}
 .crm-side-card.leads-side{background:linear-gradient(145deg,rgba(74,135,222,.88),rgba(39,87,159,.76));box-shadow:0 18px 48px rgba(20,50,100,.3),inset 0 1px rgba(255,255,255,.28)}.side-card-head{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.4px;font-weight:700}.side-avatar{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#d4c7a9;color:#43372c;overflow:hidden}.side-avatar img{width:100%;height:100%;object-fit:cover}.side-big{font-family:var(--serif);font-size:clamp(36px,3vw,54px);font-weight:400;line-height:1}.side-new{display:flex;align-items:center;gap:8px;font-size:10px;flex-wrap:wrap}.side-new b{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 8px;font-size:9px}.side-pill-bars{height:64px;display:flex;align-items:flex-end;gap:8px;padding:2px 5px}.side-pill-bars i{flex:1;max-width:28px;border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 5px 16px rgba(15,42,90,.16);min-height:8px}
