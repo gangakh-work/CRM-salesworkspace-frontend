@@ -7,6 +7,7 @@ import Grabber from './components/Grabber'
 import Palette from './components/Palette'
 import Toasts from './components/Toasts'
 import CRMWidgets from './widgets/CRMWidgets'
+import FloatingAssistant from './components/FloatingAssistant'
 const Overview = lazy(() => import('./pages/Overview'))
 const Leads = lazy(() => import('./pages/Leads'))
 const Opportunities = lazy(() => import('./pages/Opportunities'))
@@ -33,9 +34,8 @@ const VIEWS = {
   'opportunity-detail': OpportunityDetail,
 }
 
-/* the scene is drawn on a fixed 1780×910 canvas and zoomed to fit the window */
-const CANVAS = { w: 1780, h: 910 }
-const SPATIAL_MIN = 1100
+/* Keep the existing spatial layout; at very small real-device widths, use the existing flat layout. */
+const SPATIAL_MIN = 600
 
 const DEFAULTS = {
   curve: 16,
@@ -71,6 +71,8 @@ export default function App() {
   const [activeDashboardView, setActiveDashboardView] = useState(null)
   const [spatial, setSpatial] = useState(() => innerWidth >= SPATIAL_MIN)
   const stage = useRef(null)
+  const assistantReturn = useRef(null)
+  const pageScroll = useRef(new Map())
 
   const set = useCallback((patch) => setSettings((s) => ({ ...s, ...patch })), [])
 
@@ -91,14 +93,59 @@ export default function App() {
     if (innerWidth < SPATIAL_MIN) scrollTo(0, 0)
   }
 
+  /* Add short native hover descriptions to existing controls without changing markup or layout. */
+  useEffect(() => {
+    const addBriefTitles = (root = document) => {
+      root.querySelectorAll('button, a, [role="button"], input, select, textarea, [tabindex="0"]').forEach((element) => {
+        if (element.title || element.dataset.tooltip || element.dataset.tip) return
+        const aria = element.getAttribute('aria-label')
+        const label = aria || element.textContent?.replace(/\s+/g, ' ').trim()
+        if (label) element.title = label.length > 120 ? `${label.slice(0, 117)}…` : label
+      })
+      root.querySelectorAll('td[title=""]').forEach((element) => element.removeAttribute('title'))
+    }
+    addBriefTitles()
+    const observer = new MutationObserver(() => addBriefTitles())
+    observer.observe(document.querySelector('.stage') || document.body, { childList: true, subtree: true, characterData: true })
+    return () => observer.disconnect()
+  }, [page])
+
   /* each page is a #/hash entry, so the browser's own back and forward buttons work */
   const go = useCallback((id) => {
     if (id === pageFromHash()) return
+    if (id === 'assistant' && page !== 'assistant') {
+      const scroller = stage.current?.querySelector('.page-scroll')
+      assistantReturn.current = { page, hash: location.hash, scrollTop: scroller?.scrollTop || 0 }
+    }
     history.pushState(null, '', id === 'overview' ? location.pathname : `#/${id}`)
     toTop()
     setPage(id)
     if (id !== 'assistant') setActiveDashboardView(null)
-  }, [])
+  }, [page])
+  const goAssistant = useCallback(() => {
+    if (page === 'assistant') return
+    const scroller = stage.current?.querySelector('.page-scroll')
+    assistantReturn.current = {
+      page,
+      hash: location.hash,
+      scrollTop: scroller?.scrollTop || 0,
+    }
+    go('assistant')
+  }, [page, go])
+
+  const returnFromAssistant = useCallback(() => {
+    const saved = assistantReturn.current
+    if (!saved) {
+      go('overview')
+      return
+    }
+    history.pushState(null, '', saved.hash || location.pathname)
+    setPage(saved.page)
+    requestAnimationFrame(() => {
+      const scroller = stage.current?.querySelector('.page-scroll')
+      if (scroller) scroller.scrollTop = saved.scrollTop
+    })
+  }, [go])
   const openDashboardView = useCallback((view) => {
     go(view.page)
     setActiveDashboardView(view)
@@ -118,13 +165,11 @@ export default function App() {
     setTimeout(() => setToasts((all) => all.filter((x) => x.id !== id)), 3200)
   }, [])
 
-  /* fit the canvas to the viewport; below SPATIAL_MIN the windows lie flat and scroll */
+  /* Switch to the existing flat mobile layout only at genuinely narrow viewport widths. */
   useEffect(() => {
     const fit = () => {
       const wide = innerWidth >= SPATIAL_MIN
       setSpatial(wide)
-      const z = wide ? Math.min(1.45, Math.max(0.55, Math.min(innerWidth / CANVAS.w, innerHeight / CANVAS.h))) : 1
-      document.documentElement.style.setProperty('--z', z.toFixed(4))
     }
     fit()
     addEventListener('resize', fit)
@@ -212,8 +257,8 @@ export default function App() {
   }, [])
 
   const ctx = useMemo(
-    () => ({ page, go, settings, set, toast, openSheet: setSheet, spatial, side, setSide, right, setRight, recordDetail, setRecordDetail, activeDashboardView, openDashboardView }),
-    [page, go, settings, set, toast, spatial, side, right, recordDetail, activeDashboardView, openDashboardView],
+    () => ({ page, go, goAssistant, returnFromAssistant, assistantReturn: assistantReturn.current, settings, set, toast, openSheet: setSheet, spatial, side, setSide, right, setRight, recordDetail, setRecordDetail, activeDashboardView, openDashboardView }),
+    [page, go, goAssistant, returnFromAssistant, settings, set, toast, spatial, side, right, recordDetail, activeDashboardView, openDashboardView],
   )
 
   const View = VIEWS[page]
@@ -246,6 +291,7 @@ export default function App() {
         </div>
 
         {sheet === 'palette' && <Palette onClose={() => setSheet(null)} />}
+        <FloatingAssistant />
         <Toasts items={toasts} />
       </main>
     </AppContext.Provider>

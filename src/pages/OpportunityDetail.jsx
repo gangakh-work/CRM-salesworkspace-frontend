@@ -75,7 +75,7 @@ export default function OpportunityDetail(){
  const liveTabs=['Timeline','Activities','Meetings','Emails','Calls','Tasks','Documents','Proposals']
  return <><PageHead title={name} sub={`Opportunity 360° · ${record.customerid_name||record.parentaccountid_name||record.company||'Dataverse opportunity'}`}>
  <button className="chip" onClick={()=>go('opportunities')}><Icon name="arrowLeft" size={14}/> Back to Opportunities</button>
- <label className="stage-action"><span>Update stage</span><select aria-label="Update opportunity stage" value={record.stepname||''} disabled={saving} onChange={e=>changeStage(e.target.value)}><option value="">Select stage</option>{STAGES.filter(x=>!['won','lost'].includes(x.id)).map(stage=><option key={stage.id} value={stage.label}>{stage.label}</option>)}</select></label>
+ <label className="stage-action"><span>Update stage</span><select aria-label="Update opportunity stage" value={record.stepname||''} disabled={saving} onChange={e=>changeStage(e.target.value)}><option value="">Select stage</option>{STAGES.map(stage=><option key={stage.id} value={stage.label}>{stage.label}</option>)}</select></label>
  <button className="chip" onClick={()=>setEditCommercial(true)}><Icon name="edit" size={14}/> Edit Dates &amp; TCV</button><button className="cta" onClick={()=>setAction('won')}><Icon name="check" size={14}/> Mark Won</button><button className="chip" onClick={()=>setAction('lost')}>Mark Lost</button></PageHead>
  {loading&&<p className="empty">Loading opportunity from Dataverse…</p>}{error&&<div className="empty" role="alert">{error}</div>}
  <nav className="record-tabs">{tabs.map(x=><button key={x} className={tab===x?'active':''} onClick={()=>setTab(x)}>{x}</button>)}</nav>

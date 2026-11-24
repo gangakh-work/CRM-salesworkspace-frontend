@@ -31,18 +31,18 @@ export default function CRMWidgets() {
   const monthly = months.map((_, i) => won.filter(o => { const d = new Date(pick(o, ['actualclosedate'], '')); return !Number.isNaN(d.getTime()) && d.getMonth() === i }).length)
   const max = Math.max(1, ...monthly)
   return <div className="crm-right-stack">
-    <section className="crm-side-card leads-side hl">
+    <section className="crm-side-card leads-side hl" data-tooltip={`Leads: ${totalLeads.toLocaleString('en-IN')} total, ${newLeads} created during the current month. Bar values show leads created in each of the latest eight months.`}>
       <div className="side-card-head"><span>LEADS</span></div>
       <strong className="side-big">{totalLeads.toLocaleString('en-IN')}</strong>
       <div className="side-new">{newLeads} new this month <b>↗ Live CRM</b></div>
       <div className="side-pill-bars">{leadMonths.map((v,i)=><i key={i} style={{height:`${Math.max(5,v/Math.max(1,...leadMonths)*100)}%`}}/>)}</div>
     </section>
-    <section className="crm-side-card pipeline-side hl">
+    <section className="crm-side-card pipeline-side hl" data-tooltip="Total Sales Pipeline sums estimated value or budget amount for open opportunities whose CRM state/status is not won, lost or closed.">
       <small>SALES PERFORMANCE</small><h3><Icon name="pipeline" size={17}/> Total Sales Pipeline</h3>
       <div className="pipeline-value">{money(pipeline)}</div>
       <div className="pipeline-foot"><span>{opportunities.length} opportunities</span></div>
     </section>
-    <section className="crm-side-card won-side hl">
+    <section className="crm-side-card won-side hl" data-tooltip={`Opportunity Wins: ${won.length} opportunities marked won. Closed-won value is ${money(wonValue)}, summed from actual value or fallback estimated/value fields.`}>
       <div className="won-side-title"><div><small>PERFORMANCE</small><h3>Opportunity Wins</h3></div><span className="won-badge">{won.length} won</span></div>
       <strong className="side-big">{won.length.toLocaleString('en-IN')}</strong>
       <p>{money(wonValue)} closed-won value</p>

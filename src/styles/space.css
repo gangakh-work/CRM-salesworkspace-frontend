@@ -41,11 +41,11 @@
 
 /* ---------------- stage ---------------- */
 .stage {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
+  position: relative;
+  height: 100dvh;
+  min-height: 100dvh;
+  display: block;
+  overflow: auto;
 }
 /* a dim veil that comes down when a sheet is in front */
 .stage::after {
@@ -63,6 +63,7 @@
 }
 
 .space {
+  container: spatial-space / inline-size;
   --side-w: 236px;
   --right-w: 376px;
   --gap-r: 0px;
@@ -70,9 +71,10 @@
 
   position: relative;
   z-index: 1;
-  zoom: var(--z);
-  width: 1780px;
+  width: min(max(calc(100vw - 24px), 1372px), 1780px);
+  min-width: 1372px;
   height: 910px;
+  margin: 12px auto;
   padding: 28px 130px 8px;
   display: grid;
   grid-template-columns: var(--side-w) minmax(0, 1fr) var(--right-w);
@@ -375,7 +377,8 @@
 }
 /* the overview is built to fill the window exactly; other pages scroll */
 .page[data-page='overview'] {
-  height: 100%;
+  min-height: 100%;
+  height: auto;
 }
 [data-layout='flat'] .page[data-page='overview'] {
   height: auto;
@@ -536,10 +539,9 @@
   place-items: center;
 }
 .sheet {
-  zoom: var(--z);
   position: relative;
   width: 580px;
-  max-width: calc(100vw / var(--z) - 32px);
+  max-width: calc(100vw - 32px);
   border-radius: 34px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.02) 40%),
@@ -566,7 +568,6 @@
   left: 50%;
   translate: -50% 0;
   z-index: 60;
-  zoom: var(--z);
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -621,6 +622,7 @@
 .stage[data-layout='flat'] {
   position: relative;
   display: block;
+  height: auto;
   place-items: normal;
   min-height: 100%;
   overflow: visible;
@@ -629,9 +631,10 @@
   position: fixed;
 }
 [data-layout='flat'] .space {
-  zoom: 1;
   width: 100%;
+  min-width: 0;
   height: auto;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -709,13 +712,11 @@
   display: none;
 }
 [data-layout='flat'] .sheet {
-  zoom: 1;
   max-width: calc(100vw - 24px);
 }
 [data-layout='flat'] .toasts {
   position: fixed;
   bottom: 20px;
-  zoom: 1;
 }
 [data-layout='flat'] .sheet-wrap {
   position: fixed;
@@ -730,8 +731,180 @@
 .crm-right-stack{height:100%;display:grid;grid-template-rows:1.18fr .55fr 1.2fr;gap:14px;padding:0;min-height:0}
 .crm-side-card{min-height:0;padding:19px 21px;border:1px solid rgba(255,255,255,.2);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.19),rgba(255,255,255,.065));box-shadow:0 18px 45px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.16);backdrop-filter:blur(26px);display:flex;flex-direction:column;justify-content:center;gap:9px;overflow:hidden}
 .crm-side-card>small,.crm-side-card small{font-size:8px;letter-spacing:1.6px;opacity:.58}.crm-side-card h3{font-size:17px;margin:0;display:flex;align-items:center;gap:8px}.crm-side-card p{font-size:10px;line-height:1.5;opacity:.68;margin:0}.crm-side-card button{align-self:flex-start;display:flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.09);color:inherit;padding:8px 11px;border-radius:10px;font-size:10px;white-space:nowrap;transition:background .2s,transform .2s}.crm-side-card button:hover{background:rgba(255,255,255,.18);transform:translateY(-1px)}
-.crm-side-card.leads-side{background:linear-gradient(145deg,rgba(74,135,222,.88),rgba(39,87,159,.76));box-shadow:0 18px 48px rgba(20,50,100,.3),inset 0 1px rgba(255,255,255,.28)}.side-card-head{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.4px;font-weight:700}.side-avatar{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#d4c7a9;color:#43372c;overflow:hidden}.side-avatar img{width:100%;height:100%;object-fit:cover}.side-big{font-family:var(--serif);font-size:clamp(36px,3vw,54px);font-weight:400;line-height:1}.side-new{display:flex;align-items:center;gap:8px;font-size:10px;flex-wrap:wrap}.side-new b{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 8px;font-size:9px}.side-pill-bars{height:64px;display:flex;align-items:flex-end;gap:8px;padding:2px 5px}.side-pill-bars i{flex:1;max-width:28px;border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 5px 16px rgba(15,42,90,.16);min-height:8px}
-.pipeline-side{padding:18px 20px;gap:8px}.pipeline-value{font-family:var(--serif);font-size:clamp(27px,2.2vw,39px);line-height:1.1;white-space:nowrap}.pipeline-foot{display:flex;align-items:center;justify-content:space-between;font-size:10px;opacity:.75}.pipeline-foot button{width:34px;height:34px;border-radius:50%;padding:0;display:grid;place-items:center;background:#fff;color:#4a3a2a;border:0}
+.crm-side-card.leads-side{background:linear-gradient(145deg,rgba(74,135,222,.88),rgba(39,87,159,.76));box-shadow:0 18px 48px rgba(20,50,100,.3),inset 0 1px rgba(255,255,255,.28)}.side-card-head{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.4px;font-weight:700}.side-avatar{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:#d4c7a9;color:#43372c;overflow:hidden}.side-avatar img{width:100%;height:100%;object-fit:cover}.side-big{font-family:var(--serif);font-size:44px;font-weight:400;line-height:1}.side-new{display:flex;align-items:center;gap:8px;font-size:10px;flex-wrap:wrap}.side-new b{background:rgba(255,255,255,.18);border-radius:20px;padding:4px 8px;font-size:9px}.side-pill-bars{height:64px;display:flex;align-items:flex-end;gap:8px;padding:2px 5px}.side-pill-bars i{flex:1;max-width:28px;border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 5px 16px rgba(15,42,90,.16);min-height:8px}
+.pipeline-side{padding:18px 20px;gap:8px}.pipeline-value{font-family:var(--serif);font-size:32px;line-height:1.1;white-space:nowrap}.pipeline-foot{display:flex;align-items:center;justify-content:space-between;font-size:10px;opacity:.75}.pipeline-foot button{width:34px;height:34px;border-radius:50%;padding:0;display:grid;place-items:center;background:#fff;color:#4a3a2a;border:0}
 .won-side{justify-content:flex-start;padding:18px 20px}.won-side-title{display:flex;align-items:center;justify-content:space-between;gap:8px}.won-side-title h3{margin-top:4px}.won-badge{font-size:9px;padding:5px 8px;border-radius:20px;background:rgba(255,255,255,.13)}.won-side .side-big{font-size:40px}.won-line-chart{height:85px;margin-top:2px;min-height:65px}.won-line-chart svg{width:100%;height:100%;overflow:visible}.won-dates{display:flex;justify-content:space-between;font-size:9px;opacity:.6;margin-top:-5px}.won-side button{margin-top:auto}
-@media(max-width:1100px){.crm-right-stack{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}.crm-side-card{min-height:210px}}
-@media(max-width:620px){.crm-right-stack{grid-template-columns:1fr}.crm-side-card{min-height:190px}}
+@container spatial-space (max-width:1100px){.crm-right-stack{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto}.crm-side-card{min-height:210px}}
+@container spatial-space (max-width:620px){.crm-right-stack{grid-template-columns:1fr}.crm-side-card{min-height:190px}}
+
+
+/* Reference desktop fit: preserve the original glass theme and three-pane shell. */
+@media (min-width: 601px) {
+  .stage[data-layout='spatial'] {
+    display: block;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .stage[data-layout='spatial'] > .space {
+    box-sizing: border-box;
+    width: min(78.3vw, 1780px);
+    max-width: 1780px;
+    min-width: 0;
+    height: 91.5dvh;
+    min-height: 0;
+    margin: 2.8dvh auto 5.7dvh;
+    padding: 0;
+    grid-template-columns: 15.7% minmax(0, 59.3%) 25%;
+    grid-template-rows: minmax(0, 1fr) 14px;
+    grid-template-areas:
+      'side main right'
+      '. grab .';
+    column-gap: 0;
+    row-gap: 0;
+  }
+
+  .stage[data-layout='spatial'] .side,
+  .stage[data-layout='spatial'] .main,
+  .stage[data-layout='spatial'] .right {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .stage[data-layout='spatial'] .side {
+    padding: 16px 10px 12px;
+  }
+
+  .stage[data-layout='spatial'] .right {
+    padding: 12px 10px;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .stage[data-layout='spatial'] .page-scroll {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 14px 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .stage[data-layout='spatial'] .crm-right-stack {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1.18fr) minmax(0, .55fr) minmax(0, 1.2fr);
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    gap: 10px;
+    padding: 2px;
+  }
+
+  .stage[data-layout='spatial'] .crm-side-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: clamp(12px, 1.15vw, 20px);
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1100px) {
+  .stage[data-layout='spatial'] > .space {
+    width: 90vw;
+    grid-template-columns: 16% minmax(0, 58%) 26%;
+  }
+}
+
+@media (min-width: 601px) and (max-height: 680px) {
+  .stage[data-layout='spatial'] > .space {
+    height: 93dvh;
+    margin-top: 1.8dvh;
+    margin-bottom: 5.2dvh;
+  }
+  .stage[data-layout='spatial'] .page-scroll {
+    padding-block: 10px;
+  }
+}
+
+
+/* Match the visual scale of 75% browser zoom while browser stays at 100%.
+   CSS zoom scales the complete CRM shell and preserves normal layout flow.
+   The inverse dimensions compensate for zoom so its rendered footprint
+   remains 78.3vw x 91.5dvh, matching the supplied reference. */
+@media (min-width: 601px) {
+  .stage[data-layout='spatial'] {
+    display: block;
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .stage[data-layout='spatial'] > .space {
+    zoom: .75;
+    box-sizing: border-box;
+    width: 104.4vw;
+    max-width: none;
+    min-width: 0;
+    height: 122dvh;
+    min-height: 0;
+    margin: 5.67dvh 0 0 14.47vw;
+    padding: 0;
+    grid-template-columns: 15.7% minmax(0, 59.3%) 25%;
+    grid-template-rows: minmax(0, 1fr) 14px;
+    grid-template-areas:
+      'side main right'
+      '. grab .';
+    column-gap: 0;
+    row-gap: 0;
+  }
+
+  .stage[data-layout='spatial'] .side,
+  .stage[data-layout='spatial'] .main,
+  .stage[data-layout='spatial'] .right {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .stage[data-layout='spatial'] .right {
+    overflow: hidden;
+  }
+
+  /* Keep the right-hand KPI cards stacked, regardless of the enlarged
+     pre-zoom container width used to compensate for the .75 zoom. */
+  .stage[data-layout='spatial'] .crm-right-stack {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(0, 1.18fr) minmax(0, .55fr) minmax(0, 1.2fr) !important;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    gap: 10px;
+  }
+
+  .stage[data-layout='spatial'] .page-scroll {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+}
+
+@media (min-width: 601px) and (max-height: 680px) {
+  .stage[data-layout='spatial'] > .space {
+    height: 124dvh;
+    margin-top: 4.67dvh;
+  }
+}

@@ -55,7 +55,7 @@
 .ci-tracking-result > span { color:rgba(220,230,242,.55); font-size:11px; }
 .ci-event-row { display:flex; justify-content:space-between; gap:12px; padding:9px 0; border-top:1px solid rgba(255,255,255,.1); color:#e9eff7; font-size:12px; }
 .ci-event-row time { color:rgba(220,230,242,.58); }
-@media (max-width:760px) {
+@container spatial-space (max-width:760px) {
   .ci-upload-form { grid-template-columns:1fr; }
   .ci-upload-form > .cta { grid-column:1; justify-self:stretch; }
   .ci-insight-grid,.ci-entity-grid,.ci-form-grid { grid-template-columns:1fr; }

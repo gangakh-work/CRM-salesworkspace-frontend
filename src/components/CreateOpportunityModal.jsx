@@ -38,7 +38,7 @@ const FIELD_DEFINITIONS = [
   ['fundingValueUsd', 'Funding Value in USD', 'number', ''],
 ]
 
-const SALES_STAGE_OPTIONS = ['Qualify', 'Develop', 'Propose', 'Close']
+const SALES_STAGE_OPTIONS = ['Discovery/RFI', 'RFP/Proposal', 'Post proposal discussions/Negotiations', 'Verbal/Email Confirmation', 'Contracting', 'Won', 'Lost']
 
 const makeEmptyForm = () => Object.fromEntries(
   FIELD_DEFINITIONS.map(([key, , type]) => [key, type === 'checkbox' ? false : ''])
@@ -253,9 +253,7 @@ export default function CreateOpportunityModal({ onClose, onCreated }) {
         ) : type === 'stage' ? (
           <select {...common}>
             <option value="">Select {label}</option>
-            {options.length
-              ? options.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)
-              : SALES_STAGE_OPTIONS.map((stage) => <option key={stage} value={stage}>{stage}</option>)}
+            {SALES_STAGE_OPTIONS.map((stage) => <option key={stage} value={stage}>{stage}</option>)}
           </select>
         ) : fieldOptions.length ? (
           <select

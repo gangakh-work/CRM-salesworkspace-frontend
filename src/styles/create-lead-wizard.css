@@ -286,7 +286,7 @@
   border-color: #347eff;
 }
 
-@media (max-width: 520px) {
+@container spatial-space (max-width: 520px) {
   .clw-modal {
     padding: 16px 13px;
   }
@@ -437,7 +437,7 @@
   gap: 10px;
 }
 
-@media (max-width: 700px) {
+@container spatial-space (max-width: 700px) {
   .clw-modal {
     padding: 20px 18px 18px;
   }

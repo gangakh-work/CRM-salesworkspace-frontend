@@ -155,7 +155,7 @@ function AgentMessage({ message, busy, onAction, onRecordOpen, onFormSubmit, onF
 }
 
 export default function Assistant() {
-  const { toast, page, recordDetail, go, setRecordDetail, activeDashboardView } = useApp()
+  const { toast, page, recordDetail, go, setRecordDetail, activeDashboardView, returnFromAssistant, assistantReturn } = useApp()
   const { profile } = useAuth()
   const userEmail = profile?.mail || profile?.userPrincipalName || ''
   const userName = profile?.displayName || userEmail.split('@')[0] || 'Sales User'
@@ -497,7 +497,9 @@ export default function Assistant() {
   }
 
   return <>
-    <PageHead title="AI Assistant" sub="Your sales workspace copilot" />
+    <PageHead title="AI Assistant" sub="Your sales workspace copilot">
+      {assistantReturn && <button type="button" className="chip" onClick={returnFromAssistant}>← Back</button>}
+    </PageHead>
     <div className="glassy-assistant-layout">
       <section className="glassy-assistant-chat card">
         <div className="glassy-assistant-head"><span className="assistant-avatar"><Icon name="sparkle" size={18}/></span><div className="assistant-title"><b>Glassy CRM Assistant</b><small>Sales Agent API · {assistantStatus?.status || (assistantStatus?.available === true ? 'Connected' : assistantStatus?.available === false ? 'Unavailable' : 'Checking status…')}</small></div><button type="button" className="chip assistant-new-chat" onClick={newConversation}>New chat</button></div>

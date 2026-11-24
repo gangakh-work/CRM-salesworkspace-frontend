@@ -24,11 +24,19 @@ const AuthContext = createContext({
 
 export const useAuth = () => useContext(AuthContext)
 
-const clientId = import.meta.env.VITE_MSAL_CLIENT_ID || ''
-const tenantId = import.meta.env.VITE_MSAL_TENANT_ID || 'common'
-const redirectUri =
-  import.meta.env.VITE_MSAL_REDIRECT_URI || window.location.origin
+const clientId =
+  import.meta.env.VITE_ENTRA_CLIENT_ID ||
+  import.meta.env.VITE_MSAL_CLIENT_ID ||
+  ''
+const tenantId =
+  import.meta.env.VITE_ENTRA_TENANT_ID ||
+  import.meta.env.VITE_MSAL_TENANT_ID ||
+  'common'
 
+const redirectUri =
+  import.meta.env.VITE_ENTRA_REDIRECT_URI ||
+  import.meta.env.VITE_MSAL_REDIRECT_URI ||
+  window.location.origin
 const msal = new PublicClientApplication({
   auth: {
     clientId:
@@ -224,11 +232,11 @@ function SignInGate({ children }) {
   const startMicrosoftSignIn = () => {
     if (
       !clientId ||
-      !import.meta.env.VITE_MSAL_TENANT_ID ||
+      !tenantId || tenantId === 'common' ||
       !backendScope
     ) {
       setError(
-        'Microsoft sign-in configuration is incomplete. Check VITE_MSAL_CLIENT_ID, VITE_MSAL_TENANT_ID and VITE_MSAL_API_SCOPE, then restart Vite.'
+        'Microsoft sign-in configuration is incomplete. Check VITE_ENTRA_CLIENT_ID, VITE_ENTRA_TENANT_ID and VITE_MSAL_API_SCOPE, then restart Vite.'
       )
       return
     }
@@ -346,11 +354,11 @@ function SignInGate({ children }) {
           )}
 
           {(!clientId ||
-            !import.meta.env.VITE_MSAL_TENANT_ID ||
+            !tenantId || tenantId === 'common' ||
             !backendScope) && (
             <p className="auth-note">
-              Microsoft sign-in requires VITE_MSAL_CLIENT_ID,
-              VITE_MSAL_TENANT_ID and VITE_MSAL_API_SCOPE in the
+              Microsoft sign-in requires VITE_ENTRA_CLIENT_ID,
+              VITE_ENTRA_TENANT_ID and VITE_MSAL_API_SCOPE in the
               frontend .env file. Restart Vite after updating it.
             </p>
           )}

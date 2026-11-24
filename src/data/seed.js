@@ -216,10 +216,11 @@ export const LEADS = [
 
 /* ---------------- deals pipeline ---------------- */
 export const STAGES = [
-  { id: 'new', label: 'New', tone: 'sky' },
-  { id: 'qualified', label: 'Qualified', tone: 'blue' },
-  { id: 'proposal', label: 'Proposal', tone: 'violet' },
-  { id: 'negotiation', label: 'Negotiation', tone: 'amber' },
+  { id: 'discovery-rfi', label: 'Discovery/RFI', tone: 'sky' },
+  { id: 'rfp-proposal', label: 'RFP/Proposal', tone: 'blue' },
+  { id: 'post-proposal-negotiations', label: 'Post proposal discussions/Negotiations', tone: 'violet' },
+  { id: 'verbal-email-confirmation', label: 'Verbal/Email Confirmation', tone: 'amber' },
+  { id: 'contracting', label: 'Contracting', tone: 'amber' },
   { id: 'won', label: 'Won', tone: 'teal' },
   { id: 'lost', label: 'Lost', tone: 'mute' },
 ]

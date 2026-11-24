@@ -49,11 +49,11 @@ const isComplete = (task) => pick(task, ['statecode']) === 1 ||
 const getTaskDue = (task) => asDate(pick(task, ['due_date', 'scheduledend', 'scheduledstart', 'dueDate'], ''))
 const getStage = (row) => {
   const raw = String(pick(row, ['stepname', 'salesstage', 'statuscode_label', 'stage', 'status'], 'Other')).toLowerCase()
-  if (raw.includes('qualif')) return 'Qualification'
-  if (raw.includes('discover') || raw.includes('develop')) return 'Discovery'
-  if (raw.includes('propos')) return 'Proposal'
-  if (raw.includes('negotiat')) return 'Negotiation'
-  if (raw.includes('close')) return 'Closing'
+  if (raw.includes('post proposal') || raw.includes('negotiat')) return 'Post proposal discussions/Negotiations'
+  if (raw.includes('discover') || raw.includes('rfi') || raw.includes('qualif')) return 'Discovery/RFI'
+  if (raw.includes('rfp') || raw.includes('propos')) return 'RFP/Proposal'
+  if (raw.includes('verbal') || raw.includes('email confirmation')) return 'Verbal/Email Confirmation'
+  if (raw.includes('contract')) return 'Contracting'
   return 'Other'
 }
 
@@ -84,9 +84,9 @@ function Sparkline({ values = [] }) {
   return <svg className="sales-sparkline" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true"><polyline points={points} /></svg>
 }
 
-function KpiCard({ icon, title, value, note, accent, series, onClick }) {
+function KpiCard({ icon, title, value, note, accent, series, onClick, tooltip }) {
   return (
-    <button type="button" className={`card hl sales-kpi sales-kpi-${accent}`} onClick={onClick} aria-label={`View ${title}: ${value}. ${note}`}>
+    <button type="button" className={`card hl sales-kpi sales-kpi-${accent}`} onClick={onClick} aria-label={`View ${title}: ${value}. ${note}`} data-tooltip={tooltip}>
       <div className="sales-kpi-heading"><span className="sales-kpi-icon"><Icon name={icon} size={19} /></span><h2>{title}</h2></div>
       <strong className="sales-kpi-value">{value}</strong>
       <span className="sales-kpi-note">{note}</span>
@@ -101,7 +101,7 @@ function PriorityCard({ tasks, onTaskClick, onViewAll }) {
     .sort((a, b) => getTaskDue(a) - getTaskDue(b))
   const visibleTasks = pending.slice(0, 3)
   return (
-    <article className="card hl sales-kpi sales-priority-kpi">
+    <article className="card hl sales-kpi sales-priority-kpi" data-tooltip="Today's priorities are incomplete tasks due before tomorrow. Tasks are sorted by due date, and overdue tasks are listed first.">
       <div className="sales-kpi-heading">
         <span className="sales-kpi-icon"><Icon name="calendar" size={19} /></span>
         <h2>Today's Priorities</h2>
@@ -112,7 +112,7 @@ function PriorityCard({ tasks, onTaskClick, onViewAll }) {
           const due = getTaskDue(task)
           const overdue = due < new Date(new Date().setHours(0, 0, 0, 0))
           return (
-            <button type="button" className="priority-kpi-task" key={taskId || task.subject} onClick={() => taskId && onTaskClick(String(taskId))} disabled={!taskId}>
+            <button type="button" className="priority-kpi-task" key={taskId || task.subject} onClick={() => taskId && onTaskClick(String(taskId))} disabled={!taskId} data-tooltip={`${pick(task, ['subject', 'title', 'description'], 'CRM task')}${due ? ` — Due ${due.toLocaleDateString()}` : ''}`}>
               <span className={`priority-kpi-dot${overdue ? ' overdue' : ''}`} />
               <span className="priority-kpi-name">{pick(task, ['subject', 'title', 'description'], 'CRM task')}</span>
               <small>{overdue ? 'Overdue' : 'Today'}</small>
@@ -128,7 +128,7 @@ function PriorityCard({ tasks, onTaskClick, onViewAll }) {
 
 function TopRecordsCard({ title, icon, records, kind, onRecordClick }) {
   return (
-    <article className={`card sales-kpi sales-record-kpi sales-kpi-${kind}`}>
+    <article className={`card sales-kpi sales-record-kpi sales-kpi-${kind}`} data-tooltip={kind === 'opportunities' ? 'Top 5 opportunities ranked by estimated value or expected revenue, from highest to lowest.' : 'Top 5 leads ranked by available estimated value or expected revenue, from highest to lowest.'}>
       <div className="sales-kpi-heading">
         <span className="sales-kpi-icon"><Icon name={icon} size={19} /></span>
         <h2>{title}</h2>
@@ -145,7 +145,7 @@ function TopRecordsCard({ title, icon, records, kind, onRecordClick }) {
             ? money(pick(record, ['estimatedvalue', 'expectedrevenue', 'value'], 0))
             : money(leadRevenue(record))
           return (
-            <button type="button" className="sales-record-row" key={recordId || `${name}-${index}`} onClick={() => recordId && onRecordClick(String(recordId))} disabled={!recordId}>
+            <button type="button" className="sales-record-row" key={recordId || `${name}-${index}`} onClick={() => recordId && onRecordClick(String(recordId))} disabled={!recordId} data-tooltip={`${name} — ${detail}`}>
               <span className="sales-record-rank">{index + 1}</span>
               <span className="sales-record-name">{name}</span>
               <small>{detail}</small>
@@ -199,7 +199,7 @@ function SalesPerformance({ wonDeals, now }) {
   }, [now, period, wonDeals])
   const max = Math.max(...values, 1)
   return (
-    <article className="card sales-panel performance-panel">
+    <article className="card sales-panel performance-panel" data-tooltip="My Sales Performance sums actual or estimated close value for opportunities marked won within the selected yearly, quarterly or monthly period.">
       <PanelTitle icon="target" action={<div className="sales-period-toggle" role="group" aria-label="Sales performance period">
         {['yearly', 'quarterly', 'monthly'].map((option) => <button type="button" key={option} className={period === option ? 'active' : ''} aria-pressed={period === option} onClick={() => setPeriod(option)}>{option[0].toUpperCase() + option.slice(1)}</button>)}
       </div>}>My Sales Performance</PanelTitle>
@@ -210,7 +210,7 @@ function SalesPerformance({ wonDeals, now }) {
       <div className="sales-performance-content">
         <div className="sales-performance-foot">{title}</div>
         <div className={`sales-month-chart sales-chart-${period}`} role="img" aria-label={`${title}: ${money(total)}`}>
-          {values.map((value, index) => <div key={labels[index]} title={`${labels[index]}: ${money(value)}`}><i style={{ height: `${Math.max(value ? 9 : 3, value / max * 100)}%` }} /><small>{period === 'monthly' && Number(labels[index]) % 5 !== 1 ? '' : labels[index]}</small></div>)}
+          {values.map((value, index) => <div key={labels[index]} data-tooltip={`${labels[index]}: ${money(value)} closed-won value`}><i style={{ height: `${Math.max(value ? 9 : 3, value / max * 100)}%` }} /><small>{period === 'monthly' && Number(labels[index]) % 5 !== 1 ? '' : labels[index]}</small></div>)}
         </div>
       </div>
     </article>
@@ -236,17 +236,17 @@ function AttentionDeals({ deals }) {
 }
 
 function PipelineStages({ opportunities }) {
-  const stageOrder = ['Qualification', 'Discovery', 'Proposal', 'Negotiation', 'Closing', 'Other']
+  const stageOrder = ['Discovery/RFI', 'RFP/Proposal', 'Post proposal discussions/Negotiations', 'Verbal/Email Confirmation', 'Contracting', 'Other']
   const stages = stageOrder.map((stage) => {
     const rows = opportunities.filter((deal) => getStage(deal) === stage)
     return { stage, count: rows.length, value: rows.reduce((sum, deal) => sum + Number(pick(deal, ['estimatedvalue', 'expectedrevenue', 'value'], 0)), 0) }
   }).filter((stage) => stage.count)
   const total = opportunities.length || 1
   return (
-    <article className="card sales-panel stage-panel">
+    <article className="card sales-panel stage-panel" data-tooltip="Counts open opportunities by normalized stage. Percentages use the open-opportunity total as the denominator; no lost or won opportunities are included.">
       <PanelTitle icon="pipeline">Pipeline by Stage</PanelTitle>
       <div className="stage-layout"><div className="stage-funnel" aria-hidden="true">{stages.slice(0, 5).map((stage) => <i key={stage.stage} style={{ width: `${Math.max(34, 100 - (stages.indexOf(stage) * 13))}%` }} />)}</div>
-        <div className="stage-list">{stages.length ? stages.map((stage) => <div className="stage-row" key={stage.stage}><i /><span>{stage.stage}</span><b>{stage.count}</b><small>{Math.round(stage.count / total * 100)}%</small></div>) : <p className="sales-empty">No open pipeline to group by stage.</p>}</div>
+        <div className="stage-list">{stages.length ? stages.map((stage) => <div className="stage-row" data-tooltip={`${stage.stage}: ${stage.count} open opportunities (${Math.round(stage.count / total * 100)}%), ${money(stage.value)} pipeline value`} key={stage.stage}><i /><span>{stage.stage}</span><b>{stage.count}</b><small>{Math.round(stage.count / total * 100)}%</small></div>) : <p className="sales-empty">No open pipeline to group by stage.</p>}</div>
       </div>
     </article>
   )
@@ -348,7 +348,7 @@ export default function Overview() {
         <TopRecordsCard icon="pipeline" title="Top 5 Opportunities" records={topOpportunities} kind="opportunities" onRecordClick={openTopOpportunity} />
         <TopRecordsCard icon="users" title="Top 5 Leads" records={topLeads} kind="leads" onRecordClick={openTopLead} />
         <PriorityCard tasks={tasks} onTaskClick={openTask} onViewAll={openPriorityTasks} />
-        <KpiCard icon="help" title="Deals at Risk" value={riskDeals.length} note="Closing soon or overdue" accent="rose" series={riskDeals.map((deal) => Number(pick(deal, ['estimatedvalue', 'value'], 0)))} onClick={() => openView({ page: 'opportunities', entityType: 'opportunity', label: 'Deals at risk', filter: 'at-risk', recordIds: riskOpportunityIds })} />
+        <KpiCard icon="help" title="Deals at Risk" value={riskDeals.length} note="Closing soon or overdue" accent="rose" series={riskDeals.map((deal) => Number(pick(deal, ['estimatedvalue', 'value'], 0)))} tooltip="Deals at Risk are open opportunities with an estimated close date within 30 days or already overdue, or whose CRM status contains 'risk' or 'no activity'." onClick={() => openView({ page: 'opportunities', entityType: 'opportunity', label: 'Deals at risk', filter: 'at-risk', recordIds: riskOpportunityIds })} />
         <SalesPerformance wonDeals={wonDeals} now={now} />
         <PipelineStages opportunities={openOpportunities} />
         <AttentionDeals deals={riskDeals} />

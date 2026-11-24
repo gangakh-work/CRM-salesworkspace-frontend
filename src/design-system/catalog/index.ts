@@ -1,1 +1,0 @@
-export { DesignSystemCatalog } from './DesignSystemCatalog'

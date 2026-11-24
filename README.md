@@ -8,6 +8,7 @@ This is the frontend-only package for the CRM Sales Workspace. It retains the ex
 - Central dashboard: Pipeline Value, Leads, Top Opportunities, Sales Activity, and Opportunity Wins.
 - Right analytics rail: Leads count, Total Sales Pipeline value, and Opportunity Wins trend.
 - Dashboard values are calculated from the existing CRM API responses where available; no fixed sample KPI values were introduced.
+- Added a Knowledge Book with a guided explanation of CRM pages, sales-agent workflows, and data connection expectations; removed the former Support page.
 - Rebuilt the sign-in screen to match the same warm gold/brown glass theme.
 - Removed all top navigation links/buttons from the login screen. The header contains only the SONATA brand.
 - Kept Microsoft Entra sign-in and Microsoft Graph profile/photo retrieval.
